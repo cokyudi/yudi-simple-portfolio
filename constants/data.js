@@ -22,28 +22,28 @@ const userData = {
       {
         title: "Front-end Developer",
         company: "DGIT Systems",
-        year: "2019/11",
+        year: "2019-11",
         companyLink: "https://www.dgitsystems.com/",
         desc: "Contributed to design, code, and maintenance company products especially front-end side.",
       },
       {
         title: "Application Developer",
         company: "Mitra Integrasi Informatika",
-        year: "2018/11",
+        year: "2018-11",
         companyLink: "",
         desc: "Placed in client side one of the biggest bank in Indonesia Bank Rakyat Indonesia as Web Developer.",
       },
       {
         title: "Graduation",
         company: "Udayana University",
-        year: "2018/08",
+        year: "2018-08",
         companyLink: "https://www.unud.ac.id/",
         desc: "Major in Computer Science",
       },
       {
         title: "Part-time Web Developer",
         company: "Avatar Solutions",
-        year: "2018/02",
+        year: "2018-02",
         companyLink: "https://avatarsolution.com/",
         desc: "Part-time while doing my thesis. Here I develop and maintenance Web-based projects from clients",
       },
@@ -51,11 +51,8 @@ const userData = {
     resumeUrl:
       "https://drive.google.com/file/d/1xmE3BOmgM7TAOOgVp36xQIQvYDntDYoo/view?usp=sharing",
     socialLinks: {
-      instagram: "https://instagram.com/maninthere",
-      twitter: "https://twitter.com/mannupaaji",
-      linkedin: "https://linkedin.com/in/manuarora28",
-      github: "https://github.com/manuarora700",
-      facebook: "https://facebook.com/",
+      linkedin: "https://linkedin.com/in/cokyudi",
+      github: "https://github.com/cokyudi",
     },
   };
   

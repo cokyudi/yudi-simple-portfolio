@@ -3,14 +3,15 @@ import {useState} from 'react';
 import Image from "next/image"
 import profile from "../public/profile.jpg"
 import Experience from "./Experience"
+import '/node_modules/flag-icons/css/flag-icons.min.css'
 
 const About = () => {
     const [buttonText, setButtonText] = useState('Hello !');
 
     function handleClick() {
         if (buttonText==='Hello !') {
-            setButtonText('こんにちは !');    
-        } else if (buttonText==='こんにちは !') {
+            setButtonText('こんにちは');    
+        } else if (buttonText==='こんにちは') {
             setButtonText('Hello !');    
         }
     }
@@ -29,23 +30,54 @@ const About = () => {
                     />
                 </div>
                 <div className="lg:px-4 lg:mt-12 ">
-                    <h1 onClick={handleClick} className="text-3xl font-bold text-gray-900 lg:text-7xl dark:text-white pointer">
-                        {buttonText}
-                    </h1>
-                    <div className="mt-6 text-gray-800 dark:text-white">
-                        <p className="mb-1">
-                        I'm Yudi Dharma Putra,
-                        Graduate of computer science with 4 years
-                        experience working across full-stack and fron-end of web development in professional
-                        company and industry.
-                        I've been working mostly using PHP and Javascript with its framework such as 
-                        Codeigniter, Laravel, AngularJS, Angular, jQuery.
-                        </p>
-                        <p className="mb-4">
-                        Eager to learn new
-                        technologies to improve knowledge and skill. 
-                        </p>
+                    <div className="lg:grid grid-cols-3 gaps-4">
+                        <div className="lg:col-span-2 lg:text-left">  
+                            <h1 className="text-5xl font-bold text-gray-900 lg:text-7xl dark:text-white pointer">
+                                {buttonText}
+                            </h1>
+                        </div>
+                        <div className="lg:col-span-1 lg:text-right">    
+                            <span onClick={handleClick} style={{width: 3.333 + 'em',  cursor: 'pointer'}} className={buttonText==='Hello !'? 'fi fi-gb h-20':'fi fi-jp h-20'}></span>
+                        </div>
                     </div>
+                    {buttonText==='Hello !' && 
+                        <div className="mt-6 text-gray-800 dark:text-white">
+                            <p className="mb-1 text-xl">
+                            I'm Yudi Dharma Putra,
+                            Graduate of computer science with 4 years
+                            experience working across full-stack and fron-end of web development in professional
+                            company and industry.
+                            I've been working mostly using PHP and Javascript with its framework such as 
+                            Codeigniter, Laravel, AngularJS, Angular, jQuery.
+                            </p>
+                            <p className="mb-1 text-xl">
+                            Eager to learn new
+                            technologies to improve knowledge and skill. 
+                            </p>
+                            <p className="mb-4 text-xl">
+                            Download my CV <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1KFmBxKCY1C6mDFuB5EUYictNCvqSa6K0/view?usp=sharing">here</a>
+                            </p>
+                        </div>
+                    }
+
+                    {buttonText!=='Hello !' && 
+                        <div className="mt-6 text-gray-800 dark:text-white">
+                            <p className="mb-1 text-xl">
+                            私は Yudi Dharma Putra です。コンピュータ サイエンスの卒業生で、専門の企業や業界で Web 開発のフルスタックおよびフロントエンドで 4 年間働いた経験があります。 私は主に、Codeigniter、Laravel、AngularJS、Angular、jQuery などのフレームワークで PHP と Javascript を使用して作業してきました。
+
+知識とスキルを向上させるために新しい技術を学ぶことに熱心です。
+                            </p>
+                            <p className="mb-1 text-xl">
+                            新しいことを学びたがる
+知識とスキルを向上させる技術。
+                            </p>
+                            <p className="mb-4 text-xl">
+                            <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1KFmBxKCY1C6mDFuB5EUYictNCvqSa6K0/view?usp=sharing">
+                            私の履歴書はこちらからダウンロードしてください
+                            </a>
+                            </p>
+                        </div>
+                    }
                 </div>
             </div>
             <Experience/>
