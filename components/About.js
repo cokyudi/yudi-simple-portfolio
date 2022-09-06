@@ -5,16 +5,7 @@ import profile from "../public/profile.jpg"
 import Experience from "./Experience"
 import '/node_modules/flag-icons/css/flag-icons.min.css'
 
-const About = () => {
-    const [buttonText, setButtonText] = useState('Hello !');
-
-    function handleClick() {
-        if (buttonText==='Hello !') {
-            setButtonText('こんにちは');    
-        } else if (buttonText==='こんにちは') {
-            setButtonText('Hello !');    
-        }
-    }
+const About = (props) => {
     return (
         <div className="container px-4 mx-auto">
             <div className="lg:space-x-5 lg:flex lg:flex-row item-center lg:-mx-4 flex flex-col text-center lg:text-left"> 
@@ -33,14 +24,11 @@ const About = () => {
                     <div className="lg:grid grid-cols-3 gaps-4">
                         <div className="lg:col-span-2 lg:text-left">  
                             <h1 className="text-5xl font-bold text-gray-900 lg:text-7xl dark:text-white pointer">
-                                {buttonText}
+                                {props.language}
                             </h1>
                         </div>
-                        <div className="lg:col-span-1 lg:text-right">    
-                            <span onClick={handleClick} style={{width: 3.333 + 'em',  cursor: 'pointer'}} className={buttonText==='Hello !'? 'fi fi-gb h-20':'fi fi-jp h-20'}></span>
-                        </div>
                     </div>
-                    {buttonText==='Hello !' && 
+                    {props.language==='Hello !' && 
                         <div className="mt-6 text-gray-800 dark:text-white">
                             <p className="mb-1 text-xl">
                             I'm Yudi Dharma Putra,
@@ -60,7 +48,7 @@ const About = () => {
                         </div>
                     }
 
-                    {buttonText!=='Hello !' && 
+                    {props.language!=='Hello !' && 
                         <div className="mt-6 text-gray-800 dark:text-white">
                             <p className="mb-1 text-xl">
                             私は Yudi Dharma Putra です。コンピュータ サイエンスの卒業生で、専門の企業や業界で Web 開発のフルスタックおよびフロントエンドで 4 年間働いた経験があります。 私は主に、Codeigniter、Laravel、AngularJS、Angular、jQuery などのフレームワークで PHP と Javascript を使用して作業してきました。
