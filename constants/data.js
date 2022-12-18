@@ -20,6 +20,13 @@ const userData = {
     },
     experience: [
       {
+        title: "Part-time Fullstack Developer",
+        company: "TREASURY INC.",
+        year: "2022-12",
+        companyLink: "https://www.treasury.jp/",
+        desc: "My first experience working in Tokyo Japan.",
+      },
+      {
         title: "Front-end Developer",
         company: "DGIT Systems",
         year: "2019-11",
