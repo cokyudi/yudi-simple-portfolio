@@ -60,7 +60,7 @@ const About = (props) => {
 知識とスキルを向上させる技術。
                             </p>
                             <p className="mb-4 text-xl">
-                            <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1wdM4dPZRrFZtOjrGInD50GXdBJb5CuG3/view?usp=sharing">
+                            <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1UKI_8xicqqeTTOx1yLcq8Q0mMHDaTi1C/view?usp=sharing">
                             私の履歴書はこちらからダウンロードしてください
                             </a>
                             </p>
