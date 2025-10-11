@@ -32,7 +32,7 @@ const About = (props) => {
                         <div className="mt-6 text-gray-800 dark:text-white">
                             <p className="mb-1 text-xl">
                             I'm Yudi Dharma Putra,
-                            Graduate of computer science with 5 years
+                            Graduate of computer science with 7 years
                             experience working across full-stack and fron-end of web development in professional
                             company and industry.
                             I've been working mostly using PHP and Javascript with its framework such as 
@@ -43,7 +43,7 @@ const About = (props) => {
                             technologies to improve knowledge and skill. 
                             </p>
                             <p className="mb-4 text-xl">
-                            Download my CV <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1wdM4dPZRrFZtOjrGInD50GXdBJb5CuG3/view?usp=sharing">here</a>
+                            Download my CV <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1UKI_8xicqqeTTOx1yLcq8Q0mMHDaTi1C/view?usp=drive_link">here</a>
                             </p>
                         </div>
                     }
