@@ -31,12 +31,12 @@ const About = (props) => {
                     {props.language==='Hello !' && 
                         <div className="mt-6 text-gray-800 dark:text-white">
                             <p className="mb-1 text-xl">
-                            I'm Yudi Dharma Putra,
-                            Graduate of computer science with 7 years
-                            experience working across full-stack and fron-end of web development in professional
-                            company and industry.
-                            I've been working mostly using PHP and Javascript with its framework such as 
-                            Codeigniter, Laravel, AngularJS, Angular, jQuery.
+                            I’m a Frontend Engineer who loves transforming complex ideas into elegant, fast, and accessible web experiences.
+                            My journey—from Indonesia to working in Japan—has been all about learning how technology, design, and people intersect.
+
+                            Whether building fintech dashboards or compliance systems with React + TypeScript, I focus on creating meaningful, measurable impact: faster load times, smoother UX, happier users.
+
+                            I thrive in collaborative environments where engineers and designers work together to craft experiences that matter.
                             </p>
                             <p className="mb-1 text-xl">
                             Eager to learn new
@@ -51,13 +51,17 @@ const About = (props) => {
                     {props.language!=='Hello !' && 
                         <div className="mt-6 text-gray-800 dark:text-white">
                             <p className="mb-1 text-xl">
-                            私は Yudi Dharma Putra です。コンピュータ サイエンスの卒業生で、専門の企業や業界で Web 開発のフルスタックおよびフロントエンドで 4 年間働いた経験があります。 私は主に、Codeigniter、Laravel、AngularJS、Angular、jQuery などのフレームワークで PHP と Javascript を使用して作業してきました。
+                            私は、複雑なアイデアを美しく、速く、そして誰もが使いやすい Web 体験へと変えることを得意とするフロントエンドエンジニアです。
+                            インドネシアから日本でのキャリアへと歩んできた中で、テクノロジー・デザイン・人との関わりがどのように交わり、価値を生み出すのかを学んできました。
 
-知識とスキルを向上させるために新しい技術を学ぶことに熱心です。
+                            React と TypeScript を用いたフィンテック向けダッシュボードやコンプライアンスシステムの開発などを通して、
+                            「速い読み込み」「快適なユーザー体験」「満足度の高い利用体験」といった、意味のある・測定可能な成果を追求しています。
+
+                            エンジニアとデザイナーが協力し、価値あるユーザー体験を共に作り上げる環境で働くことに喜びを感じています。
                             </p>
                             <p className="mb-1 text-xl">
                             新しいことを学びたがる
-知識とスキルを向上させる技術。
+                            知識とスキルを向上させる技術。
                             </p>
                             <p className="mb-4 text-xl">
                             <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1UKI_8xicqqeTTOx1yLcq8Q0mMHDaTi1C/view?usp=sharing">
