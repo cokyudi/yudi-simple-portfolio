@@ -43,7 +43,7 @@ const About = (props) => {
                             technologies to improve knowledge and skill. 
                             </p>
                             <p className="mb-4 text-xl">
-                            Download my CV <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/13QeFv2bdmEhPvIrveFPsFpyJ2ecMNkYs/view?usp=sharing">here</a>
+                            Download my CV <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://drive.google.com/file/d/1-L4cYTaNxdfS3FzceDZHduve_kjjGrJi/view?usp=sharing">here</a>
                             </p>
                         </div>
                     }
