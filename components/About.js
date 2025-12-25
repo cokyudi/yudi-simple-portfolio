@@ -77,7 +77,7 @@ const About = (props) => {
 
                 <motion.a
                   className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
-                  href="https://drive.google.com/file/d/1-L4cYTaNxdfS3FzceDZHduve_kjjGrJi/view?usp=sharing"
+                  href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -99,7 +99,7 @@ const About = (props) => {
                 </motion.p>
                 <motion.a
                   className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
-                  href="https://drive.google.com/file/d/1UKI_8xicqqeTTOx1yLcq8Q0mMHDaTi1C/view?usp=sharing"
+                  href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >

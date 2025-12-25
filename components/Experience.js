@@ -65,7 +65,7 @@ export default function Experience() {
   );
 }
 
-// ✅ Animated Experience Card
+// Animated Experience Card
 const ExperienceCard = ({ title, desc, year, company, companyLink, index }) => {
   return (
     <motion.div

@@ -63,7 +63,7 @@ const userData = {
       },
     ],
     resumeUrl:
-      "https://drive.google.com/file/d/1xmE3BOmgM7TAOOgVp36xQIQvYDntDYoo/view?usp=sharing",
+      "https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing",
     socialLinks: {
       linkedin: "https://linkedin.com/in/cokyudi",
       github: "https://github.com/cokyudi",
