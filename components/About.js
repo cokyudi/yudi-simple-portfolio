@@ -80,6 +80,10 @@ const About = (props) => {
                   href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+                  target="_blank"
                 >
                   Download my CV here
                 </motion.a>
@@ -102,6 +106,10 @@ const About = (props) => {
                   href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+                  target="_blank"
                 >
                   私の履歴書はこちらからダウンロードしてください
                 </motion.a>
