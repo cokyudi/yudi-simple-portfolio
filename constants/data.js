@@ -20,14 +20,14 @@ const userData = {
     },
     experience: [
       {
-        title: "Fullstack Developer",
+        title: "Full-stack Developer",
         company: "TREASURY INC.",
         year: "2023-3",
         companyLink: "https://www.treasury.jp/",
         desc: "My first Full-time job in Japan, Contributing on development of company products",
       },
       {
-        title: "Part-time Fullstack Developer",
+        title: "Part-time Full-stack Developer",
         company: "TREASURY INC.",
         year: "2022-12",
         companyLink: "https://www.treasury.jp/",
