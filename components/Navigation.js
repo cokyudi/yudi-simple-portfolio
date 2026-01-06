@@ -12,17 +12,39 @@ const Navigation = (props) => {
         }
     }
     return (
-        <div className="sticky top-0 z-20 py-2 bg-white md:py-6 md:mb-6 dark:bg-black">
-            <div className="container px-4 mx-auto lg:max-w-4xl flex items-center justify-between">
-                <Link href="/" className={"font-medium tracking-wider transition-colors text-gray-900 hover:text-sky-500 uppercase dark:text-white"}>
-                    Yudi Dharma Putra
+        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur dark:bg-black/80">
+            <nav className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
+                <Link
+                    href="/"
+                    className="font-semibold tracking-wide text-gray-900 dark:text-white hover:text-sky-500 transition"
+                >
+                    YUDI DHARMA PUTRA
                 </Link>
-                <div>
-                    <span onClick={handleClick} style={{width: 2 + 'rem', height: 2 + 'rem', verticalAlign: 'text-bottom',  cursor: 'pointer'}} className={props.text==='Hello !'? 'fi fi-gb h-20':'fi fi-jp h-20'}></span>
-                    <ThemeSwitch/>
+
+                <div className="flex items-center gap-6">
+                    <Link
+                        href="/blog"
+                        className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-sky-500 transition"
+                    >
+                        Blog
+                    </Link>
+
+                    <button
+                        onClick={handleClick}
+                        aria-label="Switch language"
+                        className="flex items-center"
+                    >
+                        <span
+                        className={`fi ${
+                            props.text === "Hello !" ? "fi-gb" : "fi-jp"
+                        } text-xl cursor-pointer`}
+                        />
+                    </button>
+
+                    <ThemeSwitch />
                 </div>
-            </div>
-        </div>
+            </nav>
+        </header>
     )
 }
 
