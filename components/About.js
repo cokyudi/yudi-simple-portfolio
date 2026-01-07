@@ -58,7 +58,7 @@ const About = (props) => {
             {props.language === 'Hello !' ? (
               <>
                 {[
-                  "I’m a Frontend Engineer who loves transforming complex ideas into elegant, fast, and accessible web experiences.",
+                  "I’m a Full-stack Engineer who loves transforming complex ideas into elegant, fast, and accessible web experiences.",
                   "Whether building fintech dashboards or compliance systems with React + TypeScript, I focus on creating meaningful, measurable impact.",
                   "Eager to learn new technologies to improve knowledge and skill."
                 ].map((text, i) => (
@@ -99,7 +99,7 @@ const About = (props) => {
                   custom={1}
                   viewport={{ once: true }}
                 >
-                  私は、複雑なアイデアを美しく、速く、そして誰もが使いやすい Web 体験へと変えることを得意とするフロントエンドエンジニアです。
+                  私は、複雑なアイデアを美しく、速く、そして誰もが使いやすい Web 体験へと変えることを得意とするフルスタックエンドエンジニアです。
                 </motion.p>
                 <motion.a
                   className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"

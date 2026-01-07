@@ -12,6 +12,7 @@ const Footer = () => {
                     <div className="flex flex-wrap pt-2 sm:space-x-4 space-x-2 font-medium lg:pt-0">
                         <span ><i>"Lets get in touch"</i></span>
                         <a
+                            aria-label="Go to LinkedIn"
                             href={userData.socialLinks.linkedin}
                             className="text-base font-normal text-gray-600 dark:text-gray-300"
                         >

@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Yudi Dharma Putra</title>
+        <meta name="description" content="Full-stack engineer in Japan specializing in Next.js, React, and modern web development." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ThemeProvider attribute="class" enableSystem={false}>

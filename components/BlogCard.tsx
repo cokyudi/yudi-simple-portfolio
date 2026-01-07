@@ -28,13 +28,13 @@ export default function BlogCard({
           cursor-pointer
         "
       >
-        <time className="text-sm text-gray-400">{new Date(date).toLocaleDateString('en-US', dateOptions)}</time>
+        <time className="text-sm text-gray-800 dark:text-gray-200">{new Date(date).toLocaleDateString('en-US', dateOptions)}</time>
 
         <h2 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
           {title}
         </h2>
 
-        <p className="mt-3 text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+        <p className="mt-3 text-sm text-gray-800 dark:text-gray-200 line-clamp-3">
           {description}
         </p>
 
