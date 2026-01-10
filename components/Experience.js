@@ -6,8 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Experience() {
   return (
-    <div>
-      {/* Header */}
+    <>
       <div className="max-w-6xl mx-auto h-48 bg-white dark:bg-neutral-800 flex items-center justify-center md:justify-start">
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
@@ -20,7 +19,6 @@ export default function Experience() {
         </motion.h1>
       </div>
 
-      {/* Timeline */}
       <div className="bg-[#F1F1F1] dark:bg-neutral-900 -mt-4">
         <div className="grid grid-cols-1 max-w-xl mx-auto pt-20">
           {userData.experience.map((exp, idx) => (
@@ -34,7 +32,6 @@ export default function Experience() {
                 index={idx}
               />
 
-              {/* Timeline Connector */}
               {idx !== userData.experience.length - 1 && (
                 <div className="divider-container flex flex-col items-center -mt-2">
                   <motion.div
@@ -61,7 +58,7 @@ export default function Experience() {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

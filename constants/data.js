@@ -4,7 +4,6 @@ const userData = {
     designation: "Front-end Developer",
     avatarUrl: "/avatar.png",
     email: "cokagungyudi@gmail.com",
-    phone: "+818093614482",
     address: "Saitama, Japan",
     projects: [],
     about: {

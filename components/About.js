@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import profile from "../public/profile.jpg"
 import Experience from "./Experience"
 import '/node_modules/flag-icons/css/flag-icons.min.css'
+import Link from "next/link"
 
 const About = (props) => {
   const textVariants = {
@@ -24,7 +25,6 @@ const About = (props) => {
     <div className="container px-4 mx-auto">
       <div className="lg:space-x-5 lg:flex lg:flex-row item-center lg:-mx-4 flex flex-col text-center lg:text-left">
 
-        {/* Profile Image */}
         <motion.div
           className="flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -42,7 +42,6 @@ const About = (props) => {
           />
         </motion.div>
 
-        {/* Text Section */}
         <div className="lg:px-4 lg:mt-12">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -58,68 +57,116 @@ const About = (props) => {
             {props.language === 'Hello !' ? (
               <>
                 {[
-                  "I’m a Full-stack Engineer who loves transforming complex ideas into elegant, fast, and accessible web experiences.",
-                  "Whether building fintech dashboards or compliance systems with React + TypeScript, I focus on creating meaningful, measurable impact.",
-                  "Eager to learn new technologies to improve knowledge and skill."
+                  "I’m a full-stack engineer who enjoys building fast and accessible web applications.",
+                  "Always learning and looking for ways to improve, both technically and personally."
                 ].map((text, i) => (
                   <motion.p
-                    key={i}
+                    key={'summary-en-'+i}
                     className="mb-4 text-xl"
                     variants={textVariants}
                     initial="hidden"
                     whileInView="visible"
                     custom={i}
-                    viewport={{ once: true }}
                   >
                     {text}
                   </motion.p>
                 ))}
 
-                <motion.a
-                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
-                  href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
-                  target="_blank"
-                >
-                  Download my CV here
-                </motion.a>
-              </>
-            ) : (
-              <>
-                {/* Japanese version animations */}
-                <motion.p
-                  className="mb-4 text-xl"
+                <motion.div
+                  key={'download-en'}
                   variants={textVariants}
                   initial="hidden"
                   whileInView="visible"
-                  custom={1}
-                  viewport={{ once: true }}
                 >
-                  私は、複雑なアイデアを美しく、速く、そして誰もが使いやすい Web 体験へと変えることを得意とするフルスタックエンドエンジニアです。
-                </motion.p>
-                <motion.a
-                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
-                  href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
-                  target="_blank"
+                  <motion.a
+                    className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
+                    href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    custom={'link0'}
+                    target="_blank"
+                  >
+                    Download my CV here
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  key={'read-blog-en'}
+                  className="my-5"
+                  variants={textVariants}
+                  initial="hidden"
+                  whileInView="visible"
                 >
-                  私の履歴書はこちらからダウンロードしてください
-                </motion.a>
+                  <Link href={'/blog'}>
+                    <motion.span 
+                      className="inline-block text-sm font-medium text-teal-500 dark:text-teal-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Read my blog →
+                    </motion.span>
+                  </Link>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                {[
+                  "高速で使いやすいWebアプリケーションを作ることが好きなフルスタックエンジニアです。",
+                  "技術的にも人としても、日々学びながら成長していきたいと思っています。"
+                ].map((text, i) => (
+                  <motion.p
+                    key={'summary-jp-'+i}
+                    className="mb-4 text-xl"
+                    variants={textVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    custom={i}
+                  >
+                    {text}
+                  </motion.p>
+                ))}
+
+                <motion.div
+                  key={'download-jp'}
+                  variants={textVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                >
+                  <motion.a
+                    className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block"
+                    href="https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view?usp=sharing"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    custom={'link0'}
+                    target="_blank"
+                  >
+                    履歴書はこちらからダウンロード
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  key={'read-blog-jp'}
+                  className="my-5"
+                  variants={textVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                >
+                  <Link href={'/blog'}>
+                    <motion.span 
+                      className="inline-block text-sm font-medium text-teal-500 dark:text-teal-300"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      私のブログへ →
+                    </motion.span>
+                  </Link>
+                </motion.div>
               </>
             )}
           </div>
         </div>
       </div>
 
-      {/* Experience Section Reveal */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}

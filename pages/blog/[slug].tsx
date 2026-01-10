@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { ParsedUrlQuery } from "querystring";
+import Figure from "../../components/Figure";
 
 const postsDirectory = path.join(process.cwd(), "posts");
 
@@ -74,6 +75,10 @@ export default function BlogPost({
     day: 'numeric'
   } as Intl.DateTimeFormatOptions;
 
+  const mdxComponents = {
+    Figure,
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -85,7 +90,7 @@ export default function BlogPost({
 
       <article className="mt-10 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-6 md:p-8 shadow-sm">
         <div className="prose prose-neutral dark:prose-invert max-w-none">
-          <MDXRemote {...mdxSource} />
+          <MDXRemote {...mdxSource} components={mdxComponents} />
         </div>
       </article>
     </div>

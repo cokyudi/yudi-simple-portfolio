@@ -1,0 +1,155 @@
+---
+title: "How I Built This Website with Next.js 14 (and Why I Chose It)"
+date: "2026-01-07"
+description: "A behind-the-scenes look at how I built my portfolio and blog site using Next.js 14, why I chose the tech stack, and how I monitor performance with analytics."
+---
+
+## Introduction
+
+Before I could write my first blog post, I had to **build the website itself**.
+
+This website is more than just a blog. The main page highlights my **work experience**, visitors can **download my CV**, and the blog is a space where I share what I learn along the way.
+
+I wanted something fast, SEO-friendly, and easy to evolve over time. That’s why I chose **Next.js 14** as the foundation.
+
+In this post, I’ll share **how I built this site**, why I chose each part of the stack, and what I learned throughout the process.
+
+---
+
+## Why I Built My Own Website
+
+There are many portfolio templates and blogging platforms available, but I wanted something that truly felt like *mine*.
+
+My goals were simple:
+- Showcase my **professional experience** clearly
+- Provide a **downloadable CV**
+- Have a **blog** for learning notes and experiments
+- Leave room to grow and improve over time
+
+I also wanted a real project where I could practice modern web development techniques instead of just reading about them.
+
+---
+
+## Why Next.js 14
+
+Next.js 14 felt like the right choice for this project.
+
+Some of the reasons:
+- **App Router** for clean and scalable routing
+- **Built-in SEO support** with the Metadata API
+- Excellent performance out of the box
+- Easy handling of **static and dynamic content**
+- Smooth deployment experience with **Vercel**
+
+It allows me to focus more on content and structure, rather than spending too much time on setup.
+
+---
+
+## My Tech Stack
+
+Here’s what powers the site and why I chose each part:
+
+- **Next.js 14** — Core framework using the App Router
+- **TypeScript** — Type safety and better maintainability
+- **Tailwind CSS** — Fast and consistent styling
+- **Markdown / MDX** — Simple and readable blog content
+- **Framer Motion** — Subtle animations and motion UI
+- **Vercel** — Deployment and hosting
+- **Vercel Analytics** — Performance and traffic insights
+- **Google Analytics** — Visitor behavior and page tracking
+
+---
+
+## Motion UI (My Tech Stack Section)
+
+I wanted the site to feel smooth and modern without being distracting.
+
+Using **Framer Motion**, I added:
+- Gentle fade-in animations
+- Small transitions when sections appear
+- Lightweight interactions that guide attention
+
+These animations are intentionally subtle — the goal is to enhance the experience, not compete with the content.
+
+---
+
+## Analytics & Monitoring
+
+Once the site was live, I wanted to understand how people actually use it.
+
+That’s why I added:
+- **Vercel Analytics** to monitor performance, page views, and Core Web Vitals
+- **Google Analytics** to understand visitor behavior, popular pages, and traffic sources
+
+This setup helps me:
+- See which pages are visited most
+- Measure whether the blog is being discovered
+- Track improvements as I iterate on SEO and performance
+
+Instead of guessing, I can now make decisions based on real data.
+
+---
+
+## Project Structure (Based on My GitHub)
+
+You can see the full source code here:  
+https://github.com/cokyudi/yudi-simple-portfolio
+
+A simplified overview of the folder structure:
+
+```txt
+components/        # Reusable UI components
+constants/         # Navigation links and constants
+lib/               # Utility functions (markdown, helpers)
+pages/             # Routes for portfolio and blog
+posts/             # Markdown blog content
+public/            # Static assets (images, CV PDF)
+styles/            # Global styles and Tailwind config
+```
+This structure keeps content, UI, and logic clearly separated and easy to maintain.
+
+---
+## What Went Well
+
+A few things worked especially well during development:
+- SEO setup using Next.js Metadata was straightforward
+- Static pages load quickly
+- Deployment with Vercel was seamless
+- Combining a portfolio and blog felt natural
+- Analytics integration was simple but powerful
+
+Seeing good performance early on was very motivating.
+
+---
+## Challenges I Faced
+
+Of course, it wasn’t perfect from the start:
+- Deciding how much SEO setup was “enough”
+- Styling Markdown content consistently
+- Keeping animations subtle
+- Balancing portfolio content and blog content on one site
+
+Each challenge helped me understand better how real production sites evolve.
+
+---
+## What I Want to Improve Next
+
+This site is only the beginning. Some ideas for the next steps:
+- Add an RSS feed
+- Implement blog search
+- Implement more animations
+- Add blog's featured image 
+- Improve Core Web Vitals
+- Write deeper technical posts about Next.js and SEO
+
+---
+
+## Final Thoughts
+
+Building this website with Next.js 14 reminded me that the best way to learn is by building something real.
+
+This site will continue to evolve as I learn more — and the blog exists to document that journey.
+
+If you’re thinking about building your own portfolio or blog, my advice is simple: start small, ship early, and improve continuously.
+
+Thanks for reading — more posts coming soon 🙏

@@ -38,7 +38,7 @@ export default function BlogCard({
           {description}
         </p>
 
-        <span className="mt-4 inline-block text-sm font-medium text-teal-300">
+        <span className="mt-4 inline-block text-sm font-medium text-teal-500 dark:text-teal-300">
           Read more →
         </span>
       </article>
