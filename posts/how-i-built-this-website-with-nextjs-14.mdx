@@ -98,13 +98,21 @@ https://github.com/cokyudi/yudi-simple-portfolio
 A simplified overview of the folder structure:
 
 ```txt
-components/        # Reusable UI components
-constants/         # Navigation links and constants
-lib/               # Utility functions (markdown, helpers)
-pages/             # Routes for portfolio and blog
-posts/             # Markdown blog content
-public/            # Static assets (images, CV PDF)
-styles/            # Global styles and Tailwind config
+app/                 # App Router (routes, layouts, pages)
+├─ layout.tsx        # Root layout (metadata, global layout)
+├─ page.tsx          # Homepage (work experience, CV download)
+├─ blog/             # Blog routes
+│  ├─ page.tsx       # Blog list page
+│  └─ [slug]/        # Individual blog post pages
+│     └─ page.tsx
+├─ not-found.tsx     # Custom 404 page
+components/          # Reusable UI components (Figure, Header, Footer, etc.)
+constants/           # Links, i18n, and static constants
+context/             # Global state for language
+lib/                 # Utilities (MDX parsing, helpers, SEO utils)
+posts/               # Blog content written in MDX
+public/              # Static assets (images, logo, CV PDF)
+styles/              # Global styles and Tailwind configuration
 ```
 This structure keeps content, UI, and logic clearly separated and easy to maintain.
 
