@@ -59,7 +59,11 @@ export default async function BlogPostPage({
       </p>
 
       <article className='mt-10 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-6 md:p-8 shadow-sm'>
-        <div className='prose prose-neutral dark:prose-invert max-w-none'>
+        <div className='
+          prose prose-neutral dark:prose-invert max-w-none
+          prose-code:before:content-none
+          prose-code:after:content-none
+        '>
           {post.content}
         </div>
       </article>

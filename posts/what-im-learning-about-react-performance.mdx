@@ -1,0 +1,304 @@
+---
+title: "What I’m Learning About React Performance Optimization"
+date: "2026-01-14"
+description: "Notes from my ongoing journey of understanding React performance—re-renders, memoization, and how I’m learning to optimize React apps more intentionally."
+---
+
+## Introduction
+
+I’ve been using React for years, but recently I realized something uncomfortable:
+
+I couldn’t clearly explain *why* some components re-render and others don’t.
+
+Sure, I knew about `useMemo`, `useCallback`, and `React.memo`. I had used them before.  
+But my understanding felt shallow—more like following patterns than truly knowing *when* and *why* to use them.
+
+So I decided to slow down and really learn **React performance optimization**, starting from the basics.
+
+This post is a summary of what I’m learning so far—not as an expert, but as someone rebuilding their mental model of how React actually works.
+
+---
+
+## What React Performance Means to Me Now
+
+When I first heard “React optimization,” I thought it meant:
+
+> Make everything faster by using memoization.
+
+Now I see it differently.
+
+React performance is more about:
+- Understanding **why components re-render**
+- Knowing when re-renders are *fine*
+- Avoiding **unnecessary work**, not all work
+- Writing predictable, readable components first
+
+React is already fast by default. Optimization is about *intent*, not panic.
+
+---
+
+## Re-renders Are Not the Enemy
+
+One important thing I’m learning:  
+**Re-renders are normal.**
+
+A component re-renders when:
+- Its state changes
+- Its props change
+- Its parent re-renders
+- Context it uses updates
+
+This doesn’t automatically mean something is wrong.
+
+By default, when a parent re-renders, **all of its children re-render too**.
+```tsx
+Parent Component
+   ├── Child A
+   └── Child B
+```
+When `Parent` state changes:
+```tsx
+Parent Component  🔄
+   ├── Child A     🔄
+   └── Child B     🔄
+```
+Even if `Child A` and `Child B` don’t use the updated state, they still re-render.
+
+This is normal React behavior — and often totally fine.
+
+React’s reconciliation is efficient, and many re-renders are cheap.  
+The real problem is **expensive calculations or large component trees re-rendering unnecessarily**.
+
+Understanding this alone changed how I think about optimization.
+
+---
+
+## React.memo: Helpful, but Not Magic
+
+Now let’s wrap `Child A` with `React.memo`.
+```tsx
+Parent Component
+   ├── Child A (memoized)
+   └── Child B
+```
+If Parent re-renders **but Child A’s props don’t change**:
+```tsx
+Parent Component  🔄
+   ├── Child A     ⏸️ (skipped)
+   └── Child B     🔄
+```
+This is where `React.memo` helps:
+- It prevents unnecessary work
+- Only when props stay referentially equal
+
+At first, I thought `React.memo` was an easy performance win.
+
+Now I know:
+- `React.memo` prevents re-render **only if props are referentially equal**
+- If props change every render, it does nothing
+- It adds complexity and comparison cost
+
+A simple example:
+
+```tsx
+const ItemList = React.memo(({ items }) => {
+  return items.map(item => <Item key={item.id} {...item} />);
+});
+```
+
+This helps only if items doesn’t change on every render.
+
+I’m learning to use React.memo after identifying a real problem—not by default.
+
+---
+
+## useMemo Is About Values, Not Speed
+
+One misconception I had:  
+`useMemo` makes things faster.
+
+What I’m learning now:
+
+- `useMemo` memoizes a **value**
+- It’s useful for **expensive calculations**
+- It won’t magically optimize simple logic
+
+Example:
+```tsx
+const sortedItems = useMemo(() => {
+  return items.sort((a, b) => a.price - b.price);
+}, [items]);
+```
+
+This makes sense when:
+
+- The calculation is expensive
+- The dependencies are stable
+- The memoized value is reused
+
+Using `useMemo` everywhere just adds noise.
+
+Without `useMemo`:
+```tsx
+Render
+ └── expensiveCalculation() 💸 every time
+```
+
+With `useMemo`:
+```tsx
+Render
+ ├── dependencies changed? → recompute
+ └── dependencies same?    → reuse cached value
+```
+
+Visualized:
+```tsx
+State change unrelated
+ └── useMemo value reused ✅
+```
+
+This helped me stop using `useMemo` blindly and start asking:
+
+> Is this calculation actually expensive?
+
+---
+
+## useCallback Finally Makes Sense
+
+`useCallback` confused me for a long time.
+
+Now I understand it better:
+- It memoizes **function references**
+- It matters when passing callbacks to memoized children
+- It’s about **identity**, not behavior
+
+```tsx
+const handleClick = useCallback(() => {
+  setCount(c => c + 1);
+}, []);
+```
+This helps when `handleClick` is passed down to a component wrapped with `React.memo`.
+
+Without that context, `useCallback` often doesn’t help—and can even hurt readability.
+
+A common mistake (one I made many times):
+```tsx
+Parent
+ └── Child (memoized)
+```
+
+But the parent passes a **new function every render**:
+```tsx
+Parent re-render
+ └── onClick = () => {}  ❌ new reference
+```
+
+Result:
+```tsx
+Parent Component  🔄
+   └── Child       🔄 (props changed!)
+```
+
+Now with useCallback:
+```tsx
+Parent re-render
+ └── onClick = useCallback(...) ✅ same reference
+```
+
+Result:
+```tsx
+Parent Component  🔄
+   └── Child       ⏸️ (skipped)
+```
+
+This diagram finally made `useCallback` “click” for me:
+👉 It’s about **function identity**, not logic.
+
+---
+## Keys and Lists: Small Detail, Big Impact
+
+Another lesson I’m revisiting: **keys matter more than I thought**.
+
+Using array indexes as keys can:
+
+- Break component state
+- Cause unnecessary re-renders
+- Create subtle UI bugs
+
+Stable, unique keys help React understand what actually changed.
+
+It’s a small detail, but it has a big impact on performance and correctness.
+
+Using **index as key**:
+```tsx
+Before:
+[ A, B, C ]
+ 0  1  2
+
+After removing A:
+[ B, C ]
+ 0  1
+```
+
+React thinks:
+```tsx
+A → B
+B → C
+```
+
+Result:
+- Wrong component reused
+- State bugs
+- Extra re-renders
+
+Using **stable IDs**:
+```tsx
+Before:
+[ A(id=1), B(id=2), C(id=3) ]
+
+After removing A:
+[ B(id=2), C(id=3) ]
+```
+
+React correctly understands:
+```tsx
+A removed
+B unchanged
+C unchanged
+```
+
+This small change can prevent **many subtle bugs**.
+
+---
+
+## Mistakes I’ve Personally Made
+
+Looking back, here are a few mistakes I’ve made—and still catch myself making sometimes:
+- Using `useMemo` and `useCallback` “just in case”
+- Optimizing before measuring anything
+- Copying patterns without understanding them
+- Ignoring React DevTools Profiler
+
+None of these are dramatic mistakes, but they add up.
+
+<Figure
+  src="/images/blog/react-meme.webp"
+  alt="React developer adding useMemo and useCallback everywhere and still seeing re-renders"
+  caption="How I feel when creating new React component"
+  priority
+/>
+
+---
+
+## Final Thoughts
+
+React optimization isn’t about clever tricks or fancy hooks.
+
+For me, it’s about:
+- Understanding how React thinks
+- Writing simple, predictable components
+- Optimizing with intention, not fear
+
+This post is just a snapshot of what I’m learning right now—and I’m sure I’ll look back at it later with new insights.
+
+Thanks for reading. I’ll keep learning, building, and sharing along the way 🙏

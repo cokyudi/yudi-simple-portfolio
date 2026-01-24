@@ -31,7 +31,7 @@ function RootLayout({ children }: { children: React.ReactNode}) {
           <Footer />
         </Providers>
 
-        <GoogleTagManager gtmId='GTM-WVZ645LG' />
+        <GoogleTagManager gtmId={process.env.GTM_ID ?? ''} />
         <Analytics />
       </body>
     </html>
