@@ -5,6 +5,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Blog | Yudi Dharma Putra',
   description: 'Notes on learning, experiments, and experiences.',
+  openGraph: {
+    images: ['/og/blog'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/og/blog'],
+  },
 };
 
 export default function BlogPage() {

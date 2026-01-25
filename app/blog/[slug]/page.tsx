@@ -26,6 +26,21 @@ export async function generateMetadata(
       description:
         frontMatter.description ??
         `Blog post: ${frontMatter.title}`,
+      openGraph: {
+        images: [
+          `/og/blog-post?title=${encodeURIComponent(
+            frontMatter.title
+          )}&date=${encodeURIComponent(frontMatter.date)}`,
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        images: [
+          `/og/blog-post?title=${encodeURIComponent(
+            frontMatter.title
+          )}&date=${encodeURIComponent(frontMatter.date)}`,
+        ],
+      },
     };
   } catch {
     return {};

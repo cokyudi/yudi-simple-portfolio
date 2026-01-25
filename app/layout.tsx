@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   icons: {
     icon: '/logo.png',
   },
+  openGraph: {
+    images: ['/og/home'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/og/home'],
+  },
 }
 
 function RootLayout({ children }: { children: React.ReactNode}) {
