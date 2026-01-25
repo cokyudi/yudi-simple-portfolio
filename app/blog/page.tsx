@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: 'Blog | Yudi Dharma Putra',
   description: 'Notes on learning, experiments, and experiences.',
   openGraph: {
+    title: 'Blog | Yudi Dharma Putra',
+    description: 'Notes on learning, experiments, and experiences.',
+    url: '/blog',
     images: ['/og/blog'],
   },
   twitter: {

@@ -27,6 +27,12 @@ export async function generateMetadata(
         frontMatter.description ??
         `Blog post: ${frontMatter.title}`,
       openGraph: {
+        type: 'article',
+        title: `${frontMatter.title} | Blog`,
+        description:
+          frontMatter.description ??
+          `Blog post: ${frontMatter.title}`,
+        url: `/blog/${params.slug}`,
         images: [
           `/og/blog-post?title=${encodeURIComponent(
             frontMatter.title
@@ -35,6 +41,10 @@ export async function generateMetadata(
       },
       twitter: {
         card: 'summary_large_image',
+        title: `${frontMatter.title} | Blog`,
+        description:
+          frontMatter.description ??
+          `Blog post: ${frontMatter.title}`,
         images: [
           `/og/blog-post?title=${encodeURIComponent(
             frontMatter.title
