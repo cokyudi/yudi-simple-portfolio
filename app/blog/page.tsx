@@ -3,10 +3,10 @@ import BlogCard from '@/components/BlogCard';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blog | Yudi Dharma Putra',
+  title: 'Blog',
   description: 'Notes on learning, experiments, and experiences.',
   openGraph: {
-    title: 'Blog | Yudi Dharma Putra',
+    title: 'Blog',
     description: 'Notes on learning, experiments, and experiences.',
     url: '/blog',
     images: ['/og/blog'],
