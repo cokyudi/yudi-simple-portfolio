@@ -30,11 +30,9 @@ export default function Navigation() {
             aria-label='Switch language'
             className='flex items-center'
           >
-            <span
-              className={`fi ${
-                language === 'en' ? 'fi-gb' : 'fi-jp'
-              } text-xl cursor-pointer`}
-            />
+            <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>
+              {language === 'en' ? 'EN' : 'JP'}
+            </span>
           </button>
 
           <ThemeSwitch />

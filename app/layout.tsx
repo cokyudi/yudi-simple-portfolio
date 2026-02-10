@@ -5,7 +5,6 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 import Providers from '@/app/providers';
 import type { Metadata } from 'next';
-import 'flag-icons';
 
 export const metadata: Metadata = {
   title: {

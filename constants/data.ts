@@ -63,6 +63,6 @@ export const userData: {
     linkedin: 'https://linkedin.com/in/cokyudi',
     github: 'https://github.com/cokyudi',
   },
-  resumeUrl: 'https://drive.google.com/file/d/1etom04V4sRfe9-h7a5aDrIVLlxj3cmLg/view'
+  resumeUrl: 'https://drive.google.com/file/d/1uHb_EamHVgZelREGH1EFUxv4eS5mxO6W/view?usp=sharing'
 };
   

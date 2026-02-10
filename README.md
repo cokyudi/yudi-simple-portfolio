@@ -1,27 +1,112 @@
-# Next.js + Tailwind CSS Example
+# Yudi Simple Portfolio
+A personal website built with **Next.js App Router**, serving as my **portfolio**, **CV hub**, and **technical blog**.
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+This project is both a public-facing site and a learning playground where I experiment with modern web development concepts such as server components, performance optimization, SEO, and analytics.
 
-## Deploy your own
+🔗 Live site: https://www.yudidputra.com/
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+---
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## ✨ Features
+- **Portfolio homepage**
+  - Work experience overview
+  - Downloadable CV
+- **Blog**
+  - Written in MDX
+  - Static generation with incremental updates
+- **Performance-focused**
+  - Optimized images
+  - Modern font loading
+- **SEO-ready**
+  - Metadata API
+  - Open Graph images
+- **Analytics**
+  - Vercel Analytics
+  - Google Analytics
 
-## How to use
+---
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+## 🛠 Tech Stack
+- **Next.js 14** (App Router)
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- **MDX**
+- **Framer Motion**
+- **Vercel**
+- **Vercel Analytics**
+- **Google Analytics**
 
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+---
+
+## 📂 Project Structure
+```tsx
+app/                # App Router pages and layouts
+  ├─ blog/           # Blog index and blog detail pages
+  ├─ og/             # Dynamic Open Graph image routes
+  ├─ layout.tsx      # Root layout
+  └─ page.tsx        # Homepage (portfolio)
+
+components/          # Reusable UI components
+constants/           # Navigation links and static constants
+lib/                 # Utilities (MDX helpers, data fetching)
+posts/               # Blog content written in MDX
+public/              # Static assets (images, CV PDF)
+styles/              # Global styles and Tailwind config
+
 ```
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+This structure keeps routing, content, UI, and logic clearly separated and easy to scale.
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
+---
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## 🧠 Why I Built This
+Instead of using a ready-made template or blogging platform, I wanted to:
+- Build something fully under my control
+- Practice real **Next.js patterns**
+- Learn by shipping and iterating
+- Have a long-term place to document what I learn
+
+This site will continue to evolve as my skills and interests grow.
+
+---
+
+## 🚀 Getting Started (Local Development)
+```tsx
+git clone https://github.com/cokyudi/yudi-simple-portfolio.git
+cd yudi-simple-portfolio
+npm install
+npm run dev
+```
+Then open:  
+http://localhost:3000
+
+---
+## 📝 Blog Content
+Blog posts live in the `posts/` directory and are written in MDX, allowing:
+- Markdown content
+- Embedded React components
+- Custom layouts (e.g. figures, code blocks)
+
+---
+
+## 📈 Analytics & Monitoring
+- **Vercel Analytics** for performance and traffic insights
+- **Google Analytics** for visitor behavior and page tracking
+
+This helps me understand how the site is used and where to improve.
+
+---
+
+## 🔮 Future Improvements
+Some ideas I plan to explore next:
+- Server Actions & mutations
+- Blog search
+- RSS feed
+- Improved Core Web Vitals
+- More advanced animations
+- Deeper technical blog posts
+
+## 📄 License
+This project is open for learning and inspiration.  
+Feel free to explore the code.
