@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '@/app/providers';
 import type { Metadata } from 'next';
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   description:
     'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
   icons: {
-    icon: '/logo.png',
+    icon: '/favicon.ico',
   },
   openGraph: {
     type: 'website',
@@ -44,6 +45,7 @@ function RootLayout({ children }: { children: React.ReactNode}) {
 
         <GoogleTagManager gtmId={process.env.GTM_ID ?? ''} />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
