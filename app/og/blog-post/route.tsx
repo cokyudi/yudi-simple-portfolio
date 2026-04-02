@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
@@ -29,6 +30,7 @@ export async function GET(req: Request) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <img
             src='https://yudidputra.com/logo.png'
+            alt='Yudi Dharma Putra logo'
             width={72}
             height={72}
           />

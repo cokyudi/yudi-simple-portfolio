@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import profile from '@/public/profile.jpg';
+import profile from '@/public/yudi-draw.jpg';
 import Experience from '@/components/Experience';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
@@ -92,14 +92,11 @@ export default function About() {
               initial='hidden'
               whileInView='visible'
             >
-              <Link href='/blog' passHref>
-                <motion.span
-                  className='inline-block text-sm font-medium text-teal-500 dark:text-teal-300'
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  {t.readBlog}
-                </motion.span>
+              <Link
+                href='/blog'
+                className='inline-block text-sm font-medium text-teal-500 dark:text-teal-300 transition-transform hover:scale-105 active:scale-95'
+              >
+                {t.readBlog}
               </Link>
             </motion.div>
           </div>

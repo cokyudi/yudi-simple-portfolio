@@ -34,14 +34,20 @@ export default function ExperienceCard({
 
       <h3 className='font-semibold text-xl'>{title}</h3>
 
-      <a
-        href={companyLink}
-        target='_blank'
-        rel='noopener noreferrer'
-        className='text-teal-500 hover:underline'
-      >
-        {company}
-      </a>
+      {companyLink ? (
+        <a
+          href={companyLink}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='text-teal-500 hover:underline'
+        >
+          {company}
+        </a>
+      ) : (
+        <span className='text-neutral-700 dark:text-neutral-300'>
+          {company}
+        </span>
+      )}
 
       <p className='text-neutral-600 dark:text-neutral-400 my-2'>
         {desc}

@@ -1,4 +1,4 @@
-import 'tailwindcss/tailwind.css'
+import '../styles/globals.css'
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { GoogleTagManager } from '@next/third-parties/google';

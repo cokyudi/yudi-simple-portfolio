@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
@@ -18,7 +19,8 @@ export async function GET() {
         }}
       >
         <img 
-          src='https://yudidputra.com/profile.jpg'
+          src='https://yudidputra.com/yudi-draw.jpg'
+          alt='Yudi Dharma Putra profile photo'
           width={320}
           height={320}
           style={{
