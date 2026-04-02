@@ -8,6 +8,7 @@ import Providers from '@/app/providers';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.yudidputra.com'),
   title: {
     default: 'Yudi Dharma Putra',
     template: '%s | Yudi Dharma Putra',
