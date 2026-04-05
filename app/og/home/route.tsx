@@ -3,6 +3,8 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
+const profileImageSrc = 'https://www.yudidputra.com/yudi-draw.jpg?v=2026-04-05-draw';
+
 export async function GET() {
   return new ImageResponse(
     (
@@ -19,7 +21,7 @@ export async function GET() {
         }}
       >
         <img 
-          src='https://yudidputra.com/yudi-draw.jpg'
+          src={profileImageSrc}
           alt='Yudi Dharma Putra profile photo'
           width={320}
           height={320}
@@ -40,11 +42,8 @@ export async function GET() {
       </div>
     ),
     {
-      headers: {
-        "Cache-Control": "public, max-age=31536000, immutable",
-      }, 
-      width: 1200, 
-      height: 630 
+      width: 1200,
+      height: 630,
     },
   );
 }

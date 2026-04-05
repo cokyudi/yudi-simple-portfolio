@@ -7,6 +7,8 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '@/app/providers';
 import type { Metadata } from 'next';
 
+const OG_IMAGE_VERSION = '2026-04-05-draw';
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.yudidputra.com'),
   title: {
@@ -24,11 +26,11 @@ export const metadata: Metadata = {
     title: 'Yudi Dharma Putra',
     description:
       'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
-    images: ['/og/home'],
+    images: [`/og/home?v=${OG_IMAGE_VERSION}`],
   },
   twitter: {
     card: 'summary_large_image',
-    images: ['/og/home'],
+    images: [`/og/home?v=${OG_IMAGE_VERSION}`],
   },
 }
 
