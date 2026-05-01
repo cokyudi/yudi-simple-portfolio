@@ -8,7 +8,7 @@ import ExperienceCard from '@/components/ExperienceCard';
 import TimelineDivider from '@/components/TimelineDivider';
 import { useLanguage } from '@/context/LanguageContext';
 
-export default function Experience(): JSX.Element {
+export default function Experience() {
   const { language } = useLanguage();
   const t = i18n[language];
 

@@ -6,9 +6,9 @@ import {
 } from '@/lib/posts';
 
 type BlogPostPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export function generateStaticParams() {
@@ -19,7 +19,8 @@ export async function generateMetadata(
   { params }: BlogPostPageProps
 ): Promise<Metadata> {
   try {
-    const { frontMatter } = await getPostBySlug(params.slug);
+    const { slug } = await params;
+    const { frontMatter } = await getPostBySlug(slug);
 
     return {
       title: `${frontMatter.title} | Blog`,
@@ -32,7 +33,7 @@ export async function generateMetadata(
         description:
           frontMatter.description ??
           `Blog post: ${frontMatter.title}`,
-        url: `/blog/${params.slug}`,
+        url: `/blog/${slug}`,
         images: [
           `/og/blog-post?title=${encodeURIComponent(
             frontMatter.title
@@ -60,7 +61,8 @@ export async function generateMetadata(
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-  const post = await getPostBySlug(params.slug).catch(() => {
+  const { slug } = await params;
+  const post = await getPostBySlug(slug).catch(() => {
     notFound();
   });
 
@@ -69,6 +71,7 @@ export default async function BlogPostPage({
     month: 'long',
     day: 'numeric',
   };
+  const locale = post.frontMatter.lang === 'ja' ? 'ja-JP' : 'en-US';
 
   return (
     <div className='max-w-4xl mx-auto px-4 py-10'>
@@ -78,7 +81,7 @@ export default async function BlogPostPage({
 
       <p className='text-gray-800 dark:text-gray-200 mt-2'>
         {new Date(post.frontMatter.date).toLocaleDateString(
-          'en-US',
+          locale,
           dateOptions
         )}
       </p>

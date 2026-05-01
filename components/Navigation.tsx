@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import ThemeSwitch from '@/components/ThemeSwitch';
 import { useLanguage } from '@/context/LanguageContext';
 
 export default function Navigation() {
   const { language, toggleLanguage } = useLanguage();
+  const pathname = usePathname();
+  const isPostPage = /^\/blog\/.+/.test(pathname);
 
   return (
     <header className='sticky top-0 z-20 bg-white/80 backdrop-blur dark:bg-black/80'>
@@ -25,15 +28,17 @@ export default function Navigation() {
             Blog
           </Link>
 
-          <button
-            onClick={toggleLanguage}
-            aria-label='Switch language'
-            className='flex items-center'
-          >
-            <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>
-              {language === 'en' ? 'EN' : 'JP'}
-            </span>
-          </button>
+          {!isPostPage && (
+            <button
+              onClick={toggleLanguage}
+              aria-label='Switch language'
+              className='flex items-center'
+            >
+              <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>
+                {language === 'en' ? 'EN' : 'JP'}
+              </span>
+            </button>
+          )}
 
           <ThemeSwitch />
         </div>

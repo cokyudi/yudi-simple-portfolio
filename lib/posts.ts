@@ -16,12 +16,14 @@ export type BlogPostMeta = {
   title: string;
   date: string;
   description: string;
+  lang: 'en' | 'ja';
 };
 
 export type BlogPostFrontMatter = {
   title: string;
   date: string;
   description?: string;
+  lang?: 'en' | 'ja';
 };
 
 export type BlogPost = {
@@ -74,6 +76,7 @@ export const getPostBySlug = cache(
         title: data.title as string,
         date: data.date as string,
         description: data.description as string | undefined,
+        lang: (data.lang as 'en' | 'ja') ?? 'en',
       },
     };
   }
@@ -90,6 +93,7 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
         title: data.title as string,
         date: data.date as string,
         description: (data.description as string) ?? '',
+        lang: (data.lang as 'en' | 'ja') ?? 'en',
       };
     })
     .sort(

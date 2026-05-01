@@ -1,4 +1,5 @@
 export type ExperienceId =
+  | 'meets-fulltime'
   | 'treasury-fulltime'
   | 'treasury-parttime'
   | 'dgit'
@@ -22,6 +23,12 @@ export const userData: {
   resumeUrl: string
 } = {
   experience: [
+    {
+      id: 'meets-fulltime',
+      company: 'Meets Consulting Inc.',
+      year: '2026-05',
+      companyLink: 'https://www.meetsc.co.jp/',
+    },
     {
       id: 'treasury-fulltime',
       company: 'TREASURY INC.',

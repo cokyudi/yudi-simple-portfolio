@@ -1,20 +1,27 @@
+'use client';
+
 import Link from 'next/link';
+import { i18n } from '@/constants/i18n';
 import { BlogPostMeta } from '@/lib/posts';
 
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
-
-type BlogCardProps = BlogPostMeta;
+type BlogCardProps = BlogPostMeta & {
+  lang: 'en' | 'ja';
+};
 
 export default function BlogCard({
   title,
   description,
   date,
   slug,
+  lang,
 }: BlogCardProps) {
+  const locale = lang === 'ja' ? 'ja-JP' : 'en-US';
+  const formatted = new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(date));
+
   return (
     <Link
       href={`/blog/${slug}`}
@@ -36,7 +43,7 @@ export default function BlogCard({
           dateTime={date}
           className='text-sm text-gray-800 dark:text-gray-200'
         >
-          {dateFormatter.format(new Date(date))}
+          {formatted}
         </time>
 
         <h2 className='mt-2 text-lg font-semibold text-gray-900 dark:text-white'>
@@ -48,7 +55,7 @@ export default function BlogCard({
         </p>
 
         <span className='mt-4 inline-block text-sm font-medium text-teal-500 dark:text-teal-300 group-hover:underline'>
-          Read more →
+          {i18n[lang].blog.readMore}
         </span>
       </article>
     </Link>

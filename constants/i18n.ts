@@ -9,8 +9,18 @@ export const i18n = {
       downloadCV: 'Download my CV here',
       readBlog: 'Read my blog →',
     },
+    blog: {
+      heading: 'Blog',
+      subtitle: 'Notes on learning, experiments, and experiences.',
+      readMore: 'Read more →',
+      emptyState: 'No posts available in English yet.',
+    },
     heading: 'Experiences',
     experience: {
+      'meets-fulltime': {
+        title: 'Senior Full-stack Engineer',
+        desc: 'EC x DX AI-driven product development 0 → 1, contributing to the company’s growth.',
+      },
       'treasury-fulltime': {
         title: 'Full-stack Engineer',
         desc: 'My first full-time job in Japan, contributing to company products.',
@@ -48,8 +58,18 @@ export const i18n = {
       downloadCV: 'ここから履歴書をダウンロード',
       readBlog: 'ブログを読む →',
     },
+    blog: {
+      heading: 'ブログ',
+      subtitle: '学び、実験、そして経験についてのメモ。',
+      readMore: '続きを読む →',
+      emptyState: 'まだ日本語の記事はありません。',
+    },
     heading: '職務経歴',
     experience: {
+      'meets-fulltime': {
+        title: 'シニアフルスタックエンジニア',
+        desc: 'EC x DX AI駆動のプロダクト開発0→1に携わり、会社の成長に貢献。',
+      },
       'treasury-fulltime': {
         title: 'フルスタックエンジニア',
         desc: '日本での初めての正社員として、プロダクト開発に貢献。',
