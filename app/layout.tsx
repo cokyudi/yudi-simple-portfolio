@@ -37,16 +37,22 @@ export const metadata: Metadata = {
 function RootLayout({ children }: { children: React.ReactNode}) {
   return (
     <html lang='en' suppressHydrationWarning className='h-full'>
-      <body className='min-h-screen flex flex-col'>
+      <body suppressHydrationWarning className='min-h-screen flex flex-col'>
         <Providers>
+          <a
+            href='#main-content'
+            className='sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg dark:focus:bg-neutral-900 dark:focus:text-white'
+          >
+            Skip to main content
+          </a>
           <Navigation />
-          <main className='flex-1'>
+          <main id='main-content' className='flex-1'>
             {children}
           </main>
           <Footer />
         </Providers>
 
-        <GoogleTagManager gtmId={process.env.GTM_ID ?? ''} />
+        {process.env.GTM_ID && <GoogleTagManager gtmId={process.env.GTM_ID} />}
         <Analytics />
         <SpeedInsights />
       </body>

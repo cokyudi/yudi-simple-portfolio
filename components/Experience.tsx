@@ -15,7 +15,8 @@ export default function Experience() {
   return (
     <section aria-labelledby='experience-heading'>
       <div className='max-w-6xl mx-auto h-48 bg-white dark:bg-neutral-800 flex items-center justify-center md:justify-start'>
-        <motion.h1
+        <motion.h2
+          id='experience-heading'
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -23,7 +24,7 @@ export default function Experience() {
           className='text-5xl md:text-7xl font-bold text-center md:text-left'
         >
           {t.heading}
-        </motion.h1>
+        </motion.h2>
       </div>
 
       <div className='bg-gray-100 dark:bg-neutral-900 -mt-4'>
