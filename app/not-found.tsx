@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export default function NotFound() {
   return (
-    <main className='mt-16 flex items-center justify-center px-4'>
+    <div className='mt-16 flex items-center justify-center px-4'>
       <div className='max-w-md text-center'>
         <div className='flex justify-center mb-6'>
           <Image
@@ -22,6 +22,6 @@ export default function NotFound() {
           The page you’re looking for doesn’t exist.
         </p>
       </div>
-    </main>
+    </div>
   );
 }

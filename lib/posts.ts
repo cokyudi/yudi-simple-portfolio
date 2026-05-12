@@ -45,6 +45,11 @@ function getPostFilePath(slug: string): string {
 const readPostFile = cache((slug: string) => {
   const fullPath = getPostFilePath(slug);
 
+  // Guard against path traversal: resolved path must stay within postsDirectory
+  if (!fullPath.startsWith(postsDirectory + path.sep) && fullPath !== postsDirectory) {
+    throw new Error('Invalid slug');
+  }
+
   if (!fs.existsSync(fullPath)) {
     throw new Error('Post not found');
   }

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 
 export type ExperienceCardProps = {
   title: string;
@@ -19,13 +19,15 @@ export default function ExperienceCard({
   companyLink,
   index,
 }: ExperienceCardProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.15 }}
+      transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.15 }}
       viewport={{ once: true }}
-      whileHover={{ scale: 1.02, y: -4 }}
+      whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -4 }}
       className='relative border p-6 rounded-xl shadow-md bg-white dark:bg-neutral-800 z-10 mx-4 transition-all'
     >
       <div className='absolute -top-10 -left-1 text-4xl text-neutral-400 font-bold dark:text-neutral-600 select-none'>

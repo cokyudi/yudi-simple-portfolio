@@ -31,7 +31,7 @@ export default function Navigation() {
           {!isPostPage && (
             <button
               onClick={toggleLanguage}
-              aria-label='Switch language'
+              aria-label={language === 'en' ? 'Switch to Japanese' : 'Switch to English'}
               className='flex items-center'
             >
               <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>

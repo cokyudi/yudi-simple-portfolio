@@ -1,4 +1,6 @@
 import '../styles/globals.css'
+import { GeistSans } from 'geist/font/sans';
+import { Noto_Sans_JP } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { GoogleTagManager } from '@next/third-parties/google';
@@ -6,6 +8,12 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '@/app/providers';
 import type { Metadata } from 'next';
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ['latin'],
+  variable: '--font-noto-sans-jp',
+  display: 'swap',
+});
 
 const OG_IMAGE_VERSION = '2026-04-05-draw';
 
@@ -36,8 +44,8 @@ export const metadata: Metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode}) {
   return (
-    <html lang='en' suppressHydrationWarning className='h-full'>
-      <body suppressHydrationWarning className='min-h-screen flex flex-col'>
+    <html lang='en' suppressHydrationWarning className={`h-full ${GeistSans.variable} ${notoSansJP.variable}`}>
+      <body suppressHydrationWarning className='min-h-screen flex flex-col font-sans'>
         <Providers>
           <a
             href='#main-content'

@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { userData, type ExperienceBase } from '@/constants/data';
 import { i18n } from '@/constants/i18n';
 import ExperienceCard from '@/components/ExperienceCard';
@@ -11,15 +10,16 @@ import { useLanguage } from '@/context/LanguageContext';
 export default function Experience() {
   const { language } = useLanguage();
   const t = i18n[language];
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section aria-labelledby='experience-heading'>
       <div className='max-w-6xl mx-auto h-48 bg-white dark:bg-neutral-800 flex items-center justify-center md:justify-start'>
         <motion.h2
           id='experience-heading'
-          initial={{ opacity: 0, y: 40 }}
+          initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
           viewport={{ once: true }}
           className='text-5xl md:text-7xl font-bold text-center md:text-left'
         >
@@ -32,7 +32,7 @@ export default function Experience() {
           {userData.experience.map((exp: ExperienceBase, idx) => {
             const expText = t.experience[exp.id];
             return (
-              <React.Fragment key={exp.id}>
+              <div key={exp.id}>
                 <ExperienceCard
                   title={expText.title}
                   desc={expText.desc}
@@ -45,7 +45,7 @@ export default function Experience() {
                 {idx !== userData.experience.length - 1 && (
                   <TimelineDivider />
                 )}
-              </React.Fragment>
+              </div>
             );
           })}
         </div>
