@@ -24,9 +24,8 @@ export default function ExperienceCard({
   return (
     <motion.div
       initial={shouldReduceMotion ? false : { opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.15 }}
-      viewport={{ once: true }}
       whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -4 }}
       className='relative border p-6 rounded-xl shadow-md bg-white dark:bg-neutral-800 z-10 mx-4 transition-all'
     >

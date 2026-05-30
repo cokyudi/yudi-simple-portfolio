@@ -17,7 +17,7 @@ const ThemeSwitch = () => {
 			aria-label='Toggle dark mode'
 			type='button'
 			onClick={() => setTheme(isDark ? 'light' : 'dark')}
-			className='w-8 h-8 p-1 ml-1 mr-1 rounded sm:ml-4 focus:outline-none focus:ring-2 focus:ring-teal-500'
+			className='w-11 h-11 p-2.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-500'
 		>
 			<svg
 				xmlns='http://www.w3.org/2000/svg'

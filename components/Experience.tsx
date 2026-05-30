@@ -18,9 +18,8 @@ export default function Experience() {
         <motion.h2
           id='experience-heading'
           initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
-          viewport={{ once: true }}
           className='text-5xl md:text-7xl font-bold text-center md:text-left'
         >
           {t.heading}

@@ -23,7 +23,7 @@ export default function Navigation() {
         <div className='flex items-center gap-6'>
           <Link
             href='/blog'
-            className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'
+            className='inline-flex items-center justify-center min-h-11 min-w-11 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'
           >
             Blog
           </Link>
@@ -32,7 +32,7 @@ export default function Navigation() {
             <button
               onClick={toggleLanguage}
               aria-label={language === 'en' ? 'Switch to Japanese' : 'Switch to English'}
-              className='flex items-center'
+              className='inline-flex items-center justify-center min-h-11 min-w-11'
             >
               <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>
                 {language === 'en' ? 'EN' : 'JP'}
