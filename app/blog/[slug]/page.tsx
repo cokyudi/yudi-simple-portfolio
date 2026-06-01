@@ -4,6 +4,7 @@ import {
   getPostBySlug,
   getAllPostSlugs,
 } from '@/lib/posts';
+import Badge from '@/components/ui/Badge';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -74,21 +75,23 @@ export default async function BlogPostPage({
   const locale = post.frontMatter.lang === 'ja' ? 'ja-JP' : 'en-US';
 
   return (
-    <div className='max-w-4xl mx-auto px-4 py-10'>
-      <h1 className='text-3xl font-bold text-gray-900 dark:text-gray-100'>
+    <div className='max-w-4xl mx-auto px-5 py-10'>
+      <h1 className='text-3xl md:text-4xl font-display font-bold text-fg'>
         {post.frontMatter.title}
       </h1>
 
-      <p className='text-gray-800 dark:text-gray-200 mt-2'>
-        {new Date(post.frontMatter.date).toLocaleDateString(
-          locale,
-          dateOptions
-        )}
+      <p className='mt-3'>
+        <Badge>
+          {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
+        </Badge>
       </p>
 
-      <article className='mt-10 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-6 md:p-8 shadow-sm'>
+      <article className='mt-10 border-2 border-ink bg-surface p-6 md:p-8 shadow-retro'>
         <div className='
-          prose prose-neutral dark:prose-invert max-w-none
+          prose max-w-none
+          prose-headings:font-display
+          prose-img:border-2 prose-img:border-ink prose-img:shadow-retro prose-img:rounded-none
+          prose-pre:border-2 prose-pre:border-ink prose-pre:rounded-none
           prose-code:before:content-none
           prose-code:after:content-none
         '>

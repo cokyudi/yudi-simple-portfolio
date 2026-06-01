@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import { GeistSans } from 'geist/font/sans';
-import { Noto_Sans_JP } from 'next/font/google';
+import { Noto_Sans_JP, Space_Grotesk } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { GoogleTagManager } from '@next/third-parties/google';
@@ -12,6 +12,13 @@ import type { Metadata } from 'next';
 const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
   variable: '--font-noto-sans-jp',
+  display: 'swap',
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['500', '700'],
+  variable: '--font-space-grotesk',
   display: 'swap',
 });
 
@@ -44,12 +51,12 @@ export const metadata: Metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode}) {
   return (
-    <html lang='en' suppressHydrationWarning className={`h-full ${GeistSans.variable} ${notoSansJP.variable}`}>
+    <html lang='en' suppressHydrationWarning className={`h-full ${GeistSans.variable} ${notoSansJP.variable} ${spaceGrotesk.variable}`}>
       <body suppressHydrationWarning className='min-h-screen flex flex-col font-sans'>
         <Providers>
           <a
             href='#main-content'
-            className='sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded focus:shadow-lg dark:focus:bg-neutral-900 dark:focus:text-white'
+            className='sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-paper focus:text-ink focus:border-2 focus:border-ink focus:shadow-retro'
           >
             Skip to main content
           </a>

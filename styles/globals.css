@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --paper: #faf6ec;
+  --surface: #fefcf7;
+  --ink: #141414;
+  --shadow: #141414;
+  --fg: #3a3a3a;
+  --accent: #0f766e;
+  --on-accent: #ffffff;
+  --highlight: #f59e0b;
+  --muted: #6b6b6b;
+}
+
+.dark {
+  --paper: #15130d;
+  --surface: #201d14;
+  --ink: #ede9e0;
+  --shadow: #7a766c;
+  --fg: #cfcabf;
+  --accent: #14b8a6;
+  --on-accent: #141414;
+  --highlight: #fbbf24;
+  --muted: #948e82;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--fg);
+}

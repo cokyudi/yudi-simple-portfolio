@@ -17,13 +17,13 @@ const ThemeSwitch = () => {
 			aria-label='Toggle dark mode'
 			type='button'
 			onClick={() => setTheme(isDark ? 'light' : 'dark')}
-			className='w-11 h-11 p-2.5 rounded focus:outline-none focus:ring-2 focus:ring-teal-500'
+			className='inline-flex items-center justify-center w-11 h-11 p-2.5 border-2 border-ink bg-surface text-fg shadow-retro-sm transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 		>
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
 				viewBox='0 0 20 20'
 				fill='currentColor'
-				className='text-gray-900 dark:text-gray-100'
+				className='w-full h-full'
 			>
 				{isDark ? (
 					<path

@@ -16,11 +16,11 @@ export default function Figure({ src, alt, caption, priority = false }: FigurePr
         width={500}
         height={500}
         priority={priority}
-        className='rounded-xl w-auto h-auto'
+        className='border-2 border-ink shadow-retro w-auto h-auto'
       />
 
       {caption && (
-        <figcaption className='mt-2 text-center text-sm text-gray-500 dark:text-gray-400'>
+        <figcaption className='mt-2 text-center text-sm text-muted'>
           {caption}
         </figcaption>
       )}

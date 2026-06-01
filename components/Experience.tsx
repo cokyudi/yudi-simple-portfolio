@@ -14,20 +14,20 @@ export default function Experience() {
 
   return (
     <section aria-labelledby='experience-heading'>
-      <div className='max-w-6xl mx-auto h-48 bg-white dark:bg-neutral-800 flex items-center justify-center md:justify-start'>
+      <div className='max-w-6xl mx-auto h-48 flex items-center justify-center md:justify-start'>
         <motion.h2
           id='experience-heading'
           initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
-          className='text-5xl md:text-7xl font-bold text-center md:text-left'
+          className='text-5xl md:text-7xl font-display font-bold text-fg text-center md:text-left'
         >
           {t.heading}
         </motion.h2>
       </div>
 
-      <div className='bg-gray-100 dark:bg-neutral-900 -mt-4'>
-        <div className='grid grid-cols-1 max-w-4xl mx-auto pt-20'>
+      <div>
+        <div className='grid grid-cols-1 max-w-4xl mx-auto pt-10'>
           {userData.experience.map((exp: ExperienceBase, idx) => {
             const expText = t.experience[exp.id];
             return (

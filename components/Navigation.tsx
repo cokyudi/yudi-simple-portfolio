@@ -5,26 +5,26 @@ import { usePathname } from 'next/navigation';
 import ThemeSwitch from '@/components/ThemeSwitch';
 import { useLanguage } from '@/context/LanguageContext';
 
+const control =
+  'inline-flex items-center justify-center min-h-11 border-2 border-ink bg-surface text-fg shadow-retro-sm transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent';
+
 export default function Navigation() {
   const { language, toggleLanguage } = useLanguage();
   const pathname = usePathname();
   const isPostPage = /^\/blog\/.+/.test(pathname);
 
   return (
-    <header className='sticky top-0 z-20 bg-white/80 backdrop-blur dark:bg-black/80'>
+    <header className='sticky top-0 z-20 border-b-2 border-ink bg-paper'>
       <nav className='mx-auto max-w-4xl px-4 py-4 flex items-center justify-between'>
         <Link
           href='/'
-          className='font-semibold tracking-wide text-gray-900 dark:text-white hover:text-teal-500 hover:dark:text-teal-300 transition'
+          className='font-display font-bold tracking-tight text-fg hover:text-accent transition-colors'
         >
           YUDI DHARMA PUTRA
         </Link>
 
-        <div className='flex items-center gap-6'>
-          <Link
-            href='/blog'
-            className='inline-flex items-center justify-center min-h-11 min-w-11 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'
-          >
+        <div className='flex items-center gap-3'>
+          <Link href='/blog' className={`${control} px-3 text-sm font-display font-bold`}>
             Blog
           </Link>
 
@@ -32,11 +32,9 @@ export default function Navigation() {
             <button
               onClick={toggleLanguage}
               aria-label={language === 'en' ? 'Switch to Japanese' : 'Switch to English'}
-              className='inline-flex items-center justify-center min-h-11 min-w-11'
+              className={`${control} min-w-11 text-sm font-display font-bold`}
             >
-              <span className='text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-teal-500 hover:dark:text-teal-300 transition'>
-                {language === 'en' ? 'EN' : 'JP'}
-              </span>
+              {language === 'en' ? 'EN' : 'JP'}
             </button>
           )}
 

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import profile from '@/public/yudi-draw.jpg';
 import Experience from '@/components/Experience';
-import Link from 'next/link';
+import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import { userData } from '@/constants/data';
@@ -26,19 +26,17 @@ export default function About() {
   }
 
   return (
-    <div className='container px-4'>
+    <div className='container px-5'>
       <div className='lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
         <motion.div
           className='flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'
-          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
+          initial={false}
         >
           <Image
             src={profile}
             alt='profile photo of Yudi Dharma Putra'
             priority
-            className='rounded-full shadow-lg'
+            className='rounded-full border-2 border-ink shadow-retro'
             width={250}
             height={250}
             placeholder='blur'
@@ -49,15 +47,15 @@ export default function About() {
 
         <div className='lg:px-4 lg:mt-12'>
           <motion.h1
-            className='text-5xl font-bold text-gray-900 lg:text-7xl dark:text-white'
-            initial={shouldReduceMotion ? false : { opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            className='text-5xl font-display font-bold text-fg lg:text-7xl'
+            initial={shouldReduceMotion ? false : { x: -30 }}
+            animate={{ x: 0 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
           >
             {t.greeting}
           </motion.h1>
 
-          <div className='mt-6 text-gray-800 dark:text-white'>
+          <div className='mt-6 text-fg'>
             {t.summary.map((text, i) => (
               <motion.p
                 key={`summary-${i}`}
@@ -71,45 +69,30 @@ export default function About() {
               </motion.p>
             ))}
 
-            <motion.a
-              href={userData.resumeUrl}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600 inline-block'
-              variants={textVariants}
-              initial='hidden'
-              whileInView='visible'
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
-            >
-              {t.downloadCV}
-            </motion.a>
-
             <motion.div
-              className='my-5'
+              className='mt-8 flex flex-wrap gap-4 justify-center lg:justify-start'
               variants={textVariants}
               initial='hidden'
               whileInView='visible'
+              custom={t.summary.length}
             >
-              <Link
-                href='/blog'
-                className='inline-block text-sm font-medium text-teal-500 dark:text-teal-300 transition-transform hover:scale-105 active:scale-95'
+              <Button
+                href={userData.resumeUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+                variant='accent'
               >
+                {t.downloadCV}
+              </Button>
+              <Button href='/blog' variant='neutral'>
                 {t.readBlog}
-              </Link>
+              </Button>
             </motion.div>
           </div>
         </div>
       </div>
 
-      <motion.div
-        initial={shouldReduceMotion ? false : { opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
-        viewport={{ once: true }}
-      >
-        <Experience />
-      </motion.div>
+      <Experience />
     </div>
   )
 }

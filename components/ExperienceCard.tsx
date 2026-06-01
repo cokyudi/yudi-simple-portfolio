@@ -1,6 +1,8 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
+import Card from '@/components/ui/Card';
+import Badge from '@/components/ui/Badge';
 
 export type ExperienceCardProps = {
   title: string;
@@ -26,33 +28,31 @@ export default function ExperienceCard({
       initial={shouldReduceMotion ? false : { opacity: 0, y: 60 }}
       animate={{ opacity: 1, y: 0 }}
       transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.15 }}
-      whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -4 }}
-      className='relative border p-6 rounded-xl shadow-md bg-white dark:bg-neutral-800 z-10 mx-4 transition-all'
+      whileHover={shouldReduceMotion ? undefined : { y: -4 }}
+      className='relative z-10 mx-4'
     >
-      <div className='absolute -top-10 -left-1 text-4xl text-neutral-400 font-bold dark:text-neutral-600 select-none'>
-        {year}
-      </div>
+      <Card className='relative p-6'>
+        <div className='absolute -top-3 left-4'>
+          <Badge variant='neutral'>{year}</Badge>
+        </div>
 
-      <h3 className='font-semibold text-xl'>{title}</h3>
+        <h3 className='mt-2 font-display font-bold text-xl text-fg'>{title}</h3>
 
-      {companyLink ? (
-        <a
-          href={companyLink}
-          target='_blank'
-          rel='noopener noreferrer'
-          className='text-teal-500 hover:underline'
-        >
-          {company}
-        </a>
-      ) : (
-        <span className='text-neutral-700 dark:text-neutral-300'>
-          {company}
-        </span>
-      )}
+        {companyLink ? (
+          <a
+            href={companyLink}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-accent font-medium hover:underline'
+          >
+            {company}
+          </a>
+        ) : (
+          <span className='text-fg'>{company}</span>
+        )}
 
-      <p className='text-neutral-600 dark:text-neutral-400 my-2'>
-        {desc}
-      </p>
+        <p className='text-muted my-2'>{desc}</p>
+      </Card>
     </motion.div>
   );
 }
