@@ -81,7 +81,7 @@ export default async function BlogPostPage({
       </h1>
 
       <p className='mt-3'>
-        <Badge>
+        <Badge variant='highlight'>
           {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
         </Badge>
       </p>
