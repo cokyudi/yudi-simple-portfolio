@@ -27,11 +27,8 @@ export default function About() {
 
   return (
     <div className='container px-5'>
-      <div className='lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
-        <motion.div
-          className='flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'
-          initial={false}
-        >
+      <div className='max-w-5xl mx-auto lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
+        <div className='hero-photo flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'>
           <Image
             src={profile}
             alt='profile photo of Yudi Dharma Putra'
@@ -43,16 +40,25 @@ export default function About() {
             sizes="250px"
             quality={80}
           />
-        </motion.div>
+        </div>
 
-        <div className='lg:px-4 lg:mt-12'>
-          <motion.h1
-            className='text-5xl font-display font-bold text-fg lg:text-7xl'
+        <div className='hero-text lg:px-4 lg:mt-12'>
+          <motion.p
+            className='mb-3 font-display font-bold uppercase tracking-widest text-sm text-accent'
             initial={shouldReduceMotion ? false : { x: -30 }}
             animate={{ x: 0 }}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
           >
             {t.greeting}
+          </motion.p>
+
+          <motion.h1
+            className='text-5xl font-display font-bold text-fg lg:text-7xl'
+            initial={shouldReduceMotion ? false : { x: -30 }}
+            animate={{ x: 0 }}
+            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, delay: 0.05, ease: 'easeOut' }}
+          >
+            {t.name}
           </motion.h1>
 
           <div className='mt-6 text-fg'>

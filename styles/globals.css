@@ -30,3 +30,40 @@ body {
   background-color: var(--paper);
   color: var(--fg);
 }
+
+/*
+ * Scroll-driven hero: fade + drift as the hero exits the top of the viewport.
+ * Pure CSS (no JS). Gated on view() support; disabled for reduced-motion.
+ * Keyframes start at the resting state, so first paint is unaffected (LCP-safe).
+ */
+@keyframes hero-out-photo {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-24px); }
+}
+
+@keyframes hero-out-text {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-48px); }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-photo,
+    .hero-text {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+
+    /* Photo and text fade over slightly different scroll distances → depth. */
+    .hero-photo {
+      animation-name: hero-out-photo;
+      animation-range: 0 320px;
+    }
+
+    .hero-text {
+      animation-name: hero-out-text;
+      animation-range: 0 400px;
+    }
+  }
+}

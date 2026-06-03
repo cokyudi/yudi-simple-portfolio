@@ -1,13 +1,15 @@
 export const i18n = {
   en: {
     about: {
-      greeting: 'Hello!',
+      greeting: 'Hello, I’m',
+      name: 'Yudi Dharma Putra',
       summary: [
         'I’m a full-stack engineer who enjoys building fast and accessible web applications.',
         'Always learning and looking for ways to improve, both technically and personally.',
       ],
       downloadCV: 'Download my CV here',
       readBlog: 'Read my blog →',
+      current: 'Current',
     },
     blog: {
       heading: 'Blog',
@@ -50,13 +52,15 @@ export const i18n = {
 
   ja: {
     about: {
-      greeting: 'こんにちは！',
+      greeting: 'こんにちは、',
+      name: 'Yudi Dharma Putra',
       summary: [
         '私はフルスタックエンジニアで、高速でアクセシブルなWebアプリケーションを作ることを楽しんでいます。',
         '技術的にも個人的にも、常に学び、改善する方法を探しています。',
       ],
       downloadCV: 'ここから履歴書をダウンロード',
       readBlog: 'ブログを読む →',
+      current: '現職',
     },
     blog: {
       heading: 'ブログ',
