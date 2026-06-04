@@ -28,7 +28,7 @@ export default function About() {
   return (
     <div className='container px-5'>
       <div className='max-w-5xl mx-auto lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
-        <div className='hero-photo flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'>
+        <div className='flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'>
           <Image
             src={profile}
             alt='profile photo of Yudi Dharma Putra'
@@ -42,7 +42,7 @@ export default function About() {
           />
         </div>
 
-        <div className='hero-text lg:px-4 lg:mt-12'>
+        <div className='lg:px-4 lg:mt-12'>
           <motion.p
             className='mb-3 font-display font-bold uppercase tracking-widest text-sm text-accent'
             initial={shouldReduceMotion ? false : { x: -30 }}
@@ -68,7 +68,7 @@ export default function About() {
                 className='mb-4 text-xl'
                 variants={textVariants}
                 initial='hidden'
-                whileInView='visible'
+                animate='visible'
                 custom={i}
               >
                 {text}
@@ -79,7 +79,7 @@ export default function About() {
               className='mt-8 flex flex-wrap gap-4 justify-center lg:justify-start'
               variants={textVariants}
               initial='hidden'
-              whileInView='visible'
+              animate='visible'
               custom={t.summary.length}
             >
               <Button
