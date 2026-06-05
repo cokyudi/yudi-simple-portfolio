@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
   icons: {
     icon: '/favicon.ico',
+    apple: '/icons/apple-touch-icon.png',
   },
   openGraph: {
     type: 'website',
