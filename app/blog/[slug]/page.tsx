@@ -5,6 +5,7 @@ import {
   getAllPostSlugs,
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
+import { OG_VERSION } from '@/constants/og';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -38,7 +39,7 @@ export async function generateMetadata(
         images: [
           `/og/blog-post?title=${encodeURIComponent(
             frontMatter.title
-          )}&date=${encodeURIComponent(frontMatter.date)}`,
+          )}&date=${encodeURIComponent(frontMatter.date)}&v=${OG_VERSION}`,
         ],
       },
       twitter: {
@@ -50,7 +51,7 @@ export async function generateMetadata(
         images: [
           `/og/blog-post?title=${encodeURIComponent(
             frontMatter.title
-          )}&date=${encodeURIComponent(frontMatter.date)}`,
+          )}&date=${encodeURIComponent(frontMatter.date)}&v=${OG_VERSION}`,
         ],
       },
     };

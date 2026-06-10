@@ -7,6 +7,7 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '@/app/providers';
+import { OG_VERSION } from '@/constants/og';
 import type { Metadata } from 'next';
 
 const notoSansJP = Noto_Sans_JP({
@@ -21,8 +22,6 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   display: 'swap',
 });
-
-const OG_IMAGE_VERSION = '2026-04-05-draw';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.yudidputra.com'),
@@ -42,11 +41,11 @@ export const metadata: Metadata = {
     title: 'Yudi Dharma Putra',
     description:
       'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
-    images: [`/og/home?v=${OG_IMAGE_VERSION}`],
+    images: [`/og/home?v=${OG_VERSION}`],
   },
   twitter: {
     card: 'summary_large_image',
-    images: [`/og/home?v=${OG_IMAGE_VERSION}`],
+    images: [`/og/home?v=${OG_VERSION}`],
   },
 }
 
