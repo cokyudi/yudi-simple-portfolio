@@ -6,6 +6,7 @@ import {
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
 import { OG_VERSION } from '@/constants/og';
+import { SITE_URL, SITE_NAME } from '@/constants/site';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -75,8 +76,28 @@ export default async function BlogPostPage({
   };
   const locale = post.frontMatter.lang === 'ja' ? 'ja-JP' : 'en-US';
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.frontMatter.title,
+    description: post.frontMatter.description ?? '',
+    datePublished: post.frontMatter.date,
+    inLanguage: post.frontMatter.lang ?? 'en',
+    url: `${SITE_URL}/blog/${slug}`,
+    mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
+    image: `${SITE_URL}/og/blog-post?title=${encodeURIComponent(
+      post.frontMatter.title,
+    )}&date=${encodeURIComponent(post.frontMatter.date)}&v=${OG_VERSION}`,
+    author: { '@type': 'Person', name: SITE_NAME, url: SITE_URL },
+    publisher: { '@type': 'Person', name: SITE_NAME, url: SITE_URL },
+  };
+
   return (
     <div className='max-w-4xl mx-auto px-5 py-10'>
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <h1 className='text-3xl md:text-4xl font-display font-bold text-fg'>
         {post.frontMatter.title}
       </h1>

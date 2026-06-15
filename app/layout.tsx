@@ -35,6 +35,11 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/icons/apple-touch-icon.png',
   },
+  alternates: {
+    types: {
+      'application/rss+xml': '/feed.xml',
+    },
+  },
   openGraph: {
     type: 'website',
     siteName: 'Yudi Dharma Putra',
