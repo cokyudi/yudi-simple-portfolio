@@ -1,0 +1,156 @@
+---
+title: "What I'm Learning About AI-Driven Development with Claude"
+date: "2026-06-17"
+description: "Notes from my first weeks of doing full AI-driven development with Claude—best practices for the CLI, dos and don'ts, and how I'm learning to prompt more intentionally."
+---
+
+## Introduction
+
+I recently started doing something I never seriously did before: **letting an AI drive most of my day-to-day development.**
+
+Not autocomplete. Not "ask a chatbot a question and copy-paste the answer." I mean actually handing tasks to Claude in the terminal, letting it read my codebase, edit files, run commands, and iterate—while I steer.
+
+It's been humbling. Some days it feels like magic. Other days I realize the bottleneck wasn't the AI—it was *how I was using it*.
+
+So this post is mostly a note to myself. A place I can come back to and remember what I've learned, before I forget it and relearn the same lessons the hard way.
+
+I'm not an expert at this. I'm a few weeks in. But that's exactly why I want to write it down now.
+
+---
+
+## What "AI-Driven Development" Means to Me Now
+
+When I started, I thought AI-driven development meant:
+
+> Type a vague request, get working code, done.
+
+Now I see it differently.
+
+It's less like commanding a robot and more like **working with a fast, capable, slightly over-eager junior engineer** who has read everything but doesn't know *your* project, *your* constraints, or *your* taste—unless you tell it.
+
+The quality of what I get out is almost entirely a function of:
+- How much **context** I give it
+- How **clearly** I scope the task
+- How carefully I **review** what comes back
+
+The AI is fast. My job shifted from *typing code* to *thinking clearly and reviewing well*.
+
+<Figure
+  src="/images/blog/ai-driven-development-with-claude.webp"
+  alt="An abstract 3D illustration representing artificial intelligence and large language models"
+  caption="Less typing, more steering and reviewing."
+  priority
+/>
+
+---
+
+## Set Up a CLAUDE.md First
+
+The single biggest improvement to my results came from one file: **`CLAUDE.md`**.
+
+It's a file Claude reads automatically and treats as project instructions. Mine documents:
+- The commands (`build`, `lint`, `test`, `dev`)
+- The architecture and folder conventions
+- Code style rules ("use `interface` for data, `type` for unions", "default to Server Components")
+- The "do nots" specific to my stack
+
+```md
+## Code Style
+- Use functional components with arrow functions.
+- NEVER hardcode strings—use the i18n constants.
+- Default to Server Components; only use 'use client' when needed.
+```
+
+Without it, Claude guesses based on general conventions. With it, the output looks like *my* code. Every correction I find myself repeating, I add to this file so I never have to say it twice.
+
+---
+
+## Best Practices I'm Settling Into
+
+A few habits that have made the biggest difference:
+
+**Work in small, scoped tasks.** "Add canonical URLs to the blog pages" goes well. "Improve my SEO" does not. The narrower the task, the better the result and the easier the review.
+
+**Plan before you build.** For anything non-trivial, I ask for a plan first and read it before approving. Catching a wrong assumption in a plan costs seconds; catching it after the code is written costs a lot more.
+
+**Commit constantly.** I let Claude make a change, I review the diff, I commit. Small commits mean that if something goes sideways, `git` is my undo button. AI-driven development without version control discipline is playing with fire.
+
+**Make it verify its own work.** Asking it to run the build, the linter, or the tests after a change catches most mistakes before I even look. "Run `npm run build` and fix anything that breaks" is one of my most-used phrases.
+
+**Review every diff like it's a PR from a stranger.** Because effectively, it is. Fast code I don't understand is a liability, not a win.
+
+---
+
+## Dos and Don'ts
+
+Here's what I keep reminding myself.
+
+**Do:**
+- Give context up front—file paths, examples, constraints
+- Scope tasks small and concrete
+- Ask for a plan on anything complex
+- Let it run tools (build, tests, git) instead of doing it manually
+- Keep a running `CLAUDE.md` of corrections
+- Read every line before committing
+
+**Don't:**
+- Don't say "make it better" and expect to be happy
+- Don't accept code you don't understand
+- Don't let it run for ten steps without checking in
+- Don't skip version control "just this once"
+- Don't assume it knows your project—it only knows what you told it
+- Don't outsource the *thinking*, only the *typing*
+
+That last one is the one I have to repeat to myself the most.
+
+---
+
+## How I'm Learning to Prompt
+
+Prompting turned out to be a real skill, not a trick. A few things that consistently help:
+
+**Lead with intent and constraints.**
+
+```text
+Add a dark-mode toggle to the navbar.
+Use the existing next-themes setup.
+Match the RetroUI button style in components/ui/Button.tsx.
+Don't add new dependencies.
+```
+
+That gets me something usable on the first try. Compare it to "add dark mode," which gets me a guessing game.
+
+**Point at examples.** "Make this look like `BlogCard.tsx`" carries more information than three paragraphs of description. Show, don't tell.
+
+**Say what *not* to do.** Constraints are as valuable as goals. "Don't touch the MDX files" or "don't refactor anything unrelated" keeps the change focused.
+
+**Ask it to ask.** "If anything is ambiguous, ask me before coding" prevents a lot of confidently-wrong output.
+
+**Iterate in conversation.** I rarely get it perfect in one shot. Following up with "good, now make the spacing tighter and use the accent color" is normal—and fast.
+
+---
+
+## Mistakes I've Personally Made
+
+A few weeks in, here are the ones I keep catching myself doing:
+
+- Giving a vague task and blaming the output
+- Accepting a slick-looking diff without really reading it
+- Letting it make a big sweeping change instead of small steps
+- Forgetting to commit, then losing a good state
+- Re-explaining the same convention instead of putting it in `CLAUDE.md`
+- Treating it as an oracle instead of a collaborator I need to direct
+
+None of these are dramatic. But they're the difference between AI *speeding me up* and AI *quietly creating a mess I have to clean later*.
+
+---
+
+## Final Thoughts
+
+AI-driven development hasn't made engineering easier so much as it's **moved where the effort goes.**
+
+Less time typing. More time thinking clearly, giving context, and reviewing carefully. The skills that matter most now are the old ones—clear communication, good judgment, version control discipline—just applied to a very fast collaborator.
+
+This post is a snapshot of where I am right now. I'm sure I'll read it back in a few months and cringe a little at how much I still had to learn. That's fine. That's the point.
+
+Thanks for reading. I'll keep learning, building, and sharing along the way 🙏
