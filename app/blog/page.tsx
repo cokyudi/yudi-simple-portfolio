@@ -6,6 +6,9 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Blog',
   description: 'Notes on learning, experiments, and experiences.',
+  alternates: {
+    canonical: '/blog',
+  },
   openGraph: {
     title: 'Blog',
     description: 'Notes on learning, experiments, and experiences.',
