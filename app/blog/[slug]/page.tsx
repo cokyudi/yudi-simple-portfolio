@@ -101,12 +101,18 @@ export default async function BlogPostPage({
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
-      <h1 className='text-3xl md:text-4xl font-display font-bold text-fg'>
+      <h1
+        className='text-3xl md:text-4xl font-display font-bold text-fg'
+        style={{ viewTransitionName: `post-title-${slug}` }}
+      >
         {post.frontMatter.title}
       </h1>
 
       <p className='mt-3'>
-        <Badge variant='highlight'>
+        <Badge
+          variant='highlight'
+          style={{ viewTransitionName: `post-date-${slug}` }}
+        >
           {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
         </Badge>
       </p>

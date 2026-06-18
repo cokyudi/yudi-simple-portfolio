@@ -1,6 +1,7 @@
 'use client'
 
 import { ThemeProvider } from 'next-themes'
+import { ViewTransitions } from 'next-view-transitions'
 import { LanguageProvider } from '@/context/LanguageContext'
 import { MotionConfig } from 'framer-motion'
 
@@ -18,7 +19,7 @@ export default function Providers({
     >
       <LanguageProvider>
         <MotionConfig reducedMotion='user'>
-          {children}
+          <ViewTransitions>{children}</ViewTransitions>
         </MotionConfig>
       </LanguageProvider>
     </ThemeProvider>

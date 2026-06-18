@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { i18n } from '@/constants/i18n';
 import { BlogPostMeta } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
@@ -39,11 +39,18 @@ export default function BlogCard({
           group-active:translate-x-0.5 group-active:translate-y-0.5 group-active:shadow-none
         '
       >
-        <Badge variant='highlight' className='self-start'>
+        <Badge
+          variant='highlight'
+          className='self-start'
+          style={{ viewTransitionName: `post-date-${slug}` }}
+        >
           <time dateTime={date}>{formatted}</time>
         </Badge>
 
-        <h2 className='mt-2 text-lg font-display font-bold text-fg group-hover:text-accent transition-colors'>
+        <h2
+          className='mt-2 text-lg font-display font-bold text-fg group-hover:text-accent transition-colors'
+          style={{ viewTransitionName: `post-title-${slug}` }}
+        >
           {title}
         </h2>
 

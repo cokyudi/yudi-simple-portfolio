@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 type Variant = 'accent' | 'neutral';
