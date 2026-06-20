@@ -1,112 +1,101 @@
 # Yudi Simple Portfolio
-A personal website built with **Next.js App Router**, serving as my **portfolio**, **CV hub**, and **technical blog**.
 
-This project is both a public-facing site and a learning playground where I experiment with modern web development concepts such as server components, performance optimization, SEO, and analytics.
+A personal website built with the **Next.js App Router**, serving as my **portfolio**, **CV hub**, and **bilingual technical blog** — with an AI assistant that answers questions about my background.
+
+It's both a public-facing site and a playground where I experiment with modern web development: server components, view transitions, performance, SEO, i18n, and AI integration.
 
 🔗 Live site: https://www.yudidputra.com/
 
 ---
 
 ## ✨ Features
-- **Portfolio homepage**
-  - Work experience overview
-  - Downloadable CV
-- **Blog**
-  - Written in MDX
-  - Static generation with incremental updates
-- **Performance-focused**
-  - Optimized images
-  - Modern font loading
-- **SEO-ready**
-  - Metadata API
-  - Open Graph images
-- **Analytics**
-  - Vercel Analytics
-  - Google Analytics
+
+- **Portfolio homepage** — about, experience timeline, downloadable CV, and contact CTAs
+- **Bilingual (EN / JA)** — client-side language switching via React context, all copy in `constants/i18n.ts`
+- **Blog** — MDX content, statically generated, per-post language
+- **AI assistant** — "Ask about Yudi" chat grounded only on curated `knowledge/` files (Gemini Flash), scoped to decline off-topic requests
+- **View transitions** — title/date morph from blog cards into posts; cross-fade elsewhere
+- **Theming** — dark / light mode with a subtle graph-paper grid background
+- **SEO** — Metadata API, dynamic Open Graph images, RSS feed, sitemap, robots, JSON-LD, canonical URLs, `llms.txt`
+- **Analytics & conversions** — Vercel Analytics + Speed Insights, Google Analytics via GTM, `cv_download` / `contact_click` events
 
 ---
 
 ## 🛠 Tech Stack
-- **Next.js 14** (App Router)
-- **React**
-- **TypeScript**
-- **Tailwind CSS**
-- **MDX**
-- **Framer Motion**
-- **Vercel**
-- **Vercel Analytics**
-- **Google Analytics**
+
+- **Next.js 16** (App Router) · **React 19** · **TypeScript**
+- **Tailwind CSS** · **Framer Motion** · **next-themes** · **next-view-transitions**
+- **MDX** (`next-mdx-remote`) for blog content
+- **AI SDK v6** + **@ai-sdk/google** (Gemini) for the assistant
+- **Vercel** (hosting, Analytics, Speed Insights) · **Google Analytics** (GTM)
 
 ---
 
 ## 📂 Project Structure
-```tsx
-app/                # App Router pages and layouts
-  ├─ blog/           # Blog index and blog detail pages
+
+```
+app/                 # App Router pages, layouts, routes
+  ├─ blog/           # Blog index and post pages
   ├─ og/             # Dynamic Open Graph image routes
+  ├─ api/chat/       # AI assistant endpoint (server-side)
+  ├─ feed.xml/       # RSS feed
+  ├─ llms.txt/       # AI-crawler index
+  ├─ sitemap.ts      # Sitemap · robots.ts · manifest.ts
   ├─ layout.tsx      # Root layout
   └─ page.tsx        # Homepage (portfolio)
 
-components/          # Reusable UI components
-constants/           # Navigation links and static constants
-lib/                 # Utilities (MDX helpers, data fetching)
-posts/               # Blog content written in MDX
-public/              # Static assets (images, CV PDF)
-styles/              # Global styles and Tailwind config
-
+components/           # UI components (Chat widget, cards, CTAs, …)
+constants/           # Static data (data.ts) and i18n strings (i18n.ts)
+context/             # LanguageContext (EN/JA)
+knowledge/           # Assistant grounding (not rendered): profile + FAQ, EN/JA
+lib/                 # MDX helpers (posts.ts), knowledge reader (knowledge.ts)
+posts/               # Blog content (MDX)
+public/              # Static assets
+styles/              # Global styles
 ```
 
-This structure keeps routing, content, UI, and logic clearly separated and easy to scale.
-
 ---
 
-## 🧠 Why I Built This
-Instead of using a ready-made template or blogging platform, I wanted to:
-- Build something fully under my control
-- Practice real **Next.js patterns**
-- Learn by shipping and iterating
-- Have a long-term place to document what I learn
+## 🚀 Getting Started
 
-This site will continue to evolve as my skills and interests grow.
-
----
-
-## 🚀 Getting Started (Local Development)
-```tsx
+```bash
 git clone https://github.com/cokyudi/yudi-simple-portfolio.git
 cd yudi-simple-portfolio
 npm install
-npm run dev
+npm run dev          # http://localhost:3000
 ```
-Then open:  
-http://localhost:3000
+
+```bash
+npm run build        # production build
+npm run start        # serve the production build
+npm run lint         # ESLint
+```
+
+### Environment variables
+
+Create `.env.local` (gitignored — never commit secrets):
+
+```bash
+GOOGLE_GENERATIVE_AI_API_KEY=...   # Gemini key (free, from aistudio.google.com) — powers the assistant
+GTM_ID=GTM-XXXXXXX                 # optional — enables Google Tag Manager / Analytics
+```
+
+The assistant only responds when `GOOGLE_GENERATIVE_AI_API_KEY` is set. The key is read server-side only and is never sent to the browser or into the model prompt.
 
 ---
+
+## 🤖 AI Assistant
+
+The "Ask about Yudi" chat is grounded **only** on the markdown files in `knowledge/` (curated, public-safe career info). The `/api/chat` route stuffs that context into a scoped system prompt that politely declines anything off-topic. Guardrails: per-IP rate limit, input-length and output-token caps. Runs on Gemini's free tier, so there's no billing exposure.
+
+---
+
 ## 📝 Blog Content
-Blog posts live in the `posts/` directory and are written in MDX, allowing:
-- Markdown content
-- Embedded React components
-- Custom layouts (e.g. figures, code blocks)
+
+Posts live in `posts/` as MDX, supporting Markdown, embedded React components, and custom layouts (figures, code blocks). Each post carries a `lang: 'en' | 'ja'` frontmatter field; the blog grid filters by the active language.
 
 ---
-
-## 📈 Analytics & Monitoring
-- **Vercel Analytics** for performance and traffic insights
-- **Google Analytics** for visitor behavior and page tracking
-
-This helps me understand how the site is used and where to improve.
-
----
-
-## 🔮 Future Improvements
-Some ideas I plan to explore next:
-- Server Actions & mutations
-- Blog search
-- RSS feed
-- Improved Core Web Vitals
-- More advanced animations
-- Deeper technical blog posts
 
 ## 📄 License
-This project is open for learning and inspiration.  
-Feel free to explore the code.
+
+Open for learning and inspiration — feel free to explore the code.
