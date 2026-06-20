@@ -31,7 +31,7 @@ export default function Navigation() {
           {!isPostPage && (
             <button
               onClick={toggleLanguage}
-              aria-label={language === 'en' ? 'Switch to Japanese' : 'Switch to English'}
+              aria-label={language === 'en' ? 'EN, switch to Japanese' : 'JP, switch to English'}
               className={`${control} min-w-11 text-sm font-display font-bold`}
             >
               {language === 'en' ? 'EN' : 'JP'}
