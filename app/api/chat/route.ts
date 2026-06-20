@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { generateText } from 'ai';
+import { streamText } from 'ai';
 import { getKnowledge } from '@/lib/knowledge';
 
 export const runtime = 'nodejs';
@@ -64,14 +64,14 @@ export async function POST(req: Request) {
     .map((m) => ({ role: m.role, content: String(m.content).slice(0, MAX_INPUT_CHARS) }));
 
   try {
-    const { text } = await generateText({
+    const result = streamText({
       model: google('gemini-2.5-flash'),
       system: SYSTEM_PROMPT + getKnowledge(),
       messages: cleaned,
       maxOutputTokens: 500,
       temperature: 0.3,
     });
-    return Response.json({ text });
+    return result.toTextStreamResponse();
   } catch {
     return Response.json(
       { error: 'The assistant is unavailable right now. Please try again later.' },

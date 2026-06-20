@@ -34,6 +34,11 @@ export const i18n = {
       send: 'Send',
       close: 'Close chat',
       error: 'Something went wrong. Please try again.',
+      suggestions: [
+        'What’s Yudi’s tech stack?',
+        'Tell me about his AI work',
+        'How can I contact him?',
+      ],
     },
     heading: 'Experiences',
     experience: {
@@ -103,6 +108,11 @@ export const i18n = {
       send: '送信',
       close: 'チャットを閉じる',
       error: 'エラーが発生しました。もう一度お試しください。',
+      suggestions: [
+        'Yudiの技術スタックは？',
+        'AI関連の仕事について教えて',
+        '連絡方法は？',
+      ],
     },
     heading: '職務経歴',
     experience: {

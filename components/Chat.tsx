@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, type ReactNode } from 'react';
+import { sendGTMEvent } from '@next/third-parties/google';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 
@@ -49,15 +50,18 @@ export default function Chat() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, loading, open]);
 
-  const send = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = input.trim();
-    if (!text || loading) return;
+  const submit = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || loading) return;
 
-    const next = [...messages, { role: 'user' as const, content: text }];
+    const next = [...messages, { role: 'user' as const, content: trimmed }];
     setMessages(next);
     setInput('');
     setLoading(true);
+    sendGTMEvent({
+      event: 'chat_message',
+      turn: next.filter((msg) => msg.role === 'user').length,
+    });
 
     try {
       const res = await fetch('/api/chat', {
@@ -65,14 +69,46 @@ export default function Chat() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next }),
       });
-      const data = await res.json();
-      const reply = res.ok && data.text ? data.text : data.error || t.error;
-      setMessages((m) => [...m, { role: 'assistant', content: reply }]);
+
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}));
+        setMessages((m) => [...m, { role: 'assistant', content: data.error || t.error }]);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let acc = '';
+      let started = false;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        acc += decoder.decode(value, { stream: true });
+        if (!started) {
+          started = true;
+          setLoading(false);
+          setMessages((m) => [...m, { role: 'assistant', content: acc }]);
+        } else {
+          setMessages((m) => {
+            const copy = m.slice();
+            copy[copy.length - 1] = { role: 'assistant', content: acc };
+            return copy;
+          });
+        }
+      }
+      if (!started) {
+        setMessages((m) => [...m, { role: 'assistant', content: t.error }]);
+      }
     } catch {
       setMessages((m) => [...m, { role: 'assistant', content: t.error }]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    submit(input);
   };
 
   return (
@@ -96,6 +132,21 @@ export default function Chat() {
 
           <div ref={scrollRef} className='flex-1 space-y-3 overflow-y-auto p-4 text-sm'>
             <p className='text-muted'>{t.greeting}</p>
+
+            {messages.length === 0 && (
+              <div className='flex flex-wrap gap-2'>
+                {t.suggestions.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => submit(q)}
+                    className='border-2 border-ink bg-surface px-2.5 py-1 text-xs text-fg shadow-retro-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {messages.map((m, i) => (
               <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
                 <span
@@ -110,7 +161,7 @@ export default function Chat() {
             {loading && <p className='text-left text-muted'>…</p>}
           </div>
 
-          <form onSubmit={send} className='flex gap-2 border-t-2 border-ink p-3'>
+          <form onSubmit={onSubmit} className='flex gap-2 border-t-2 border-ink p-3'>
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
