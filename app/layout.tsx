@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { Noto_Sans_JP, Space_Grotesk } from 'next/font/google';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import Chat from '@/components/Chat';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -71,6 +72,7 @@ function RootLayout({ children }: { children: React.ReactNode}) {
             {children}
           </main>
           <Footer />
+          <Chat />
         </Providers>
 
         {process.env.GTM_ID && <GoogleTagManager gtmId={process.env.GTM_ID} />}

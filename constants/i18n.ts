@@ -25,6 +25,16 @@ export const i18n = {
       email: 'Email me',
       linkedin: 'Connect on LinkedIn',
     },
+    chat: {
+      open: 'Ask about Yudi',
+      title: 'Ask about Yudi',
+      greeting:
+        'Hi! Ask me anything about Yudi’s experience, skills, or projects.',
+      placeholder: 'Ask about my experience…',
+      send: 'Send',
+      close: 'Close chat',
+      error: 'Something went wrong. Please try again.',
+    },
     heading: 'Experiences',
     experience: {
       'meets-fulltime': {
@@ -83,6 +93,16 @@ export const i18n = {
         'プロジェクトやアイデアはありますか？面白いコラボレーションはいつでも歓迎です。お気軽にご連絡ください。',
       email: 'メールする',
       linkedin: 'LinkedInでつながる',
+    },
+    chat: {
+      open: 'Yudiについて質問',
+      title: 'Yudiについて質問',
+      greeting:
+        'こんにちは！Yudiの経歴・スキル・プロジェクトについて何でも聞いてください。',
+      placeholder: '経歴について質問…',
+      send: '送信',
+      close: 'チャットを閉じる',
+      error: 'エラーが発生しました。もう一度お試しください。',
     },
     heading: '職務経歴',
     experience: {

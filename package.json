@@ -7,9 +7,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.83",
     "@next/third-parties": "^16.2.4",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^2.0.0",
+    "ai": "^6.0.208",
     "framer-motion": "^11.18.2",
     "geist": "^1.7.0",
     "gray-matter": "^4.0.3",
