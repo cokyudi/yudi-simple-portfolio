@@ -17,6 +17,7 @@ Find a relevant, **freely licensed** image for a blog post, download and optimiz
 - Output filename must be **kebab-case**, derived from the post slug or topic (e.g. `ai-driven-development-with-claude.webp`).
 - Prefer `.webp` (matches existing assets and keeps pages light). Use `.jpg`/`.png` only if conversion fails.
 - **Only use images that are free to reuse** — Unsplash, Pexels, Pixabay, or Wikimedia Commons. Never hotlink or download copyrighted/stock-watermarked images.
+- **Match the site's aesthetic.** Prefer **calm, low-saturation** images with warm-neutral, cream, muted teal/green, sand, or amber/earthy tones that harmonize with the RetroUI palette (paper `#faf6ec`, teal accent `#0f766e`, amber highlight `#f59e0b`). **Avoid** neon / electric / high-contrast colors that clash (e.g. hot pink, electric cyan, saturated purple). The image must read well framed against **both** the light cream background (`#faf6ec`) and the dark near-black background (`#15130d`) — favor soft, mid-tone, muted images over ones that rely on a pure-white or pure-black backdrop. When in doubt, prefer minimal/abstract/textural over busy or vivid.
 - Do **not** modify the `.mdx` post unless the user explicitly asks. By default, just save the image and hand back the `<Figure>` snippet.
 - `sharp` is already a project dependency — use it for optimization (no new packages).
 - Never overwrite an existing image in `public/images/blog/` without confirming with the user first.
@@ -28,9 +29,9 @@ Find a relevant, **freely licensed** image for a blog post, download and optimiz
    - Pick an output filename from the slug, e.g. `public/images/blog/<slug>.webp`. Confirm it doesn't already exist (`ls public/images/blog/`); if it does, ask before overwriting.
 
 2. **Search for a free-license image.**
-   - Use `WebSearch` to find a fitting image on Unsplash / Pexels / Pixabay / Wikimedia Commons, querying with the post's key concepts.
+   - Use `WebSearch` to find a fitting image on Unsplash / Pexels / Pixabay / Wikimedia Commons, querying with the post's key concepts **plus calm/aesthetic modifiers** such as `minimal`, `muted`, `warm tones`, `neutral`, `soft`, `beige`, or `earthy` to bias toward palette-friendly results.
    - Use `WebFetch` on the candidate page to resolve a **direct image URL** (the actual `.jpg`/`.png`/`.webp` asset) and confirm the license permits reuse.
-   - Prefer landscape images roughly 1200px+ wide for a clean hero/figure.
+   - **Pick for color fit, not just topic:** choose the calmest, most muted candidate that suits both light and dark backgrounds (see the aesthetic constraint above). Skip anything neon or high-contrast even if it matches the topic. Prefer landscape images roughly 1200px+ wide for a clean hero/figure.
 
 3. **Download to a temp file.**
    ```bash

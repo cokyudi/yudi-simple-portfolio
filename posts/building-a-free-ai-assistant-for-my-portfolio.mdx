@@ -1,0 +1,70 @@
+---
+title: "How I Built a Free AI Assistant for My Portfolio"
+date: "2026-06-21"
+description: "I added an “Ask about Yudi” chatbot to this site — grounded on my own content, running on a free API, and built to be safe and cheap by default. Here is how, and what I learned."
+---
+
+<Figure
+  src="/images/blog/building-a-free-ai-assistant-for-my-portfolio.webp"
+  alt="Soft, warm-toned minimal abstract texture"
+  caption="Photo via Unsplash"
+  priority
+/>
+
+## Why I Wanted a Chatbot on My Portfolio
+
+For a while my site had the usual things: an about section, an experience timeline, a downloadable CV, and a blog. All useful, but all passive. A recruiter or a potential collaborator lands on the page and has to dig around to find what they care about.
+
+So I tried something different: a small **“Ask about Yudi”** chat in the corner. You type a question — *“What's his experience with React performance?”*, *“Does he speak Japanese?”*, *“How do I contact him?”* — and it answers from my actual background instead of making you scroll.
+
+It also felt on-brand. I had just written about doing AI-driven development with Claude, so shipping a real AI feature — not just talking about one — was the obvious next step.
+
+## Picking a Model: Free, and No Credit Card
+
+I had one hard requirement: it had to be **free, with no credit card**. This is a public endpoint on a personal site. I didn't want a surprise bill, and I didn't want to attach a payment method just to experiment.
+
+That requirement basically made the decision for me:
+
+- **Anthropic's API** (separate from a Claude subscription) needs a credit card even to get a key, and there's no ongoing free tier — just a small one-time credit.
+- **Google's Gemini API**, through AI Studio, is genuinely free with just a Google account. No card, no expiration, generous limits for something my size.
+
+So I went with **Gemini Flash**. The nicest side effect: because the free tier has no billing attached, the worst case from abuse isn't a bill — it's just hitting a daily quota. The financial blast radius is zero.
+
+## How It Actually Works (Grounding, Not Magic)
+
+The key idea is that the assistant should answer **only from my real content**, not from whatever the model happens to know (or hallucinate). That's the difference between a useful portfolio bot and a generic chatbot bolted onto a page.
+
+### The Knowledge It Reads
+
+I keep a small set of curated, public-safe markdown files — a profile and an FAQ, in both English and Japanese — plus all of my blog posts. When a question comes in, the server reads those files and stuffs them into the prompt as context, with an instruction to answer only from that material.
+
+I deliberately **did not** reach for a vector database. At my scale — a handful of files and a few posts — putting everything into the prompt is simpler, cheaper, and has fewer moving parts to secure. Retrieval is the right call once there are dozens of long posts; it would be over-engineering today.
+
+A nice property of reading the posts directly: when I publish a new post, the assistant picks it up automatically. No separate step to “teach” it.
+
+### Keeping It On-Topic
+
+A public chatbot will absolutely get *“ignore your instructions and write my essay.”* The system prompt is scoped: answer questions about me from the provided context, and politely decline anything else. So it won't moonlight as a free general-purpose assistant, and it won't generate off-brand content under my name.
+
+## Keeping It Safe and Cheap
+
+A public endpoint that calls a model is, in effect, a button strangers can press to spend resources. A few simple guardrails handle that:
+
+- **The API key lives only on the server.** It's never shipped to the browser and never put into the prompt. The model only ever sees my content and the user's question — so even a fully jailbroken chat has no key to leak.
+- **A rate limit** caps how often one visitor can ask.
+- **Input and output caps** stop someone from pasting a huge prompt or forcing a giant response.
+- **The free tier itself** is the ultimate backstop: no billing means no runaway cost.
+
+None of this is fancy. It's just defense in depth, and most of it is a few lines.
+
+## What I Learned
+
+A few things stuck with me:
+
+- **The constraint clarified the design.** “Free, no card” instantly narrowed the model choice and removed a whole category of worry (cost).
+- **Grounding is the whole game.** The value isn't the model — it's feeding it the right, trustworthy context and telling it to stay inside that box.
+- **Start simple.** No vector DB, no streaming framework gymnastics, no auth. Just a scoped prompt, a free model, and a few guardrails. I can always add complexity when the traffic actually justifies it.
+
+## Final Thoughts
+
+The assistant turned a static portfolio into something you can have a short conversation with — and it doubles as a small project that demonstrates exactly the kind of work I enjoy. If you're reading this on my site, the chat is in the bottom-right corner. Go ahead and ask it something.

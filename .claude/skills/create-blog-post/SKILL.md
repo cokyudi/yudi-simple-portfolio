@@ -16,6 +16,7 @@ Scaffold a new bilingual blog post (English + Japanese) in the `posts/` director
 - Do **not** modify `lib/posts.ts`, `app/blog/`, or any component unless explicitly asked.
 - The MDX body must use valid JSX syntax. Use the `<Figure>` component for images when needed (it is globally available in MDX).
 - Keep the writing tone personal and conversational, consistent with existing posts.
+- Each post should include a **header image** sourced via the `find-blog-image` skill (see workflow), unless the user opts out. The same image is used for both the EN and JA versions.
 
 ## Workflow
 
@@ -26,8 +27,9 @@ Scaffold a new bilingual blog post (English + Japanese) in the `posts/` director
    - Rough content outline or key points to cover
 2. **Create English post** at `posts/[slug].mdx` with the frontmatter and a drafted MDX body.
 3. **Create Japanese post** at `posts/[slug]-ja.mdx` with translated frontmatter (`lang: "ja"`) and a translated MDX body.
-4. **Verify** both files have the correct frontmatter fields (`title`, `date`, `description`, and `lang` for JA only) and the slug filenames match.
-5. **Confirm** to the user that the files are ready and remind them to run `npm run build` to validate static generation.
+4. **Add a header image (automatic):** Run the `find-blog-image` skill with the new slug to source a freely-licensed, optimized image into `public/images/blog/[slug].webp`, then insert the returned `<Figure>` near the top of **both** the EN and JA posts — same image, with `alt`/`caption` localized per language and `priority` set (it's the hero). If image sourcing fails, leave the posts text-only and tell the user.
+5. **Verify** both files have the correct frontmatter fields (`title`, `date`, `description`, and `lang` for JA only), the slug filenames match, and the image file exists in `public/images/blog/`.
+6. **Confirm** to the user that the files are ready and remind them to run `npm run build` to validate static generation.
 
 ## Frontmatter Schema
 
