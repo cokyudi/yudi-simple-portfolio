@@ -50,3 +50,8 @@ body {
     animation: none !important;
   }
 }
+
+/* Offset anchor jumps (TOC links) so headings clear the sticky header. */
+.prose :is(h1, h2, h3, h4) {
+  scroll-margin-top: 5rem;
+}

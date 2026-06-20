@@ -7,6 +7,7 @@ import {
 import Badge from '@/components/ui/Badge';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL, SITE_NAME } from '@/constants/site';
+import { i18n } from '@/constants/i18n';
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -77,7 +78,13 @@ export default async function BlogPostPage({
     month: 'long',
     day: 'numeric',
   };
-  const locale = post.frontMatter.lang === 'ja' ? 'ja-JP' : 'en-US';
+  const lang = post.frontMatter.lang ?? 'en';
+  const locale = lang === 'ja' ? 'ja-JP' : 'en-US';
+  const t = i18n[lang].blog;
+  const readLabel =
+    lang === 'ja'
+      ? `${post.readingTime}${t.minRead}`
+      : `${post.readingTime} ${t.minRead}`;
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -108,14 +115,33 @@ export default async function BlogPostPage({
         {post.frontMatter.title}
       </h1>
 
-      <p className='mt-3'>
+      <p className='mt-3 flex flex-wrap items-center gap-3'>
         <Badge
           variant='highlight'
           style={{ viewTransitionName: `post-date-${slug}` }}
         >
           {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
         </Badge>
+        <span className='text-sm text-muted'>{readLabel}</span>
       </p>
+
+      {post.toc.length > 0 && (
+        <nav
+          aria-label={t.contents}
+          className='mt-8 border-2 border-ink bg-surface p-4 shadow-retro'
+        >
+          <p className='font-display font-bold text-fg'>{t.contents}</p>
+          <ul className='mt-2 space-y-1 text-sm'>
+            {post.toc.map((h) => (
+              <li key={h.slug} className={h.depth === 3 ? 'ml-4' : ''}>
+                <a href={`#${h.slug}`} className='text-accent hover:underline'>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <article className='mt-10 border-2 border-ink bg-surface p-6 md:p-8 shadow-retro'>
         <div className='

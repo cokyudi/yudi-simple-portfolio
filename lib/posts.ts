@@ -6,10 +6,45 @@ import matter from 'gray-matter';
 import { cache } from 'react';
 import { compileMDX } from 'next-mdx-remote/rsc';
 import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
+import GithubSlugger from 'github-slugger';
 import Figure from '@/components/Figure';
 import type { ReactNode } from 'react';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
+
+export type TocItem = { depth: number; text: string; slug: string };
+
+// Estimate reading time: ~200 wpm for EN, ~500 chars/min for JA (CJK).
+function computeReadingTime(content: string, lang: 'en' | 'ja'): number {
+  if (lang === 'ja') {
+    const chars = (content.match(/[　-鿿＀-￯]/g) ?? []).length || content.length;
+    return Math.max(1, Math.round(chars / 500));
+  }
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+// Extract h2/h3 headings from raw markdown, slugged with the same algorithm
+// rehype-slug uses (github-slugger), so anchors match the rendered heading ids.
+function extractToc(content: string): TocItem[] {
+  const slugger = new GithubSlugger();
+  const toc: TocItem[] = [];
+  let inCode = false;
+  for (const line of content.split('\n')) {
+    if (line.trim().startsWith('```')) {
+      inCode = !inCode;
+      continue;
+    }
+    if (inCode) continue;
+    const match = /^(#{2,3})\s+(.+?)\s*#*\s*$/.exec(line);
+    if (match) {
+      const text = match[2].replace(/[*_`]/g, '').trim();
+      toc.push({ depth: match[1].length, text, slug: slugger.slug(text) });
+    }
+  }
+  return toc;
+}
 
 export type BlogPostMeta = {
   slug: string;
@@ -30,6 +65,8 @@ export type BlogPost = {
   slug: string;
   content: ReactNode;
   frontMatter: BlogPostFrontMatter;
+  readingTime: number;
+  toc: TocItem[];
 };
 
 function getPostFileNames(): string[] {
@@ -61,6 +98,7 @@ const readPostFile = cache((slug: string) => {
 export const getPostBySlug = cache(
   async (slug: string): Promise<BlogPost> => {
     const { content, data } = readPostFile(slug);
+    const lang = (data.lang as 'en' | 'ja') ?? 'en';
 
     const { content: compiledContent } = await compileMDX({
       source: content,
@@ -70,6 +108,7 @@ export const getPostBySlug = cache(
       options: {
         mdxOptions: {
           remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeSlug],
         },
       },
     });
@@ -81,8 +120,10 @@ export const getPostBySlug = cache(
         title: data.title as string,
         date: data.date as string,
         description: data.description as string | undefined,
-        lang: (data.lang as 'en' | 'ja') ?? 'en',
+        lang,
       },
+      readingTime: computeReadingTime(content, lang),
+      toc: extractToc(content),
     };
   }
 );

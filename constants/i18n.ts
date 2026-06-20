@@ -17,6 +17,8 @@ export const i18n = {
       subtitle: 'Notes on learning, experiments, and experiences.',
       readMore: 'Read more →',
       emptyState: 'No posts available in English yet.',
+      contents: 'Contents',
+      minRead: 'min read',
     },
     contact: {
       heading: 'Let’s build something together',
@@ -91,6 +93,8 @@ export const i18n = {
       subtitle: '学び、実験、そして経験についてのメモ。',
       readMore: '続きを読む →',
       emptyState: 'まだ日本語の記事はありません。',
+      contents: '目次',
+      minRead: '分で読む',
     },
     contact: {
       heading: '一緒に何かを作りましょう',
