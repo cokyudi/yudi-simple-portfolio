@@ -17,7 +17,9 @@ Find a relevant, **freely licensed** image for a blog post, download and optimiz
 - Output filename must be **kebab-case**, derived from the post slug or topic (e.g. `ai-driven-development-with-claude.webp`).
 - Prefer `.webp` (matches existing assets and keeps pages light). Use `.jpg`/`.png` only if conversion fails.
 - **Only use images that are free to reuse** — Unsplash, Pexels, Pixabay, or Wikimedia Commons. Never hotlink or download copyrighted/stock-watermarked images.
-- **Match the site's aesthetic.** Prefer **calm, low-saturation** images with warm-neutral, cream, muted teal/green, sand, or amber/earthy tones that harmonize with the RetroUI palette (paper `#faf6ec`, teal accent `#0f766e`, amber highlight `#f59e0b`). **Avoid** neon / electric / high-contrast colors that clash (e.g. hot pink, electric cyan, saturated purple). The image must read well framed against **both** the light cream background (`#faf6ec`) and the dark near-black background (`#15130d`) — favor soft, mid-tone, muted images over ones that rely on a pure-white or pure-black backdrop. When in doubt, prefer minimal/abstract/textural over busy or vivid.
+- **Relevance comes first, mood is the tiebreaker.** The image must visibly relate to the post's subject — read the whole post and pick something on-topic (e.g. an AI-chat/assistant post wants chat bubbles, a conversation UI, or an AI/robot visual — not an unrelated texture). Only **among topically relevant candidates** do you then prefer the calmest / most palette-friendly one. Never trade away relevance just to get a muted color.
+- **Look at the candidates — don't judge by color math.** You can view images. Download the top few candidates and **actually view them (Read the files)** to judge what they depict and their mood. Color statistics (dominant RGB/saturation) can confirm calmness but cannot tell you the subject, so they must never be the sole basis for the pick.
+- **Aesthetic preference (after relevance):** lean toward calm, lower-saturation images with warm-neutral / muted teal / amber tones that harmonize with the RetroUI palette (paper `#faf6ec`, teal `#0f766e`, amber `#f59e0b`) and read well on **both** the light cream and dark near-black backgrounds. Avoid neon / high-contrast clashes (hot pink, electric cyan) when a calmer relevant option exists.
 - Do **not** modify the `.mdx` post unless the user explicitly asks. By default, just save the image and hand back the `<Figure>` snippet.
 - `sharp` is already a project dependency — use it for optimization (no new packages).
 - Never overwrite an existing image in `public/images/blog/` without confirming with the user first.
@@ -29,19 +31,16 @@ Find a relevant, **freely licensed** image for a blog post, download and optimiz
    - Pick an output filename from the slug, e.g. `public/images/blog/<slug>.webp`. Confirm it doesn't already exist (`ls public/images/blog/`); if it does, ask before overwriting.
 
 2. **Search for a free-license image.**
-   - Use `WebSearch` to find a fitting image on Unsplash / Pexels / Pixabay / Wikimedia Commons, querying with the post's key concepts **plus calm/aesthetic modifiers** such as `minimal`, `muted`, `warm tones`, `neutral`, `soft`, `beige`, or `earthy` to bias toward palette-friendly results.
-   - Use `WebFetch` on the candidate page to resolve a **direct image URL** (the actual `.jpg`/`.png`/`.webp` asset) and confirm the license permits reuse.
-   - **Pick for color fit, not just topic:** choose the calmest, most muted candidate that suits both light and dark backgrounds (see the aesthetic constraint above). Skip anything neon or high-contrast even if it matches the topic. Prefer landscape images roughly 1200px+ wide for a clean hero/figure.
+   - Read the post first so the search reflects its actual subject. Query Unsplash / Pexels / Pixabay / Wikimedia Commons with the post's **key topic** terms, optionally adding calm modifiers (`minimal`, `muted`, `soft`) as a secondary nudge — but keep the topic in the query.
+   - Use `WebFetch` on the search/candidate page to resolve several **direct image URLs** (the actual `.jpg`/`.png`/`.webp` assets) and confirm the license permits reuse. Avoid brand logos/trademarks (e.g. don't grab a "Gemini" or company logo) — use generic concept imagery instead.
 
-3. **Download to a temp file.**
-   ```bash
-   curl -sL "<DIRECT_IMAGE_URL>" -o /tmp/blog-image-src
-   file /tmp/blog-image-src   # sanity-check it's actually an image
-   ```
+3. **Shortlist and look.**
+   - Download the **top 3–5 candidates** to `/tmp` and **view them** (Read each file) to judge subject and mood.
+   - Pick the candidate that best **matches the post topic** and, among those, is the calmest / most palette-friendly and works on both light and dark backgrounds. Prefer landscape ~1200px+ wide.
 
-4. **Optimize and save as webp** (resize to max 1200px wide, quality 80):
+4. **Optimize and save as webp** (the chosen candidate is already in `/tmp`; resize to max 1200px wide — or crop to a ~1200×600 landscape banner for a hero — quality 80):
    ```bash
-   node -e "const sharp=require('sharp');sharp('/tmp/blog-image-src').resize({width:1200,withoutEnlargement:true}).webp({quality:80}).toFile('public/images/blog/<NAME>.webp').then(i=>console.log('saved',i.width+'x'+i.height,Math.round(i.size/1024)+'KB')).catch(e=>{console.error(e);process.exit(1)})"
+   node -e "const sharp=require('sharp');sharp('/tmp/<CHOSEN>').resize({width:1200,withoutEnlargement:true}).webp({quality:80}).toFile('public/images/blog/<NAME>.webp').then(i=>console.log('saved',i.width+'x'+i.height,Math.round(i.size/1024)+'KB')).catch(e=>{console.error(e);process.exit(1)})"
    ```
 
 5. **Verify** the file exists and is a reasonable size (`ls -la public/images/blog/<NAME>.webp`).
