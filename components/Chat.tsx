@@ -1,10 +1,39 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 
 type Message = { role: 'user' | 'assistant'; content: string };
+
+// Render assistant text with clickable links — handles both Markdown links
+// [label](url) and bare URLs, so neither shows as raw syntax.
+function renderContent(text: string): ReactNode[] {
+  const pattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
+  const out: ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let key = 0;
+  while ((m = pattern.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const url = m[2] ?? m[3];
+    const label = m[1] ?? m[3];
+    out.push(
+      <a
+        key={key++}
+        href={url}
+        target='_blank'
+        rel='noopener noreferrer'
+        className='text-accent underline underline-offset-2 break-words'
+      >
+        {label}
+      </a>,
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
 
 export default function Chat() {
   const { language } = useLanguage();
@@ -74,7 +103,7 @@ export default function Chat() {
                     m.role === 'user' ? 'bg-accent text-on-accent' : 'bg-surface text-fg'
                   }`}
                 >
-                  {m.content}
+                  {m.role === 'assistant' ? renderContent(m.content) : m.content}
                 </span>
               </div>
             ))}
