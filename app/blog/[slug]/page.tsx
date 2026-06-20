@@ -122,7 +122,7 @@ export default async function BlogPostPage({
         >
           {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
         </Badge>
-        <span className='text-sm text-muted'>{readLabel}</span>
+        <Badge variant='neutral'>{readLabel}</Badge>
       </p>
 
       {post.toc.length > 0 && (
