@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
+import { sendGTMEvent } from '@next/third-parties/google';
 import profile from '@/public/yudi-draw.jpg';
 import Experience from '@/components/Experience';
 import Button from '@/components/ui/Button';
@@ -87,6 +88,7 @@ export default function About() {
                 target='_blank'
                 rel='noopener noreferrer'
                 variant='accent'
+                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero' })}
               >
                 {t.downloadCV}
               </Button>

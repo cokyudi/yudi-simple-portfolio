@@ -1,3 +1,6 @@
+'use client';
+
+import { sendGTMEvent } from '@next/third-parties/google';
 import { userData } from '@/constants/data';
 
 const Footer = () => {
@@ -17,6 +20,7 @@ const Footer = () => {
               target='_blank'
               rel='noopener noreferrer'
               className='text-base font-normal text-fg hover:text-accent transition-colors'
+              onClick={() => sendGTMEvent({ event: 'contact_click', method: 'linkedin' })}
             >
               <svg
                 aria-hidden='true'
