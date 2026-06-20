@@ -19,6 +19,15 @@ type LinkProps = CommonProps & ComponentPropsWithoutRef<'a'> & { href: string };
 export default function Button(props: ButtonProps | LinkProps) {
   if ('href' in props && props.href) {
     const { variant = 'accent', className, children, href, ...rest } = props;
+    // External, mailto and tel links must not go through the client-side
+    // view-transition router; render a plain anchor instead.
+    if (/^(https?:|mailto:|tel:)/.test(href)) {
+      return (
+        <a href={href} className={classes(variant, className)} {...rest}>
+          {children}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={classes(variant, className)} {...rest}>
         {children}

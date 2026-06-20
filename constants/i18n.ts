@@ -9,6 +9,7 @@ export const i18n = {
       ],
       downloadCV: 'Download my CV here',
       readBlog: 'Read my blog →',
+      getInTouch: 'Get in touch',
       current: 'Current',
     },
     blog: {
@@ -16,6 +17,13 @@ export const i18n = {
       subtitle: 'Notes on learning, experiments, and experiences.',
       readMore: 'Read more →',
       emptyState: 'No posts available in English yet.',
+    },
+    contact: {
+      heading: 'Let’s build something together',
+      subtitle:
+        'Have a project or idea in mind? I’m always up for interesting collaborations — let’s talk.',
+      email: 'Email me',
+      linkedin: 'Connect on LinkedIn',
     },
     heading: 'Experiences',
     experience: {
@@ -60,6 +68,7 @@ export const i18n = {
       ],
       downloadCV: 'ここから履歴書をダウンロード',
       readBlog: 'ブログを読む →',
+      getInTouch: 'お問い合わせ',
       current: '現職',
     },
     blog: {
@@ -67,6 +76,13 @@ export const i18n = {
       subtitle: '学び、実験、そして経験についてのメモ。',
       readMore: '続きを読む →',
       emptyState: 'まだ日本語の記事はありません。',
+    },
+    contact: {
+      heading: '一緒に何かを作りましょう',
+      subtitle:
+        'プロジェクトやアイデアはありますか？面白いコラボレーションはいつでも歓迎です。お気軽にご連絡ください。',
+      email: 'メールする',
+      linkedin: 'LinkedInでつながる',
     },
     heading: '職務経歴',
     experience: {

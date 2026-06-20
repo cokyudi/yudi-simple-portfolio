@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { sendGTMEvent } from '@next/third-parties/google';
 import profile from '@/public/yudi-draw.jpg';
 import Experience from '@/components/Experience';
+import ContactCTA from '@/components/ContactCTA';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
@@ -92,6 +93,13 @@ export default function About() {
               >
                 {t.downloadCV}
               </Button>
+              <Button
+                href={`mailto:${userData.socialLinks.email}`}
+                variant='neutral'
+                onClick={() => sendGTMEvent({ event: 'contact_click', method: 'email', location: 'hero' })}
+              >
+                {t.getInTouch}
+              </Button>
               <Button href='/blog' variant='neutral'>
                 {t.readBlog}
               </Button>
@@ -101,6 +109,8 @@ export default function About() {
       </div>
 
       <Experience />
+
+      <ContactCTA />
     </div>
   )
 }

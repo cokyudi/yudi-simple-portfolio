@@ -19,6 +19,7 @@ export const userData: {
   socialLinks: {
     linkedin: string;
     github: string;
+    email: string;
   };
   resumeUrl: string
 } = {
@@ -69,6 +70,7 @@ export const userData: {
   socialLinks: {
     linkedin: 'https://linkedin.com/in/cokyudi',
     github: 'https://github.com/cokyudi',
+    email: 'cokagungyudi@gmail.com',
   },
   resumeUrl: 'https://drive.google.com/file/d/1uHb_EamHVgZelREGH1EFUxv4eS5mxO6W/view?usp=sharing'
 };
