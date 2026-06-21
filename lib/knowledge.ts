@@ -5,6 +5,7 @@ import path from 'path';
 import { cache } from 'react';
 import matter from 'gray-matter';
 import { SITE_URL } from '@/constants/site';
+import { i18n } from '@/constants/i18n';
 
 const knowledgeDir = path.join(process.cwd(), 'knowledge');
 const postsDir = path.join(process.cwd(), 'posts');
@@ -47,8 +48,29 @@ function readPosts(): string {
     .join('\n\n---\n\n');
 }
 
-// Full grounding context for the site assistant: curated profile/FAQ plus
-// every blog post. Cached per request lifecycle.
+// Yudi's tools/setup, formatted from the same i18n data that powers the
+// /uses page — single source of truth, so the assistant never drifts from it.
+function readUses(): string {
+  const u = i18n.en.uses;
+  const categories = u.categories as ReadonlyArray<{
+    title: string;
+    items: ReadonlyArray<{ name: string; note?: string }>;
+  }>;
+  const lines = categories.map((category) => {
+    const items = category.items
+      .map((item) => (item.note ? `${item.name} (${item.note})` : item.name))
+      .join(', ');
+    return `${category.title}: ${items}`;
+  });
+  return `${u.subtitle} (see ${SITE_URL}/uses)\n${lines.join('\n')}`;
+}
+
+// Full grounding context for the site assistant: curated profile/FAQ, the
+// tools/setup, plus every blog post. Cached per request lifecycle.
 export const getKnowledge = cache((): string => {
-  return `# PROFILE & FAQ\n\n${readProfile()}\n\n---\n\n# BLOG POSTS\n\n${readPosts()}`;
+  return [
+    `# PROFILE & FAQ\n\n${readProfile()}`,
+    `# USES / SETUP\n\n${readUses()}`,
+    `# BLOG POSTS\n\n${readPosts()}`,
+  ].join('\n\n---\n\n');
 });
