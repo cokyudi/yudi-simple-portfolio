@@ -85,6 +85,15 @@ export const i18n = {
         },
       ],
     },
+    footer: {
+      builtWith: 'Built with Next.js, Tailwind & Vercel',
+      home: 'Home',
+      blog: 'Blog',
+      uses: 'Uses',
+      github: 'GitHub',
+      linkedin: 'LinkedIn',
+      email: 'Email',
+    },
     heading: 'Experiences',
     experience: {
       'meets-fulltime': {
@@ -203,6 +212,15 @@ export const i18n = {
           ],
         },
       ],
+    },
+    footer: {
+      builtWith: 'Next.js・Tailwind・Vercelで構築',
+      home: 'ホーム',
+      blog: 'ブログ',
+      uses: '使っているもの',
+      github: 'GitHub',
+      linkedin: 'LinkedIn',
+      email: 'メール',
     },
     heading: '職務経歴',
     experience: {
