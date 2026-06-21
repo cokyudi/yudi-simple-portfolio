@@ -26,6 +26,20 @@ export async function generateMetadata(
     const { slug } = await params;
     const { frontMatter } = await getPostBySlug(slug);
 
+    // EN/JA posts pair as `slug.mdx` ↔ `slug-ja.mdx`. If both exist, emit
+    // hreflang alternates so Google links the language versions.
+    const allSlugs = new Set(getAllPostSlugs().map((s) => s.slug));
+    const enSlug = slug.endsWith('-ja') ? slug.slice(0, -3) : slug;
+    const jaSlug = `${enSlug}-ja`;
+    const hasPair = allSlugs.has(enSlug) && allSlugs.has(jaSlug);
+    const languages = hasPair
+      ? {
+          en: `/blog/${enSlug}`,
+          ja: `/blog/${jaSlug}`,
+          'x-default': `/blog/${enSlug}`,
+        }
+      : undefined;
+
     return {
       title: `${frontMatter.title} | Blog`,
       description:
@@ -33,6 +47,7 @@ export async function generateMetadata(
         `Blog post: ${frontMatter.title}`,
       alternates: {
         canonical: `/blog/${slug}`,
+        ...(languages ? { languages } : {}),
       },
       openGraph: {
         type: 'article',
