@@ -28,6 +28,10 @@ export default function Navigation() {
             Blog
           </Link>
 
+          <Link href='/uses' className={`${control} px-3 text-sm font-display font-bold`}>
+            Uses
+          </Link>
+
           {!isPostPage && (
             <button
               onClick={toggleLanguage}

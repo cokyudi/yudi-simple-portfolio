@@ -42,6 +42,46 @@ export const i18n = {
         'How can I contact him?',
       ],
     },
+    uses: {
+      heading: 'Uses',
+      subtitle: 'The tools, apps, and gear I reach for day to day.',
+      categories: [
+        {
+          title: 'Editor & Terminal',
+          items: [
+            { name: 'VS Code', note: 'Main editor, with Vim keybindings' },
+            { name: 'zsh + Oh My Zsh', note: 'Shell of choice' },
+            { name: 'Claude Code', note: 'AI pair-programmer in the terminal' },
+          ],
+        },
+        {
+          title: 'Languages & Frameworks',
+          items: [
+            { name: 'TypeScript', note: 'Default for anything non-trivial' },
+            { name: 'React / Next.js', note: 'Frontend day to day' },
+            { name: 'Laravel / PHP', note: 'Backend and APIs' },
+            { name: 'Tailwind CSS', note: 'Styling' },
+          ],
+        },
+        {
+          title: 'Hardware',
+          items: [
+            { name: 'MacBook', note: 'Daily driver — update with your model' },
+            { name: 'External monitor', note: 'Update with your setup' },
+            { name: 'Keyboard & mouse', note: 'Update with your gear' },
+          ],
+        },
+        {
+          title: 'Apps & Services',
+          items: [
+            { name: 'Figma', note: 'Design hand-off' },
+            { name: 'Docker', note: 'Local environments' },
+            { name: 'GitHub', note: 'Version control & reviews' },
+            { name: 'Vercel', note: 'Hosting & analytics' },
+          ],
+        },
+      ],
+    },
     heading: 'Experiences',
     experience: {
       'meets-fulltime': {
@@ -116,6 +156,46 @@ export const i18n = {
         'Yudiの技術スタックは？',
         'AI関連の仕事について教えて',
         '連絡方法は？',
+      ],
+    },
+    uses: {
+      heading: '使っているもの',
+      subtitle: '日々の開発で使っているツール・アプリ・機材。',
+      categories: [
+        {
+          title: 'エディタ & ターミナル',
+          items: [
+            { name: 'VS Code', note: 'メインエディタ（Vimキーバインド）' },
+            { name: 'zsh + Oh My Zsh', note: '愛用のシェル' },
+            { name: 'Claude Code', note: 'ターミナル上のAIペアプログラマー' },
+          ],
+        },
+        {
+          title: '言語 & フレームワーク',
+          items: [
+            { name: 'TypeScript', note: '少し複雑なものはこれが基本' },
+            { name: 'React / Next.js', note: '日々のフロントエンド' },
+            { name: 'Laravel / PHP', note: 'バックエンドとAPI' },
+            { name: 'Tailwind CSS', note: 'スタイリング' },
+          ],
+        },
+        {
+          title: 'ハードウェア',
+          items: [
+            { name: 'MacBook', note: 'メイン機（モデルは後で更新）' },
+            { name: '外部モニター', note: '構成は後で更新' },
+            { name: 'キーボード & マウス', note: '機材は後で更新' },
+          ],
+        },
+        {
+          title: 'アプリ & サービス',
+          items: [
+            { name: 'Figma', note: 'デザインの受け渡し' },
+            { name: 'Docker', note: 'ローカル環境' },
+            { name: 'GitHub', note: 'バージョン管理とレビュー' },
+            { name: 'Vercel', note: 'ホスティングと分析' },
+          ],
+        },
       ],
     },
     heading: '職務経歴',
