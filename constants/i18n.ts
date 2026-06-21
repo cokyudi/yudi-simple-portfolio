@@ -66,9 +66,11 @@ export const i18n = {
         {
           title: 'Hardware',
           items: [
-            { name: 'MacBook', note: 'Daily driver — update with your model' },
-            { name: 'External monitor', note: 'Update with your setup' },
-            { name: 'Keyboard & mouse', note: 'Update with your gear' },
+            { name: 'MacBook Pro (M4)', note: '16GB RAM · 512GB — daily driver' },
+            { name: 'Dell P2417H', note: 'External monitor' },
+            { name: 'LG 34WP500', note: 'Ultrawide monitor' },
+            { name: 'Keychron K2', note: 'Mechanical keyboard' },
+            { name: '8BitDo Retro', note: 'Keyboard & mouse' },
           ],
         },
         {
@@ -78,6 +80,7 @@ export const i18n = {
             { name: 'Docker', note: 'Local environments' },
             { name: 'GitHub', note: 'Version control & reviews' },
             { name: 'Vercel', note: 'Hosting & analytics' },
+            { name: 'Supabase', note: 'Postgres backend & auth' },
           ],
         },
       ],
@@ -182,9 +185,11 @@ export const i18n = {
         {
           title: 'ハードウェア',
           items: [
-            { name: 'MacBook', note: 'メイン機（モデルは後で更新）' },
-            { name: '外部モニター', note: '構成は後で更新' },
-            { name: 'キーボード & マウス', note: '機材は後で更新' },
+            { name: 'MacBook Pro (M4)', note: 'メモリ16GB・512GB — メイン機' },
+            { name: 'Dell P2417H', note: '外部モニター' },
+            { name: 'LG 34WP500', note: 'ウルトラワイドモニター' },
+            { name: 'Keychron K2', note: 'メカニカルキーボード' },
+            { name: '8BitDo Retro', note: 'キーボード & マウス' },
           ],
         },
         {
@@ -194,6 +199,7 @@ export const i18n = {
             { name: 'Docker', note: 'ローカル環境' },
             { name: 'GitHub', note: 'バージョン管理とレビュー' },
             { name: 'Vercel', note: 'ホスティングと分析' },
+            { name: 'Supabase', note: 'Postgresバックエンドと認証' },
           ],
         },
       ],
