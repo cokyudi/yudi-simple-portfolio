@@ -18,17 +18,19 @@ export default function Navigation() {
       <nav className='mx-auto max-w-4xl px-4 py-4 flex items-center justify-between'>
         <Link
           href='/'
+          aria-label='Yudi Dharma Putra — home'
           className='font-display font-bold tracking-tight text-fg hover:text-accent transition-colors'
         >
-          YUDI DHARMA PUTRA
+          <span className='sm:hidden'>YUDI</span>
+          <span className='hidden sm:inline'>YUDI DHARMA PUTRA</span>
         </Link>
 
-        <div className='flex items-center gap-3'>
-          <Link href='/blog' className={`${control} px-3 text-sm font-display font-bold`}>
+        <div className='flex items-center gap-2 sm:gap-3'>
+          <Link href='/blog' className={`${control} px-2.5 sm:px-3 text-sm font-display font-bold`}>
             Blog
           </Link>
 
-          <Link href='/uses' className={`${control} px-3 text-sm font-display font-bold`}>
+          <Link href='/uses' className={`${control} px-2.5 sm:px-3 text-sm font-display font-bold`}>
             Uses
           </Link>
 
