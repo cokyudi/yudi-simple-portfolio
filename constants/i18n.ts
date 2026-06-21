@@ -49,9 +49,9 @@ export const i18n = {
         {
           title: 'Editor & Terminal',
           items: [
-            { name: 'VS Code', note: 'Main editor, with Vim keybindings' },
-            { name: 'zsh + Oh My Zsh', note: 'Shell of choice' },
-            { name: 'Claude Code', note: 'AI pair-programmer in the terminal' },
+            { name: 'VS Code', note: 'Main editor' },
+            { name: 'iTerm', note: 'Terminal' },
+            { name: 'Claude Code', note: 'AI pair-programmer in the CLI' },
           ],
         },
         {
@@ -168,9 +168,9 @@ export const i18n = {
         {
           title: 'エディタ & ターミナル',
           items: [
-            { name: 'VS Code', note: 'メインエディタ（Vimキーバインド）' },
-            { name: 'zsh + Oh My Zsh', note: '愛用のシェル' },
-            { name: 'Claude Code', note: 'ターミナル上のAIペアプログラマー' },
+            { name: 'VS Code', note: 'メインエディタ' },
+            { name: 'iTerm', note: 'ターミナル' },
+            { name: 'Claude Code', note: 'CLI上のAIペアプログラマー' },
           ],
         },
         {
