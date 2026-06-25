@@ -3,8 +3,10 @@ import type { Metadata } from 'next';
 import {
   getPostBySlug,
   getAllPostSlugs,
+  getAllPosts,
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
+import BlogCard from '@/components/BlogCard';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
@@ -58,6 +60,8 @@ export async function generateMetadata(
       },
       openGraph: {
         type: 'article',
+        publishedTime: frontMatter.date,
+        authors: ['Yudi Dharma Putra'],
         title: `${frontMatter.title} | Blog`,
         description:
           frontMatter.description ??
@@ -114,6 +118,8 @@ export default async function BlogPostPage({
     headline: post.frontMatter.title,
     description: post.frontMatter.description ?? '',
     datePublished: post.frontMatter.date,
+    dateModified: post.frontMatter.date,
+    timeRequired: `PT${post.readingTime}M`,
     inLanguage: lang,
     url: `${SITE_URL}/blog/${slug}`,
     mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
@@ -130,6 +136,11 @@ export default async function BlogPostPage({
     { name: 'Blog', url: `${SITE_URL}/blog` },
     { name: post.frontMatter.title, url: `${SITE_URL}/blog/${slug}` },
   ]);
+
+  // Internal linking: same-language posts, newest first, excluding this one.
+  const relatedPosts = getAllPosts()
+    .filter((p) => p.lang === lang && p.slug !== slug)
+    .slice(0, 3);
 
   return (
     <div className='max-w-4xl mx-auto px-5 py-10'>
@@ -186,6 +197,17 @@ export default async function BlogPostPage({
           {post.content}
         </div>
       </article>
+
+      {relatedPosts.length > 0 && (
+        <section className='mt-14'>
+          <h2 className='text-2xl font-display font-bold text-fg'>{t.readNext}</h2>
+          <div className='mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+            {relatedPosts.map((p) => (
+              <BlogCard key={p.slug} {...p} lang={lang} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

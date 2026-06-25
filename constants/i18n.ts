@@ -19,6 +19,7 @@ export const i18n = {
       emptyState: 'No posts available in English yet.',
       contents: 'Contents',
       minRead: 'min read',
+      readNext: 'Read next',
     },
     contact: {
       heading: 'Let’s build something together',
@@ -147,6 +148,7 @@ export const i18n = {
       emptyState: 'まだ日本語の記事はありません。',
       contents: '目次',
       minRead: '分で読む',
+      readNext: 'おすすめの記事',
     },
     contact: {
       heading: '一緒に何かを作りましょう',

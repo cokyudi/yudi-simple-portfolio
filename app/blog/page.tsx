@@ -25,16 +25,6 @@ export const metadata: Metadata = {
   },
 };
 
-const blogSchema = {
-  '@type': 'Blog',
-  '@id': BLOG_ID,
-  url: `${SITE_URL}/blog`,
-  name: 'Blog',
-  description,
-  inLanguage: 'en',
-  publisher: { '@id': PERSON_ID },
-};
-
 const breadcrumb = breadcrumbSchema([
   { name: 'Home', url: SITE_URL },
   { name: 'Blog', url: `${SITE_URL}/blog` },
@@ -42,6 +32,29 @@ const breadcrumb = breadcrumbSchema([
 
 export default function BlogPage() {
   const posts = getAllPosts();
+
+  // List every post (both languages) so the index declares the full
+  // inventory to search engines / LLMs, regardless of client-side filtering.
+  const blogSchema = {
+    '@type': 'Blog',
+    '@id': BLOG_ID,
+    url: `${SITE_URL}/blog`,
+    name: 'Blog',
+    description,
+    inLanguage: 'en',
+    publisher: { '@id': PERSON_ID },
+    blogPost: posts.map((post) => ({
+      '@type': 'BlogPosting',
+      '@id': `${SITE_URL}/blog/${post.slug}#post`,
+      headline: post.title,
+      description: post.description,
+      url: `${SITE_URL}/blog/${post.slug}`,
+      datePublished: post.date,
+      inLanguage: post.lang,
+      author: { '@id': PERSON_ID },
+    })),
+  };
+
   return (
     <>
       <script
