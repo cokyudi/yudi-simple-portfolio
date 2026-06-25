@@ -25,6 +25,8 @@ export function GET() {
 
 - [Home](${SITE_URL}/): About, experience timeline, and CV link.
 - [Blog](${SITE_URL}/blog): Notes on learning, experiments, and experiences.
+- [Uses](${SITE_URL}/uses): Tools, stack, and hardware Yudi uses.
+- [Full site text](${SITE_URL}/llms-full.txt): Profile, FAQ, setup, and full blog posts in one file.
 
 ## Blog posts (English)
 

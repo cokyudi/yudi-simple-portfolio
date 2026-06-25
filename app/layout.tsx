@@ -32,6 +32,8 @@ export const metadata: Metadata = {
   },
   description:
     'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
+  authors: [{ name: 'Yudi Dharma Putra', url: 'https://www.yudidputra.com' }],
+  creator: 'Yudi Dharma Putra',
   icons: {
     icon: '/favicon.ico',
     apple: '/icons/apple-touch-icon.png',
