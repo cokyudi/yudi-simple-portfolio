@@ -2,7 +2,7 @@ import { getAllPosts } from '@/lib/posts';
 import BlogGrid from '@/components/BlogGrid';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
-import { breadcrumbSchema, jsonLdGraph, PERSON_ID, BLOG_ID } from '@/lib/jsonld';
+import { breadcrumbSchema, jsonLdGraph, isoDateTime, PERSON_ID, BLOG_ID } from '@/lib/jsonld';
 import type { Metadata } from 'next';
 
 const description = 'Notes on learning, experiments, and experiences.';
@@ -49,7 +49,7 @@ export default function BlogPage() {
       headline: post.title,
       description: post.description,
       url: `${SITE_URL}/blog/${post.slug}`,
-      datePublished: post.date,
+      datePublished: isoDateTime(post.date),
       inLanguage: post.lang,
       author: { '@id': PERSON_ID },
     })),

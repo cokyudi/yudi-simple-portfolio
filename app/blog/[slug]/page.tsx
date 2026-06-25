@@ -14,6 +14,7 @@ import {
   personSchema,
   breadcrumbSchema,
   jsonLdGraph,
+  isoDateTime,
   PERSON_ID,
   BLOG_ID,
 } from '@/lib/jsonld';
@@ -60,7 +61,7 @@ export async function generateMetadata(
       },
       openGraph: {
         type: 'article',
-        publishedTime: frontMatter.date,
+        publishedTime: isoDateTime(frontMatter.date),
         authors: ['Yudi Dharma Putra'],
         title: `${frontMatter.title} | Blog`,
         description:
@@ -117,8 +118,8 @@ export default async function BlogPostPage({
     '@id': `${SITE_URL}/blog/${slug}#post`,
     headline: post.frontMatter.title,
     description: post.frontMatter.description ?? '',
-    datePublished: post.frontMatter.date,
-    dateModified: post.frontMatter.date,
+    datePublished: isoDateTime(post.frontMatter.date),
+    dateModified: isoDateTime(post.frontMatter.date),
     timeRequired: `PT${post.readingTime}M`,
     inLanguage: lang,
     url: `${SITE_URL}/blog/${slug}`,

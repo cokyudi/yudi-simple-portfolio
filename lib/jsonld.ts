@@ -24,6 +24,12 @@ export const websiteSchema = {
   publisher: { '@id': PERSON_ID },
 };
 
+// Frontmatter dates are 'YYYY-MM-DD'. Schema.org / Google prefer a full
+// ISO 8601 datetime with a timezone, so anchor to JST (author is in Japan).
+export function isoDateTime(date: string): string {
+  return `${date}T00:00:00+09:00`;
+}
+
 export function breadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     '@type': 'BreadcrumbList',
