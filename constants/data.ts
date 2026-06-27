@@ -14,8 +14,18 @@ export type ExperienceBase = {
   companyLink: string;
 };
 
+export type ProjectId = 'tangocho' | 'portfolio';
+
+export type Project = {
+  id: ProjectId;
+  name: string;
+  url: string;
+  tech: string[];
+};
+
 export const userData: {
   experience: ExperienceBase[];
+  projects: Project[];
   socialLinks: {
     linkedin: string;
     github: string;
@@ -23,6 +33,20 @@ export const userData: {
   };
   resumeUrl: string
 } = {
+  projects: [
+    {
+      id: 'tangocho',
+      name: 'tangocho (単語帳)',
+      url: 'https://tangocho.yudidputra.com',
+      tech: ['Next.js', 'TypeScript', 'Supabase', 'Gemini', 'PWA'],
+    },
+    {
+      id: 'portfolio',
+      name: 'This portfolio + AI assistant',
+      url: 'https://github.com/cokyudi/yudi-simple-portfolio',
+      tech: ['Next.js', 'TypeScript', 'Tailwind', 'AI SDK', 'MDX'],
+    },
+  ],
   experience: [
     {
       id: 'meets-fulltime',

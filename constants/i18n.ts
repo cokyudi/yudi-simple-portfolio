@@ -95,6 +95,14 @@ export const i18n = {
       linkedin: 'LinkedIn',
       email: 'Email',
     },
+    projects: {
+      heading: 'Projects',
+      subtitle: 'Things I’ve designed and built.',
+      tangocho:
+        'A Japanese vocabulary PWA that captures words with AI (Gemini + Jisho) and drills them with SM-2 spaced repetition — built for my own daily life in Japan.',
+      portfolio:
+        'This bilingual portfolio and blog, including the “Ask about Yudi” AI assistant and a full SEO/structured-data setup. Open source.',
+    },
     heading: 'Experiences',
     experience: {
       'meets-fulltime': {
@@ -223,6 +231,14 @@ export const i18n = {
       github: 'GitHub',
       linkedin: 'LinkedIn',
       email: 'メール',
+    },
+    projects: {
+      heading: 'プロジェクト',
+      subtitle: '自分で設計・開発したもの。',
+      tangocho:
+        '日本語の単語をAI（Gemini + Jisho）で取り込み、SM-2の間隔反復で覚えるPWA。日本での日常のために自作。',
+      portfolio:
+        'このバイリンガルなポートフォリオ＆ブログ。「Yudiについて質問」AIアシスタントとSEO・構造化データ一式を含む。オープンソース。',
     },
     heading: '職務経歴',
     experience: {

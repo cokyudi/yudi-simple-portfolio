@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { sendGTMEvent } from '@next/third-parties/google';
 import profile from '@/public/yudi-draw.jpg';
 import Experience from '@/components/Experience';
+import Projects from '@/components/Projects';
 import ContactCTA from '@/components/ContactCTA';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
@@ -109,6 +110,8 @@ export default function About() {
       </div>
 
       <Experience />
+
+      <Projects />
 
       <ContactCTA />
     </div>
