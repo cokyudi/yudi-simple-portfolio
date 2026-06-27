@@ -6,6 +6,7 @@ import { cache } from 'react';
 import matter from 'gray-matter';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
+import { userData } from '@/constants/data';
 
 const knowledgeDir = path.join(process.cwd(), 'knowledge');
 const postsDir = path.join(process.cwd(), 'posts');
@@ -65,12 +66,24 @@ function readUses(): string {
   return `${u.subtitle} (see ${SITE_URL}/uses)\n${lines.join('\n')}`;
 }
 
+// Projects, from the same data/i18n that powers the Projects section —
+// single source of truth, so the assistant stays in sync with the site.
+function readProjects(): string {
+  const p = i18n.en.projects;
+  const lines = userData.projects.map(
+    (project) =>
+      `${project.name} (${project.url}) — ${p[project.id]} Tech: ${project.tech.join(', ')}.`,
+  );
+  return `${p.subtitle}\n${lines.join('\n')}`;
+}
+
 // Full grounding context for the site assistant: curated profile/FAQ, the
-// tools/setup, plus every blog post. Cached per request lifecycle.
+// tools/setup, projects, plus every blog post. Cached per request lifecycle.
 export const getKnowledge = cache((): string => {
   return [
     `# PROFILE & FAQ\n\n${readProfile()}`,
     `# USES / SETUP\n\n${readUses()}`,
+    `# PROJECTS\n\n${readProjects()}`,
     `# BLOG POSTS\n\n${readPosts()}`,
   ].join('\n\n---\n\n');
 });
