@@ -12,7 +12,7 @@ export default function Projects() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className='container px-5'>
+    <section className='container px-5 mt-16 lg:mt-24'>
       <div className='max-w-5xl mx-auto'>
         <h2 className='text-3xl font-display font-bold text-fg'>{t.heading}</h2>
         <p className='mt-2 text-muted'>{t.subtitle}</p>
