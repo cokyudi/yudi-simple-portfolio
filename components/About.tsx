@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { sendGTMEvent } from '@next/third-parties/google';
 import profile from '@/public/yudi-draw.jpg';
+import { Link } from 'next-view-transitions';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import ContactCTA from '@/components/ContactCTA';
@@ -79,7 +80,7 @@ export default function About() {
             ))}
 
             <motion.div
-              className='mt-8 flex flex-wrap gap-4 justify-center lg:justify-start'
+              className='mt-8 flex flex-wrap items-center gap-4 justify-center lg:justify-start'
               variants={textVariants}
               initial='hidden'
               animate='visible'
@@ -101,9 +102,12 @@ export default function About() {
               >
                 {t.getInTouch}
               </Button>
-              <Button href='/blog' variant='neutral'>
+              <Link
+                href='/blog'
+                className='inline-flex items-center font-display font-bold text-accent hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+              >
                 {t.readBlog}
-              </Button>
+              </Link>
             </motion.div>
           </div>
         </div>

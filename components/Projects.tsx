@@ -14,7 +14,7 @@ export default function Projects() {
   return (
     <section className='container px-5 mt-16 lg:mt-24'>
       <div className='max-w-5xl mx-auto'>
-        <h2 className='text-3xl font-display font-bold text-fg'>{t.heading}</h2>
+        <h2 className='text-3xl md:text-4xl font-display font-bold text-fg'>{t.heading}</h2>
         <p className='mt-2 text-muted'>{t.subtitle}</p>
 
         <div className='mt-8 grid gap-6 sm:grid-cols-2'>

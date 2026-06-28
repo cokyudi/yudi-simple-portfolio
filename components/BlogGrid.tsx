@@ -17,7 +17,7 @@ export default function BlogGrid({ allPosts }: BlogGridProps) {
   return (
     <div className='mx-auto max-w-4xl px-5 py-10'>
       <header className='mb-10'>
-        <h1 className='text-4xl font-display font-bold text-fg'>
+        <h1 className='text-4xl md:text-5xl font-display font-bold text-fg'>
           {t.heading}
         </h1>
         <p className='mt-2 text-muted'>{t.subtitle}</p>

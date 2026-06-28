@@ -30,7 +30,7 @@ export default function Experience() {
           initial={shouldReduceMotion ? false : { opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: 'easeOut' }}
-          className='text-4xl md:text-5xl font-display font-bold text-fg text-center md:text-left'
+          className='text-3xl md:text-4xl font-display font-bold text-fg text-center md:text-left'
         >
           {t.heading}
         </motion.h2>

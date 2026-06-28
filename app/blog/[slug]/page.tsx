@@ -152,7 +152,7 @@ export default async function BlogPostPage({
         }}
       />
       <h1
-        className='text-3xl md:text-4xl font-display font-bold text-fg'
+        className='text-4xl md:text-5xl font-display font-bold text-fg'
         style={{ viewTransitionName: `post-title-${slug}` }}
       >
         {post.frontMatter.title}
@@ -171,7 +171,7 @@ export default async function BlogPostPage({
       {post.toc.length > 0 && (
         <nav
           aria-label={t.contents}
-          className='mt-8 border-2 border-ink bg-surface p-4 shadow-retro'
+          className='mt-8 border-2 border-ink bg-surface/50 p-4'
         >
           <p className='font-display font-bold text-fg'>{t.contents}</p>
           <ul className='mt-2 space-y-1 text-sm'>
@@ -188,7 +188,7 @@ export default async function BlogPostPage({
 
       <article className='mt-10 border-2 border-ink bg-surface p-6 md:p-8 shadow-retro'>
         <div className='
-          prose max-w-none
+          prose prose-lg max-w-none
           prose-headings:font-display
           prose-img:border-2 prose-img:border-ink prose-img:shadow-retro prose-img:rounded-none
           prose-pre:border-2 prose-pre:border-ink prose-pre:rounded-none
