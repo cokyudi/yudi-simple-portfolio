@@ -1,0 +1,99 @@
+---
+title: "Two Months of Building with Claude: What Actually Changed"
+date: "2026-07-02"
+description: "Two months of daily development with Claude — the skills I lean on, how much faster I ship, finally getting the UI I want, and where AI dev still falls short."
+tags: ["ai", "claude", "developer-experience", "productivity"]
+---
+
+## Two Months In
+
+A while back I wrote about my [first weeks of AI-driven development with Claude](/blog/learning-ai-driven-development-with-claude). It was mostly nerves and lessons—more "here's what I keep getting wrong" than "here's what works."
+
+Two months later, it's become how I build. Not a novelty I reach for occasionally, but the default way I move from an idea to something shipped. So this is a follow-up: what actually changed, what I lean on now, and where it still frustrates me.
+
+<Figure
+  src="/images/blog/two-months-building-with-claude.webp"
+  alt="A developer's workspace with a laptop and terminal, representing daily AI-assisted development"
+  caption="Two months in, the terminal is where most of the work happens now."
+  priority
+/>
+
+## How I Actually Use It Now
+
+Early on I used Claude like a smarter autocomplete. Now I work with it in the terminal, agentically: I give it a task, it reads the codebase, edits files, runs the build, and iterates—while I steer and review.
+
+The shape of a session is usually the same:
+
+- **Describe the goal and constraints**, not the implementation.
+- **Ask for a plan** on anything non-trivial, and read it before approving.
+- **Let it build in small steps**, reviewing each diff.
+- **Have it verify itself**—run the build, the linter, the live page—before I look.
+
+The mental shift is that I stopped thinking of it as "generate code" and started thinking of it as "delegate a task to someone fast who needs clear direction."
+
+## The Skills I Lean On
+
+A few habits and tools do most of the heavy lifting:
+
+**`CLAUDE.md` as the source of truth.** My project instructions file documents the commands, architecture, code style, and the "do nots." Every correction I'd otherwise repeat, I write down once. The output now looks like *my* code, not generic code.
+
+**Custom skills for repeatable work.** I've built small skills for the things I do often. Instead of re-explaining the process each time, I invoke the skill and it follows my conventions. The ones I reach for constantly:
+
+- `/new-post` — scaffolds a bilingual EN/JA post with the right frontmatter, tags, and structure.
+- `/find-blog-image` — sources a free-licensed header image, optimizes it to webp, and hands back the `<Figure>` snippet.
+- `/design-critique` — reviews a page's hierarchy, spacing, and typography, then lists the highest-impact fixes.
+- `/commit` — stages the relevant changes and writes a Conventional Commits message that matches my history.
+- `/code-review` — reads the diff for correctness bugs and simplifications before I push.
+- `/security-review` — checks a change for real vulnerabilities. I ran it on this site's AI assistant endpoint before trusting it in production.
+- `/a11y-audit` and `/perf-audit` — Lighthouse-driven accessibility and performance passes, so "100/100" is a check, not a hope.
+
+The pattern that matters: the more of my judgment I encode into a skill, the less I re-explain and the more the output arrives the way I'd have done it myself.
+
+**Plan before build.** For anything with more than one moving part, I ask for a plan first. Catching a wrong assumption in a plan costs seconds; catching it after the code is written costs a lot more.
+
+**Commit constantly.** Small, reviewed commits mean `git` is my undo button. I let it make a change, I read the diff, I commit. This one habit is what makes moving fast feel safe instead of reckless.
+
+**Make it verify live.** "Run the build and fix anything that breaks" and "curl the deployed page and confirm the change" catch most mistakes before I even look.
+
+## How Fast It Actually Is
+
+The honest answer: fast enough that the bottleneck moved. It's no longer typing—it's deciding what I want and reviewing what comes back.
+
+This very site is the proof. Over a stretch of evenings, I shipped things I'd normally have deferred for months: view transitions, a free AI assistant grounded on my own content, a full SEO and structured-data stack, an OG image generator, a bilingual blog pipeline. None of these were hard *ideas*. They were hard to find the *time* for. AI collapsed the time-to-ship, so "nice to have someday" became "done this week."
+
+The speedup isn't uniform. Well-scoped, well-understood tasks fly. Fuzzy or novel problems still take real thinking—the AI just removes the typing tax around the thinking.
+
+## Finally, UI I'm Happy With
+
+This is the part I didn't expect. I've always had a sense of the UI I wanted, but bridging that to pixels was slow and, honestly, discouraging. I'd settle for "fine" because "nice" was too many hours away.
+
+That changed. I can describe a direction—"RetroUI: cream paper, hard ink borders, a teal accent used sparingly"—and iterate visually in minutes. "Tighten the spacing," "demote that button to a text link," "make the article the focal point." I even run a design critique against my own pages and act on the top findings.
+
+I'm not suddenly a designer. But the gap between the design in my head and the thing on screen shrank from "too far to bother" to "a few iterations away." That's the difference between shipping something I tolerate and something I'm proud of.
+
+## Where It Still Falls Short
+
+It's not magic, and pretending otherwise leads to messes. What I'm still working on:
+
+- **Review discipline is everything.** Fast code I don't understand is a liability, not a win. The failure mode is accepting a slick diff without really reading it. I have to consciously resist this.
+- **It doesn't know what it doesn't know.** It will confidently do the wrong thing if I gave it the wrong context. Most bad output traces back to a vague prompt, not the model.
+- **Context is finite.** On long sessions it loses the thread; I've learned to keep tasks scoped and start fresh when things drift.
+- **Knowing when *not* to use it.** For a two-line change I understand perfectly, reaching for AI is slower than just typing it. The skill is judgment about where it actually helps.
+
+## What I'd Improve Next
+
+If I'm being deliberate about getting better at this, a few things:
+
+- **Write even better `CLAUDE.md` and skills.** The more of my judgment I encode, the more the output matches my taste by default.
+- **Get sharper at reviewing.** Speed on the generation side means the review side is now the real bottleneck—and the real safeguard.
+- **Lean on verification harder.** Tests, builds, live checks. The more the AI proves its own work, the less I'm trusting on faith.
+
+## Final Thoughts
+
+Two months in, AI hasn't made engineering easier so much as it's moved where the effort goes. Less typing, more thinking clearly, giving context, and reviewing carefully.
+
+The surprising part is how much *more* I ship now—not because I'm working more hours, but because the distance between "I wish this existed" and "it exists" got so much shorter. The ideas I used to shelve, I build.
+
+I'll check back in a few more months. I'm sure I'll cringe at some of this. That's the point.
+
+Thanks for reading 🙏
