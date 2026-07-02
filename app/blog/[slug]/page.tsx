@@ -181,7 +181,9 @@ export default async function BlogPostPage({
           variant='highlight'
           style={{ viewTransitionName: `post-date-${slug}` }}
         >
-          {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
+          <time dateTime={post.frontMatter.date}>
+            {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
+          </time>
         </Badge>
         <Badge variant='neutral'>{readLabel}</Badge>
       </p>
