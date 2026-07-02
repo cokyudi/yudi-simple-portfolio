@@ -52,6 +52,7 @@ export type BlogPostMeta = {
   date: string;
   description: string;
   lang: 'en' | 'ja';
+  tags: string[];
 };
 
 export type BlogPostFrontMatter = {
@@ -59,6 +60,8 @@ export type BlogPostFrontMatter = {
   date: string;
   description?: string;
   lang?: 'en' | 'ja';
+  updated?: string;
+  tags?: string[];
 };
 
 export type BlogPost = {
@@ -121,6 +124,8 @@ export const getPostBySlug = cache(
         date: data.date as string,
         description: data.description as string | undefined,
         lang,
+        updated: data.updated as string | undefined,
+        tags: (data.tags as string[] | undefined) ?? [],
       },
       readingTime: computeReadingTime(content, lang),
       toc: extractToc(content),
@@ -140,6 +145,7 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
         date: data.date as string,
         description: (data.description as string) ?? '',
         lang: (data.lang as 'en' | 'ja') ?? 'en',
+        tags: (data.tags as string[] | undefined) ?? [],
       };
     })
     .sort(

@@ -119,9 +119,12 @@ export default async function BlogPostPage({
     headline: post.frontMatter.title,
     description: post.frontMatter.description ?? '',
     datePublished: isoDateTime(post.frontMatter.date),
-    dateModified: isoDateTime(post.frontMatter.date),
+    dateModified: isoDateTime(post.frontMatter.updated ?? post.frontMatter.date),
     timeRequired: `PT${post.readingTime}M`,
     inLanguage: lang,
+    ...(post.frontMatter.tags && post.frontMatter.tags.length > 0
+      ? { keywords: post.frontMatter.tags.join(', ') }
+      : {}),
     url: `${SITE_URL}/blog/${slug}`,
     mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
     image: `${SITE_URL}/og/blog-post?title=${encodeURIComponent(
@@ -138,10 +141,22 @@ export default async function BlogPostPage({
     { name: post.frontMatter.title, url: `${SITE_URL}/blog/${slug}` },
   ]);
 
-  // Internal linking: same-language posts, newest first, excluding this one.
+  // Internal linking: same-language posts, ranked by shared-tag overlap, then
+  // newest first. Falls back to purely chronological when no tags are set.
+  const currentTags = new Set(post.frontMatter.tags ?? []);
   const relatedPosts = getAllPosts()
     .filter((p) => p.lang === lang && p.slug !== slug)
-    .slice(0, 3);
+    .map((p) => ({
+      post: p,
+      shared: p.tags.filter((tag) => currentTags.has(tag)).length,
+    }))
+    .sort(
+      (a, b) =>
+        b.shared - a.shared ||
+        new Date(b.post.date).getTime() - new Date(a.post.date).getTime(),
+    )
+    .slice(0, 3)
+    .map((r) => r.post);
 
   return (
     <div className='max-w-4xl mx-auto px-5 py-10'>
