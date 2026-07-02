@@ -47,10 +47,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Yudi Dharma Putra',
+    locale: 'en_US',
+    alternateLocale: ['ja_JP'],
     title: 'Yudi Dharma Putra',
     description:
       'Full-stack engineer in Japan specializing in Next.js, React, and modern web development.',
-    images: [`/og/home?v=${OG_VERSION}`],
+    images: [
+      {
+        url: `/og/home?v=${OG_VERSION}`,
+        alt: 'Yudi Dharma Putra — full-stack engineer in Japan',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',

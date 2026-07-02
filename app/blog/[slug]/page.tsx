@@ -69,9 +69,12 @@ export async function generateMetadata(
           `Blog post: ${frontMatter.title}`,
         url: `/blog/${slug}`,
         images: [
-          `/og/blog-post?title=${encodeURIComponent(
-            frontMatter.title
-          )}&date=${encodeURIComponent(frontMatter.date)}&v=${OG_VERSION}`,
+          {
+            url: `/og/blog-post?title=${encodeURIComponent(
+              frontMatter.title
+            )}&date=${encodeURIComponent(frontMatter.date)}&v=${OG_VERSION}`,
+            alt: frontMatter.title,
+          },
         ],
       },
       twitter: {

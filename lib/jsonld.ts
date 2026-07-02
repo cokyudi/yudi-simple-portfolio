@@ -12,6 +12,24 @@ export const personSchema = {
   name: SITE_NAME,
   url: SITE_URL,
   jobTitle: SITE_TITLE,
+  description:
+    'Full-stack engineer with 7+ years building production web applications, based in Tokyo, Japan. Works in English and Japanese (JLPT N2).',
+  image: `${SITE_URL}/yudi-draw.jpg`,
+  knowsAbout: [
+    'Next.js',
+    'React',
+    'TypeScript',
+    'Node.js',
+    'Laravel',
+    'Full-stack development',
+    'Frontend architecture',
+    'Web performance',
+  ],
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Meets Consulting Inc.',
+    url: 'https://www.meetsc.co.jp/',
+  },
   sameAs: [userData.socialLinks.linkedin, userData.socialLinks.github],
 };
 

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: 'Blog',
     description,
     url: '/blog',
-    images: [`/og/blog?v=${OG_VERSION}`],
+    images: [{ url: `/og/blog?v=${OG_VERSION}`, alt: 'Yudi Dharma Putra — Blog' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -50,6 +50,7 @@ export default function BlogPage() {
       description: post.description,
       url: `${SITE_URL}/blog/${post.slug}`,
       datePublished: isoDateTime(post.date),
+      dateModified: isoDateTime(post.updated ?? post.date),
       inLanguage: post.lang,
       author: { '@id': PERSON_ID },
     })),

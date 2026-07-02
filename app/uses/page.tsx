@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: 'Uses | Yudi Dharma Putra',
     description,
     url: '/uses',
-    images: [`/og/uses?v=${OG_VERSION}`],
+    images: [{ url: `/og/uses?v=${OG_VERSION}`, alt: 'The tools and gear Yudi Dharma Putra uses' }],
   },
   twitter: {
     card: 'summary_large_image',

@@ -53,6 +53,7 @@ export type BlogPostMeta = {
   description: string;
   lang: 'en' | 'ja';
   tags: string[];
+  updated?: string;
 };
 
 export type BlogPostFrontMatter = {
@@ -146,6 +147,7 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
         description: (data.description as string) ?? '',
         lang: (data.lang as 'en' | 'ja') ?? 'en',
         tags: (data.tags as string[] | undefined) ?? [],
+        updated: data.updated as string | undefined,
       };
     })
     .sort(

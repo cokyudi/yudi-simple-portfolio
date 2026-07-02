@@ -19,6 +19,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     if (stored) setLanguage(stored);
   }, []);
 
+  // Keep <html lang> in sync with the active UI language for a11y / language
+  // detection. Server HTML ships as 'en'; this corrects it after hydration
+  // when the user's stored/selected language is Japanese.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   const toggleLanguage = () => {
     setLanguage((prev) => {
       const next = prev === 'en' ? 'ja' : 'en';
