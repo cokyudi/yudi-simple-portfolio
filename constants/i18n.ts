@@ -11,6 +11,7 @@ export const i18n = {
       readBlog: 'Read my blog →',
       getInTouch: 'Get in touch',
       current: 'Current',
+      present: 'Present',
     },
     blog: {
       heading: 'Blog',
@@ -148,6 +149,7 @@ export const i18n = {
       readBlog: 'ブログを読む →',
       getInTouch: 'お問い合わせ',
       current: '現職',
+      present: '現在',
     },
     blog: {
       heading: 'ブログ',

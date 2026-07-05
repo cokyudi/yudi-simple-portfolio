@@ -8,6 +8,8 @@ export type ExperienceCardProps = {
   title: string;
   desc: string;
   year: string;
+  endYear?: string;
+  present?: string;
   company: string;
   companyLink: string;
   index: number;
@@ -19,6 +21,8 @@ export default function ExperienceCard({
   title,
   desc,
   year,
+  endYear,
+  present,
   company,
   companyLink,
   index,
@@ -26,6 +30,14 @@ export default function ExperienceCard({
   tag,
 }: ExperienceCardProps) {
   const shouldReduceMotion = useReducedMotion();
+
+  // Explicit range when we have an end date; ongoing role shows "– Present";
+  // point-in-time milestones (no end, not the current role) show the year alone.
+  const period = endYear
+    ? `${year} – ${endYear}`
+    : featured
+      ? `${year} – ${present ?? 'Present'}`
+      : year;
 
   return (
     <motion.div
@@ -37,7 +49,7 @@ export default function ExperienceCard({
     >
       <Card className='relative h-full flex flex-col p-6'>
         <div className='absolute -top-3 left-4'>
-          <Badge variant='neutral'>{year}</Badge>
+          <Badge variant='neutral'>{period}</Badge>
         </div>
 
         {tag && (

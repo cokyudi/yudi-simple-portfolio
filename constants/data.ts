@@ -11,6 +11,9 @@ export type ExperienceBase = {
   id: ExperienceId;
   company: string;
   year: string;
+  // Omit for the current, ongoing role (rendered as "– Present") and for
+  // point-in-time milestones like graduation (rendered as the year alone).
+  endYear?: string;
   companyLink: string;
 };
 
@@ -58,24 +61,28 @@ export const userData: {
       id: 'treasury-fulltime',
       company: 'TREASURY INC.',
       year: '2023-03',
+      endYear: '2026-04',
       companyLink: 'https://www.treasury.jp/',
     },
     {
       id: 'treasury-parttime',
       company: 'TREASURY INC.',
       year: '2022-12',
+      endYear: '2023-02',
       companyLink: 'https://www.treasury.jp/',
     },
     {
       id: 'dgit',
       company: 'DGIT Systems',
       year: '2019-11',
+      endYear: '2022-03',
       companyLink: 'https://www.dgitsystems.com/',
     },
     {
       id: 'mii',
       company: 'Mitra Integrasi Informatika',
       year: '2018-11',
+      endYear: '2019-10',
       companyLink: '',
     },
     {
@@ -88,6 +95,7 @@ export const userData: {
       id: 'avatar',
       company: 'Avatar Solutions',
       year: '2018-02',
+      endYear: '2018-08',
       companyLink: 'https://avatarsolution.com/',
     },
   ],

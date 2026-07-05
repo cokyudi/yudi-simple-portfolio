@@ -1,10 +1,34 @@
 import { SITE_URL, SITE_NAME, SITE_TITLE } from '@/constants/site';
 import { userData } from '@/constants/data';
+import { i18n } from '@/constants/i18n';
 
 // Stable @id so the Person entity is merged across home + every post.
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const BLOG_ID = `${SITE_URL}/blog#blog`;
+
+// Employment history as dated OrganizationRole nodes (excluding the graduation
+// milestone) so search engines and LLMs read exact start/end ranges instead of
+// inferring them from the visible timeline.
+const employmentHistory = userData.experience
+  .filter((exp) => exp.id !== 'graduation')
+  .map((exp) => {
+    const org: Record<string, string> = {
+      '@type': 'Organization',
+      name: exp.company,
+    };
+    if (exp.companyLink) org.url = exp.companyLink;
+    const role: Record<string, unknown> = {
+      '@type': 'OrganizationRole',
+      roleName: i18n.en.experience[exp.id].title,
+      startDate: exp.year,
+      worksFor: org,
+    };
+    if (exp.endYear) role.endDate = exp.endYear;
+    return role;
+  });
+
+const graduation = userData.experience.find((exp) => exp.id === 'graduation');
 
 export const personSchema = {
   '@type': 'Person',
@@ -25,11 +49,16 @@ export const personSchema = {
     'Frontend architecture',
     'Web performance',
   ],
-  worksFor: {
-    '@type': 'Organization',
-    name: 'Meets Consulting Inc.',
-    url: 'https://www.meetsc.co.jp/',
-  },
+  worksFor: employmentHistory,
+  ...(graduation
+    ? {
+        alumniOf: {
+          '@type': 'CollegeOrUniversity',
+          name: graduation.company,
+          url: graduation.companyLink,
+        },
+      }
+    : {}),
   sameAs: [userData.socialLinks.linkedin, userData.socialLinks.github],
 };
 

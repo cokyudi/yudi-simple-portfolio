@@ -45,6 +45,8 @@ export default function Experience() {
                 title={expText.title}
                 desc={expText.desc}
                 year={exp.year}
+                endYear={exp.endYear}
+                present={t.about.present}
                 company={exp.company}
                 companyLink={exp.companyLink}
                 index={idx}
