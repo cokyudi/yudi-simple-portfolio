@@ -1,0 +1,150 @@
+---
+title: "RAG Without a Vector Database: How \"Ask about Yudi\" Actually Works"
+date: "2026-07-25"
+description: "How my \"Ask about Yudi\" assistant does RAG with no vector database — the data flow, the trade-offs, and when this simple approach breaks."
+tags: ["ai", "rag", "gemini", "nextjs"]
+---
+
+## RAG, Minus the Hype
+
+A while ago I wrote about [building a free AI assistant for this site](/blog/building-a-free-ai-assistant-for-my-portfolio). That post was the *what* and the *why*. This one is the *how* — specifically, how the retrieval part works, because it's much simpler than most RAG tutorials would have you believe.
+
+Here's the honest headline: **"Ask about Yudi" is a RAG system with no vector database, no embeddings, and no similarity search.** It just loads everything and hands it to the model. And for a corpus this size, that's not a shortcut — it's the correct engineering decision.
+
+I'm writing this partly to explain it and partly to force myself to understand the trade-offs well enough to know exactly when I'd have to throw this approach away.
+
+<Figure
+  src="/images/blog/rag-without-a-vector-database.webp"
+  alt="An abstract visualization of data flowing through connected nodes, representing a retrieval pipeline"
+  caption="Retrieval doesn't have to mean a vector database. Sometimes it means: load everything."
+  priority
+/>
+
+## What RAG Actually Is (and Isn't)
+
+First, let me correct a misconception I had myself.
+
+**RAG does not train the model.** Retrieval-Augmented Generation retrieves relevant data at *query time* and injects it into the prompt. The model's weights never change. Nothing is "learned." You're just giving the model better notes to read before it answers.
+
+That's the whole trick, and it's why RAG is so appealing:
+
+- **Fine-tuning** changes the model's weights. It's expensive, slow to update, and the model can still confidently make things up.
+- **RAG** changes the *prompt*. It's cheap, updates instantly (edit a file, done), and the model answers from text you can point at.
+
+For a personal site assistant that needs to answer from my CV and blog posts — and never invent an employer or a date — RAG is obviously right. I don't need the model to *memorize* me. I need it to *read* me at the moment someone asks.
+
+## The Data Flow
+
+Here's the entire pipeline, end to end:
+
+```text
+┌─────────────┐   question    ┌────────────────────────┐
+│   Browser   │ ────────────▶ │    POST /api/chat      │
+│  (Chat.tsx) │               │   (server route)       │
+└─────────────┘               └───────────┬────────────┘
+       ▲                                   │  1. rate-limit + validate input
+       │                                   ▼
+       │                       ┌────────────────────────┐
+       │                       │     getKnowledge()     │
+       │                       │  concatenate, cached:  │
+       │                       │   • profile + FAQ      │
+       │                       │   • uses / projects    │
+       │                       │   • ALL blog posts     │
+       │                       └───────────┬────────────┘
+       │                                   │  2. system = PROMPT + knowledge
+       │                                   ▼
+       │        streamed tokens  ┌────────────────────────┐
+       └──────────────────────── │    Gemini 2.5 Flash    │
+                                 │      (streamText)      │
+                                 └────────────────────────┘
+```
+
+Three steps: guard the request, build the context, stream the answer. The "retrieval" is step 2 — and it's where this design is deliberately, almost embarrassingly, simple.
+
+## The Retrieval Step Is Embarrassingly Simple
+
+In a textbook RAG system, retrieval means: chunk your documents, embed them into vectors, store them in a vector database, embed the incoming question, run a similarity search, and pull back the top-k most relevant chunks.
+
+Mine skips all of that. Retrieval is one function that loads everything, once, and caches it:
+
+```ts
+// lib/knowledge.ts — "retrieval" is just: gather all the docs.
+export const getKnowledge = cache((): string => [
+  readProfile(),   // curated profile + FAQ (public-safe)
+  readUses(),      // tools / setup
+  readProjects(),  // projects
+  readPosts(),     // every blog post, globbed from /posts
+].join('\n\n---\n\n'));
+```
+
+Then the route "augments" the prompt by stuffing that whole corpus into the system message, and streams the answer:
+
+```ts
+// app/api/chat/route.ts
+const result = streamText({
+  model: google('gemini-2.5-flash'),
+  system: SYSTEM_PROMPT + getKnowledge(),  // ← the entire corpus, every request
+  messages: cleaned,
+  maxOutputTokens: 500,
+  temperature: 0.3,
+});
+return result.toTextStreamResponse();
+```
+
+That's it. There's no index to build, no embeddings to refresh, no "top-k" to tune. New blog post? It's globbed in automatically — the assistant knows about it the moment it deploys. The retrieval quality is, in a sense, perfect: the model sees *all* the relevant context because it sees *all* the context.
+
+The system prompt does the heavy lifting on behavior — answer only from the context, decline anything off-topic, reply in the user's language, no markdown. And there are guardrails around it: a per-IP rate limit, an input-length cap, a max-turns cap, and a capped output. But the retrieval itself? Load everything.
+
+## The Trade-offs
+
+This approach isn't clever. It's just well-matched to the problem. Here's the honest ledger:
+
+| Upside | Downside |
+|---|---|
+| Zero infrastructure — no vector DB, no embedding pipeline | Every query sends the **whole corpus** as input tokens |
+| Nothing to maintain — new posts are auto-included | Cost and latency grow with the corpus, not with the question |
+| No retrieval bugs — you can't mis-retrieve what you always send | Wastes tokens sending irrelevant docs every time |
+| Never stale — always matches the repo | Bounded by the model's context window |
+| Trivial to reason about and debug | Big prompts can dilute attention ("lost in the middle") |
+
+The key insight: **the cost of "retrieve everything" scales with how much you have, not with how much you need.** Right now I have a small profile, a `/uses` page, a couple of projects, and a handful of posts. That fits comfortably in Gemini's context with room to spare, cheaply. So the downsides are all theoretical — *today*.
+
+## When This Breaks
+
+The honest question isn't "is this good?" — it's "when does this stop working?" A few thresholds I'm watching:
+
+- **Context window.** Gemini 2.5 Flash has a large window, so I'm nowhere near it. But every doc I add eats into it. When the corpus approaches the window, "stuff everything" is physically impossible.
+- **Cost.** On the free tier this is free. But input tokens are billed per request in general — and I'm paying to re-send my *entire* corpus on every single message. At scale that's absurd.
+- **Latency.** A bigger prompt means a slower time-to-first-token. Nobody notices with a small corpus; everyone notices when the prompt is 200KB.
+- **Attention dilution.** Large-context models can lose relevant details buried in the middle of a huge prompt. More context isn't always better answers.
+
+My rough rule of thumb: **while the whole corpus fits in a few tens of thousands of tokens and the latency is fine, stuffing wins.** Once I have dozens of long posts — or I want the assistant to answer from something big like full documentation — I'd have crossed the line into needing real retrieval.
+
+## The Upgrade Path (What I'd Do Next)
+
+When "load everything" breaks, here's the path I'd take, roughly in order:
+
+1. **Prompt / context caching first.** Before adding infrastructure, cache the static corpus at the provider level so I stop paying to re-send unchanged text every request. Cheapest win, no architecture change.
+2. **Embeddings + a vector store.** Chunk the docs, embed each chunk, store the vectors. At query time, embed the question and pull back only the top-k relevant chunks. I'd reach for **Supabase `pgvector`** — I already use Supabase on [tangocho](https://tangocho.yudidputra.com), so it's one less new thing.
+3. **Chunking strategy.** This is where naive RAG gets bad answers. Chunk too big and retrieval is imprecise; too small and you lose context. Splitting on headings (which my MDX posts already have) is a sane start.
+4. **Reranking.** Vector similarity is fuzzy. A reranking step over the top-k candidates meaningfully improves which chunks actually make it into the prompt.
+5. **An eval harness.** The thing I *don't* have and would want most: a small set of question/expected-answer pairs to catch regressions when I change chunking, k, or the prompt. Right now I test by vibes. That doesn't scale either.
+
+Notice the order: I'd exhaust the cheap, simple options before reaching for a vector database. The mistake I want to avoid is adding retrieval infrastructure because it's the "proper" way, when the proper way for *my* data size is still a `join()`.
+
+## What I Learned
+
+Writing this forced me to articulate a few things I'd absorbed only by osmosis:
+
+- **RAG is a spectrum, not a product.** "Stuff the whole corpus into the prompt" is the simplest point on it, and it's genuinely RAG. Vector search is a further point you move to *when the data forces you*, not by default.
+- **Match the architecture to the data size.** A vector database for six blog posts is résumé-driven development, not engineering. The best system is the simplest one that fits the actual problem.
+- **The prompt does more than the retrieval.** For a small corpus, careful scoping ("answer only from context, decline otherwise") matters far more to answer quality than any retrieval sophistication.
+- **Know your own breaking point.** The value wasn't building it — it was being able to say precisely *when* I'd have to rebuild it. If you can't name the threshold, you don't understand the trade-off.
+
+## Final Thoughts
+
+"Ask about Yudi" is about as unglamorous as RAG gets: load my writing, hand it to Gemini, stream the answer. No vector database in sight. And that's the point — it's the right amount of engineering for the amount of data, and not one bit more.
+
+The interesting work wasn't making it fancy. It was resisting the urge to.
+
+Thanks for reading 🙏
