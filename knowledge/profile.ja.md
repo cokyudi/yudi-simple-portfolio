@@ -18,8 +18,13 @@ B2B・エンタープライズ向けの本番Webアプリケーションの開�
 
 ## 直近の職（出典：サイトデータ）
 
-- **シニアフルスタックエンジニア — 株式会社Meets Consulting**（2026年5月〜2026年7月）。
-  EC × DX のAI駆動プロダクト開発 0→1 に従事。
+- **シニアエンジニア — 株式会社Meets Consulting**（2026年5月〜2026年7月）。
+  3ヶ月で3つのAI統合型社内ツールを単独開発（Jest・Vitest・Playwright・Maestroで自動テスト3,300件以上）。
+  Claude CodeなどのAIコーディングエージェントと自動E2Eテストエージェントを開発の中核に据えた。
+  「AIが提案し、決定論的なコードが判断する」設計パターンでGoogle Gemini + RAG を業務基幹の自動化に統合し、
+  自動化が売上・利益率・データ整合性を損なわないよう設計。対象はB2B物流マッチングプラットフォーム
+  （Next.js/Firebase/GCP/Stripe Connect）、LINEベースのマーケティングCRM（Next.js/Supabase）、
+  そしてRAGの学習ループでAI APIコストを約85%削減したGoogle Ads自動化エンジン。
 
 ## 職務経歴の詳細
 

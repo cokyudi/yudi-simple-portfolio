@@ -11,8 +11,11 @@ TypeScript and modern JavaScript frameworks (React, Next.js, Vue, Angular) on th
 frontend; PHP/Laravel and Node.js on the backend; MySQL/PostgreSQL/MongoDB for data.
 
 ## What is Yudi's experience with AI-driven development?
-At Meets Consulting he worked on EC × DX AI-driven product development 0→1. He
-also writes about AI-driven development with Claude on his blog.
+At Meets Consulting he was the solo developer building AI-integrated internal
+tools, integrating Google Gemini and RAG behind an "AI proposes, deterministic
+code decides" pattern, with AI coding agents (Claude Code) and automated E2E
+tests as a core part of the workflow. He also writes about AI-driven development
+with Claude and about RAG on his blog.
 
 ## Does Yudi speak Japanese?
 Yes — business-level Japanese, JLPT N2. He also works in English, and Indonesian is his native language.

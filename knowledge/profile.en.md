@@ -20,8 +20,16 @@ interesting project collaborations. Reach out via email or LinkedIn.
 
 ## Most recent role (source of truth: site data)
 
-- **Senior Full-stack Engineer — Meets Consulting Inc.** (2026-05 – 2026-07).
-  EC × DX AI-driven product development 0→1.
+- **Senior Engineer — Meets Consulting Inc.** (2026-05 – 2026-07).
+  Solo developer who built three AI-integrated internal tools in three months
+  (3,300+ automated tests across Jest, Vitest, Playwright, and Maestro), with AI
+  coding agents (Claude Code) and automated E2E test agents as a core part of the
+  workflow. Integrated Google Gemini + RAG into business-critical automation using
+  an "AI proposes, deterministic code decides" design pattern, so automation never
+  compromises revenue, margin, or data integrity. Tools spanned a B2B logistics
+  matching platform (Next.js/Firebase/GCP/Stripe Connect), a LINE-based marketing
+  CRM (Next.js/Supabase), and a Google Ads automation engine whose RAG learning
+  loop cut AI API costs ~85%.
 
 ## Experience detail
 

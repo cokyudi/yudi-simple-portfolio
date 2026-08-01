@@ -11,8 +11,9 @@ B2B・エンタープライズ向けの本番Webアプリケーション開発�
 バックエンドはPHP/LaravelとNode.js、データはMySQL/PostgreSQL/MongoDBを使用しています。
 
 ## YudiのAI駆動開発の経験は？
-Meets ConsultingではEC × DX のAI駆動プロダクト開発 0→1 に従事していました。
-また、ブログでClaudeを用いたAI駆動開発について発信しています。
+Meets Consultingでは単独開発者としてAI統合型の社内ツールを構築し、「AIが提案し、決定論的なコードが判断する」
+パターンでGoogle GeminiとRAGを統合。Claude CodeなどのAIコーディングエージェントと自動E2Eテストを
+開発の中核に据えました。また、ブログでClaudeを用いたAI駆動開発やRAGについて発信しています。
 
 ## Yudiは日本語を話せますか？
 はい。ビジネスレベルの日本語（JLPT N2）で業務可能です。英語でも業務でき、母語はインドネシア語です。

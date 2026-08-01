@@ -109,31 +109,31 @@ export const i18n = {
     experience: {
       'meets-fulltime': {
         title: 'Senior Full-stack Engineer',
-        desc: 'EC x DX AI-driven product development 0 → 1, contributing to the company’s growth.',
+        desc: 'Sole developer of three AI-integrated internal tools in three months (3,300+ automated tests), with Claude Code and E2E agents in the core workflow. Built Gemini + RAG automation on an “AI proposes, deterministic code decides” pattern — e.g. a Google Ads engine that cut AI costs ~85% and delivered measurable weekly ad-spend and CPC reductions.',
       },
       'treasury-fulltime': {
         title: 'Full-stack Engineer',
-        desc: 'My first full-time job in Japan, contributing to company products.',
+        desc: 'Led frontend architecture for B2B/B2G e-signature SaaS (React/TypeScript). Improved page load ~30% and cut production issues ~40% with automated testing and code-review standards. E-Contract platform reached 800+ paid users.',
       },
       'treasury-parttime': {
         title: 'Part-time Full-stack Engineer',
-        desc: 'My first experience working in Tokyo, Japan.',
+        desc: 'My first role in Tokyo — joined the e-signature product team before converting to full-time.',
       },
       dgit: {
         title: 'Front-end Engineer',
-        desc: 'Worked on design, development, and maintenance of front-end products.',
+        desc: 'Customized a telecom CRM (TELFLOW) used by 10,000+ end users; cut frontend tech debt ~35% refactoring legacy Angular.',
       },
       mii: {
         title: 'Application Developer',
-        desc: 'Worked at a major Indonesian bank as a web developer.',
+        desc: 'Modernized a legacy money-changer system for Bank Rakyat Indonesia — a Laravel back-for-frontend with RBAC, currency-exchange workflows, and reporting across nationwide branches.',
       },
       graduation: {
         title: 'Graduation',
-        desc: 'Majored in Computer Science.',
+        desc: 'B.Sc. in Computer Science — GPA 3.62 / 4.00.',
       },
       avatar: {
         title: 'Part-time Web Developer',
-        desc: 'Developed and maintained web-based client projects.',
+        desc: 'Part-time web development on client projects while finishing my degree.',
       },
     },
   },
@@ -248,31 +248,31 @@ export const i18n = {
     experience: {
       'meets-fulltime': {
         title: 'シニアフルスタックエンジニア',
-        desc: 'EC x DX AI駆動のプロダクト開発0→1に携わり、会社の成長に貢献。',
+        desc: '3ヶ月で3つのAI統合型社内ツールを単独開発（自動テスト3,300件以上）。Claude CodeとE2Eテストエージェントを開発の中核に。「AIが提案し、決定論的なコードが判断する」パターンでGemini + RAGの自動化を構築——例：AIコストを約85%削減し、週次の広告費とCPCを着実に削減したGoogle Ads運用エンジン。',
       },
       'treasury-fulltime': {
         title: 'フルスタックエンジニア',
-        desc: '日本での初めての正社員として、プロダクト開発に貢献。',
+        desc: 'B2B/B2Gの電子契約SaaSのフロントエンド設計・実装をリード（React/TypeScript）。最適化と自動テスト・コードレビュー導入で、ページ読み込みを約30%改善、本番障害を約40%削減。電子契約プラットフォームは有料ユーザー800名以上。',
       },
       'treasury-parttime': {
         title: 'パートタイム・フルスタックエンジニア',
-        desc: '東京での初めての就業経験。',
+        desc: '東京での最初の仕事——正社員化の前に電子契約プロダクトチームに参加。',
       },
       dgit: {
         title: 'フロントエンドエンジニア',
-        desc: 'フロントエンドを中心に設計・開発・保守を担当。',
+        desc: 'エンドユーザー1万人以上が利用する通信CRM（TELFLOW）をカスタマイズ。レガシーAngularのリファクタリングでフロントエンドの技術的負債を約35%削減。',
       },
       mii: {
         title: 'アプリケーション開発者',
-        desc: 'インドネシア最大手銀行でWeb開発を担当。',
+        desc: 'インドネシア銀行（BRI）向けにレガシーな両替システムをモダン化——Laravel BFFでRBAC、両替業務フロー、全国支店の帳票を実装。',
       },
       graduation: {
         title: '卒業',
-        desc: 'コンピュータサイエンス専攻。',
+        desc: 'コンピュータサイエンス学士 — GPA 3.62 / 4.00。',
       },
       avatar: {
         title: 'パートタイムWeb開発者',
-        desc: 'クライアント向けWebアプリを開発・保守。',
+        desc: '学生時代に、クライアント案件のWeb開発をパートタイムで担当。',
       },
     },
   },
