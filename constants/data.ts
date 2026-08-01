@@ -34,7 +34,7 @@ export const userData: {
     github: string;
     email: string;
   };
-  resumeUrl: string
+  resumeUrl: { en: string; ja: string }
 } = {
   projects: [
     {
@@ -105,6 +105,10 @@ export const userData: {
     github: 'https://github.com/cokyudi',
     email: 'cokagungyudi@gmail.com',
   },
-  resumeUrl: 'https://drive.google.com/file/d/1uHb_EamHVgZelREGH1EFUxv4eS5mxO6W/view?usp=sharing'
+  resumeUrl: {
+    // EN visitors get the English CV; JA visitors get the 職務経歴書.
+    en: 'https://drive.google.com/file/d/1EXOF96Y5XCKkk88_XZeuwhlN4VN8g0gV/view?usp=sharing',
+    ja: 'https://drive.google.com/file/d/11UA4PmlMxShcN0sfM7Zmf4_nAn7wzqIt/view?usp=sharing',
+  }
 };
   

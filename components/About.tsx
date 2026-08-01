@@ -103,13 +103,22 @@ export default function About() {
               custom={t.summary.length}
             >
               <Button
-                href={userData.resumeUrl}
+                href={userData.resumeUrl.en}
                 target='_blank'
                 rel='noopener noreferrer'
-                variant='accent'
-                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero' })}
+                variant={language === 'en' ? 'accent' : 'neutral'}
+                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero', lang: 'en' })}
               >
-                {t.downloadCV}
+                {t.resumeEn}
+              </Button>
+              <Button
+                href={userData.resumeUrl.ja}
+                target='_blank'
+                rel='noopener noreferrer'
+                variant={language === 'ja' ? 'accent' : 'neutral'}
+                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero', lang: 'ja' })}
+              >
+                {t.resumeJa}
               </Button>
               <Button
                 href={`mailto:${userData.socialLinks.email}`}
