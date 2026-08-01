@@ -13,10 +13,15 @@ improving performance, code quality, and maintainability. Experienced with
 RDBMS-backed systems, automated testing, and operating apps in AWS.
 Works in English and Japanese (business level, JLPT N2). Based in Tokyo, Japan.
 
-## Current role (source of truth: site data)
+## Availability
 
-- **Senior Full-stack Engineer — Meets Consulting Inc.** (since 2026-05).
-  EC × DX AI-driven product development 0→1, contributing to company growth.
+Open to new full-stack engineering opportunities (Tokyo-based or remote) and
+interesting project collaborations. Reach out via email or LinkedIn.
+
+## Most recent role (source of truth: site data)
+
+- **Senior Full-stack Engineer — Meets Consulting Inc.** (2026-05 – 2026-07).
+  EC × DX AI-driven product development 0→1.
 
 ## Experience detail
 

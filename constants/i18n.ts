@@ -12,6 +12,7 @@ export const i18n = {
       getInTouch: 'Get in touch',
       current: 'Current',
       present: 'Present',
+      openToWork: 'Open to work',
     },
     blog: {
       heading: 'Blog',
@@ -23,9 +24,9 @@ export const i18n = {
       readNext: 'Read next',
     },
     contact: {
-      heading: 'Let’s build something together',
+      heading: 'Let’s work together',
       subtitle:
-        'Have a project or idea in mind? I’m always up for interesting collaborations — let’s talk.',
+        'I’m open to new full-stack engineering roles and interesting collaborations. Whether you’re hiring or have a project in mind — let’s talk.',
       email: 'Email me',
       linkedin: 'Connect on LinkedIn',
     },
@@ -150,6 +151,7 @@ export const i18n = {
       getInTouch: 'お問い合わせ',
       current: '現職',
       present: '現在',
+      openToWork: 'お仕事募集中',
     },
     blog: {
       heading: 'ブログ',
@@ -161,9 +163,9 @@ export const i18n = {
       readNext: 'おすすめの記事',
     },
     contact: {
-      heading: '一緒に何かを作りましょう',
+      heading: '一緒に働きましょう',
       subtitle:
-        'プロジェクトやアイデアはありますか？面白いコラボレーションはいつでも歓迎です。お気軽にご連絡ください。',
+        '新しいフルスタックエンジニアの職や、面白いコラボレーションを募集しています。採用のご相談でも、プロジェクトのお話でも、お気軽にご連絡ください。',
       email: 'メールする',
       linkedin: 'LinkedInでつながる',
     },

@@ -37,7 +37,7 @@ export const personSchema = {
   url: SITE_URL,
   jobTitle: SITE_TITLE,
   description:
-    'Full-stack engineer with 7+ years building production web applications, based in Tokyo, Japan. Works in English and Japanese (JLPT N2).',
+    'Full-stack engineer with 7+ years building production web applications, based in Tokyo, Japan. Works in English and Japanese (JLPT N2). Open to new full-stack engineering opportunities.',
   image: `${SITE_URL}/yudi-draw.jpg`,
   knowsAbout: [
     'Next.js',

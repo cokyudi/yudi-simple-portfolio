@@ -55,6 +55,7 @@ export const userData: {
       id: 'meets-fulltime',
       company: 'Meets Consulting Inc.',
       year: '2026-05',
+      endYear: '2026-07',
       companyLink: 'https://www.meetsc.co.jp/',
     },
     {

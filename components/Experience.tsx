@@ -51,7 +51,6 @@ export default function Experience() {
                 companyLink={exp.companyLink}
                 index={idx}
                 featured={idx === 0}
-                tag={idx === 0 ? t.about.current : undefined}
               />
             </div>
           );

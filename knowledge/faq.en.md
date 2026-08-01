@@ -11,8 +11,8 @@ TypeScript and modern JavaScript frameworks (React, Next.js, Vue, Angular) on th
 frontend; PHP/Laravel and Node.js on the backend; MySQL/PostgreSQL/MongoDB for data.
 
 ## What is Yudi's experience with AI-driven development?
-At Meets Consulting (current role) he works on EC × DX AI-driven product
-development 0→1. He also writes about AI-driven development with Claude on his blog.
+At Meets Consulting he worked on EC × DX AI-driven product development 0→1. He
+also writes about AI-driven development with Claude on his blog.
 
 ## Does Yudi speak Japanese?
 Yes — business-level Japanese, JLPT N2. He also works in English, and Indonesian is his native language.
@@ -21,7 +21,7 @@ Yes — business-level Japanese, JLPT N2. He also works in English, and Indonesi
 Tokyo, Japan. He has worked on Tokyo-based engineering teams since 2022.
 
 ## Is Yudi open to new work?
-He's currently employed and open to interesting project collaborations. Reach out via email or LinkedIn.
+Yes — he's actively open to new full-stack engineering roles (Tokyo-based or remote) and interesting collaborations. Reach out via email or LinkedIn.
 
 ## What are some notable projects?
 - E-Contract Management System (800+ paid users) at TREASURY.
