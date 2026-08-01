@@ -28,6 +28,6 @@ Yes — he's actively open to new full-stack engineering roles (Tokyo-based or r
 
 ## What are some notable projects?
 - E-Contract Management System (800+ paid users) at TREASURY.
-- JIIMA compliance platform for enterprise & government clients.
+- A document-management compliance platform for enterprise & government clients.
 - TELFLOW telecom CRM customizations used by 10,000+ end users at DGIT/CSG.
 - This portfolio site itself: Next.js, TypeScript, Tailwind, MDX blog, Lighthouse ~96.

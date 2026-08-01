@@ -71,8 +71,10 @@ export default function Chat() {
       });
 
       if (!res.ok || !res.body) {
-        const data = await res.json().catch(() => ({}));
-        setMessages((m) => [...m, { role: 'assistant', content: data.error || t.error }]);
+        // Rate-limited (429) or the model is unavailable / over quota (502) —
+        // most likely during a traffic spike. Redirect to direct contact
+        // instead of a dead-end error.
+        setMessages((m) => [...m, { role: 'assistant', content: t.busy }]);
         return;
       }
 
@@ -97,7 +99,9 @@ export default function Chat() {
         }
       }
       if (!started) {
-        setMessages((m) => [...m, { role: 'assistant', content: t.error }]);
+        // Stream opened but produced no tokens — typically a quota error that
+        // surfaced mid-stream. Same contact fallback.
+        setMessages((m) => [...m, { role: 'assistant', content: t.busy }]);
       }
     } catch {
       setMessages((m) => [...m, { role: 'assistant', content: t.error }]);

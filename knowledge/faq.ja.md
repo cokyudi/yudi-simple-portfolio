@@ -26,6 +26,6 @@ Meets Consultingでは単独開発者としてAI統合型の社内ツールを�
 
 ## 代表的なプロジェクトは？
 - TREASURYでの電子契約管理システム（有料ユーザー800名以上）。
-- 企業・官公庁向けのJIIMA準拠プラットフォーム。
+- 企業・官公庁向けの文書管理コンプライアンスプラットフォーム。
 - DGIT/CSGでのTELFLOW通信CRMのカスタマイズ（エンドユーザー1万人以上が利用）。
 - このポートフォリオサイト自体：Next.js, TypeScript, Tailwind, MDXブログ、Lighthouse 約96点。

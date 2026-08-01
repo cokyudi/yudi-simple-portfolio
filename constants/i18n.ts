@@ -40,6 +40,7 @@ export const i18n = {
       send: 'Send',
       close: 'Close chat',
       error: 'Something went wrong. Please try again.',
+      busy: 'I’m getting a lot of questions right now and can’t reply here. You can email Yudi directly at cokagungyudi@gmail.com or connect at https://linkedin.com/in/cokyudi',
       suggestions: [
         'What’s Yudi’s tech stack?',
         'Tell me about his AI work',
@@ -126,7 +127,7 @@ export const i18n = {
       },
       mii: {
         title: 'Application Developer',
-        desc: 'Modernized a legacy money-changer system for Bank Rakyat Indonesia — a Laravel back-for-frontend with RBAC, currency-exchange workflows, and reporting across nationwide branches.',
+        desc: 'Modernized a legacy money-changer system for a major Indonesian bank — a Laravel back-for-frontend with RBAC, currency-exchange workflows, and reporting across nationwide branches.',
       },
       graduation: {
         title: 'Graduation',
@@ -180,6 +181,7 @@ export const i18n = {
       send: '送信',
       close: 'チャットを閉じる',
       error: 'エラーが発生しました。もう一度お試しください。',
+      busy: 'ただいまアクセスが集中しており、こちらで回答できません。お急ぎの場合は cokagungyudi@gmail.com へ直接メール、または https://linkedin.com/in/cokyudi からご連絡ください。',
       suggestions: [
         'Yudiの技術スタックは？',
         'AI関連の仕事について教えて',
@@ -266,7 +268,7 @@ export const i18n = {
       },
       mii: {
         title: 'アプリケーション開発者',
-        desc: 'インドネシア銀行（BRI）向けにレガシーな両替システムをモダン化——Laravel BFFでRBAC、両替業務フロー、全国支店の帳票を実装。',
+        desc: 'インドネシアの大手銀行向けにレガシーな両替システムをモダン化——Laravel BFFでRBAC、両替業務フロー、全国支店の帳票を実装。',
       },
       graduation: {
         title: '卒業',

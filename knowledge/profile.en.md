@@ -48,7 +48,7 @@ product, supporting business stakeholders in Japanese.
 - Built invoice generation/management: PDF generation, dynamic numbering, tax calculation, download history.
 - Integrated backend APIs for contract signing, email notifications, queued reminders.
 - Supported AWS ops: EC2 log checks (staging/prod), S3 storage with pre-signed URLs.
-- Key projects: E-Contract Management System (800+ paid users); JIIMA Compliance Platform (enterprise & government).
+- Key projects: E-Contract Management System (800+ paid users); a document-management compliance platform (enterprise & government).
 
 ### Frontend Engineer — DGIT Systems / CSG, Bali (Nov 2019 – Mar 2022)
 Solutions Team customizing the core CRM product TELFLOW for telecom clients.
@@ -57,8 +57,8 @@ Solutions Team customizing the core CRM product TELFLOW for telecom clients.
 - Improved feature usability ~20–30% via iterative UI/UX work with design teams.
 - Reduced frontend tech debt ~35% by refactoring legacy Angular and improving component structure.
 
-### Full-stack Engineer (Onsite) — PT Mitra Integrasi Informatika @ Bank Rakyat Indonesia, Jakarta (Oct 2018 – Oct 2019)
-Modernized a legacy money-changer system for BRI's International Systems Development team.
+### Full-stack Engineer (Onsite) — PT Mitra Integrasi Informatika (onsite at a major Indonesian bank), Jakarta (Oct 2018 – Oct 2019)
+Modernized a legacy money-changer system for the bank's International Systems Development team.
 - Laravel-based Backend-for-Frontend (BFF): auth, authorization, validation, web-specific business logic.
 - Server-rendered Blade views with embedded Vue.js components for form-heavy workflows.
 - Laravel controllers, service classes, Eloquent models for currency exchange, staff management, reporting.
