@@ -107,8 +107,8 @@ export const userData: {
   },
   resumeUrl: {
     // EN visitors get the English CV; JA visitors get the 職務経歴書.
-    en: 'https://drive.google.com/file/d/1EXOF96Y5XCKkk88_XZeuwhlN4VN8g0gV/view?usp=sharing',
-    ja: 'https://drive.google.com/file/d/11UA4PmlMxShcN0sfM7Zmf4_nAn7wzqIt/view?usp=sharing',
+    en: 'https://drive.google.com/file/d/1FqbJZL0w82B5h8d9W3kslJriLvCaWp7o/view?usp=sharing',
+    ja: 'https://drive.google.com/file/d/1Q3GVDqU37sAwfnLrlp25pSTUAUcsbxCC/view?usp=sharing',
   }
 };
   
