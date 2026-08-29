@@ -31,7 +31,9 @@ invariants (ordering, language filtering, tag-overlap ranking) rather than
 pinning specific slugs, so adding a post does not break them.
 
 `.github/workflows/ci.yml` runs lint, typecheck, and tests on every push to `main`
-and every PR. It deliberately does **not** build: Vercel builds each push and PR
+and every PR. It runs `npx next typegen` before the typecheck — `next-env.d.ts` is gitignored,
+so a clean checkout has no image-module types and `tsc` alone fails on
+`import photo from '@/public/…'`. It deliberately does **not** build: Vercel builds each push and PR
 already, and `next build` typechecks as it goes, so CI covers only what Vercel
 misses — ESLint (dropped from the build in Next 16) and the test suite.
 

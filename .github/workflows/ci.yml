@@ -22,6 +22,12 @@ jobs:
 
       - run: npm run lint
 
+      # next-env.d.ts is gitignored and declares the image module types, so a
+      # clean checkout has no `import photo from '@/public/…'` types until Next
+      # generates them. `typegen` does that without a full build.
+      - name: Generate Next types
+        run: npx next typegen
+
       - name: Typecheck
         run: npx tsc --noEmit
 
