@@ -13,7 +13,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          # Single source of truth for the Node version; keep .nvmrc and
+          # package.json engines in step.
+          node-version-file: .nvmrc
           cache: npm
 
       - run: npm ci

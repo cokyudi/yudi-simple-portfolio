@@ -33,6 +33,15 @@ pinning specific slugs, so adding a post does not break them.
 `.github/workflows/ci.yml` runs lint, typecheck, tests, then build on every push
 to `main` and every PR.
 
+## Node version
+
+Declared in `.nvmrc` (`24`, the current LTS) and mirrored by `engines.node: ">=24"`
+in `package.json`. CI reads `.nvmrc` via `node-version-file` rather than pinning
+its own, and Vercel reads the `engines` field for the build and runtime — so the
+version lives in one place. A range, not an exact pin: an exact patch version
+breaks the build for anyone a patch release behind, which is friction without
+safety. Keep `@types/node` on the matching major.
+
 ## Architecture
 
 Next.js 16 (React 19) **App Router** portfolio site with a blog.
