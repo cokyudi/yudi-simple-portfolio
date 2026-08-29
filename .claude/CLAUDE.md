@@ -20,7 +20,7 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 
 **Routing:**
 
-- `/` → `app/page.tsx` — Portfolio home (About, experience timeline, CV link, contact CTAs)
+- `/` → `app/page.tsx` — Portfolio home; it composes the sections (`About` hero, `Experience`, `Projects`, `LatestPost`, `ContactCTA`) and reads `getAllPosts()` once for the two that need it. `About` is the hero only — keep page composition in the page, not inside a section component.
 - `/blog` → `app/blog/page.tsx` — Blog post grid
 - `/blog/[slug]` → `app/blog/[slug]/page.tsx` — Individual post (statically generated)
 - `/og/*` → `app/og/` — Dynamic Open Graph image generation
@@ -33,9 +33,11 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 - `components/` — UI components (most are `'use client'` for Framer Motion animations)
 - `constants/` — Static data (`data.ts` for experience/social links), i18n translations (`i18n.ts` for EN/JA), and typed analytics helpers (`analytics.ts`)
 - `context/` — `LanguageContext` for EN/JA language switching with localStorage persistence
+- `hooks/` — shared client hooks (`useChat` for assistant state, `useLatestPost` for the language-aware newest-post pick)
 - `lib/posts.ts` — MDX blog utilities (`getPostBySlug`, `getAllPosts`, `getAllPostSlugs`)
 - `lib/format.ts` — client-safe display formatting shared by cards and post pages (`formatPostDate`, `formatReadingTime`, `formatTag`)
 - `lib/knowledge.ts` — server-only reader that concatenates `knowledge/` + `posts/` into the assistant's grounding context
+- `lib/chat-client.ts` — browser-side transport for the assistant: POSTs the conversation and streams the reply, with no React in it
 - `posts/` — MDX blog content with gray-matter frontmatter (`title`, `date`, `description`, `lang`)
 - `knowledge/` — curated, public-safe assistant grounding (`profile.{en,ja}.md`, `faq.{en,ja}.md`); not rendered anywhere
 - `types/` — TypeScript type definitions
@@ -64,7 +66,9 @@ Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvi
 
 ## AI Assistant
 
-The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`generateText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
+The "Ask about Yudi" chat is split three ways: `components/Chat.tsx` is the view, `hooks/useChat.ts` owns conversation state and cancellation, and `lib/chat-client.ts` does the fetch + stream decode. `components/AssistantMessage.tsx` linkifies replies. Shared client/server limits live in `constants/chat.ts` — `MAX_INPUT_CHARS` caps both the input's `maxLength` and the route's truncation, so they can't drift. The route is `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`generateText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
+
+The chat panel is a non-modal dialog: it sets `role='dialog'` and moves focus to the input on open, closes on Escape, and returns focus to the toggle. It deliberately omits `aria-modal` and a focus trap — the rest of the page stays interactive, so claiming modality would tell screen readers to hide content that is still reachable.
 
 - **Secret safety:** `GOOGLE_GENERATIVE_AI_API_KEY` is read server-side only — never `NEXT_PUBLIC_*`, never in the prompt or client bundle. Free tier, so no billing exposure.
 - **Knowledge is public:** the repo is public, and the assistant exposes `knowledge/` content to anyone — keep it public-safe (no PII/secrets).

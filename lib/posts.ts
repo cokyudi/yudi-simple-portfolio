@@ -161,6 +161,28 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
     );
 });
 
+/**
+ * Same-language posts ranked by shared-tag overlap, then newest first. Falls
+ * back to purely chronological when a post carries no tags.
+ */
+export const getRelatedPosts = cache(
+  (slug: string, lang: 'en' | 'ja', limit = 3): BlogPostMeta[] => {
+    const post = getAllPosts().find((p) => p.slug === slug);
+    const tags = new Set(post?.tags ?? []);
+
+    return getAllPosts()
+      .filter((p) => p.lang === lang && p.slug !== slug)
+      .map((p) => ({ post: p, shared: p.tags.filter((tag) => tags.has(tag)).length }))
+      .sort(
+        (a, b) =>
+          b.shared - a.shared ||
+          new Date(b.post.date).getTime() - new Date(a.post.date).getTime(),
+      )
+      .slice(0, limit)
+      .map((ranked) => ranked.post);
+  },
+);
+
 export const getAllPostSlugs = cache(() => {
   return getPostFileNames().map((file) => ({
     slug: file.replace(/\.mdx$/, ''),

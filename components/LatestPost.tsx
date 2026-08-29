@@ -6,10 +6,11 @@ import BlogCard from '@/components/BlogCard';
 import { trackBlogClick } from '@/constants/analytics';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
+import { useLatestPost } from '@/hooks/useLatestPost';
 import type { BlogPostMeta } from '@/lib/posts';
 
 type LatestPostProps = {
-  post: BlogPostMeta;
+  posts: BlogPostMeta[];
 };
 
 /**
@@ -17,10 +18,13 @@ type LatestPostProps = {
  * homepage and the blog index can't drift apart — this component only supplies
  * the section framing around it.
  */
-export default function LatestPost({ post }: LatestPostProps) {
+export default function LatestPost({ posts }: LatestPostProps) {
   const { language } = useLanguage();
   const t = i18n[language].blog;
   const shouldReduceMotion = useReducedMotion();
+  const post = useLatestPost(posts);
+
+  if (!post) return null;
 
   return (
     <motion.section

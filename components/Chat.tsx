@@ -1,123 +1,55 @@
 'use client';
 
-import { useRef, useState, useEffect, type ReactNode } from 'react';
-import { trackChatMessage } from '@/constants/analytics';
+import { useEffect, useRef, useState } from 'react';
+import AssistantMessage from '@/components/AssistantMessage';
+import { MAX_INPUT_CHARS } from '@/constants/chat';
+import { useChat } from '@/hooks/useChat';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
-
-type Message = { role: 'user' | 'assistant'; content: string };
-
-// Render assistant text with clickable links — handles both Markdown links
-// [label](url) and bare URLs, so neither shows as raw syntax.
-function renderContent(text: string): ReactNode[] {
-  const pattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
-  const out: ReactNode[] = [];
-  let last = 0;
-  let m: RegExpExecArray | null;
-  let key = 0;
-  while ((m = pattern.exec(text)) !== null) {
-    if (m.index > last) out.push(text.slice(last, m.index));
-    const url = m[2] ?? m[3];
-    const label = m[1] ?? m[3];
-    out.push(
-      <a
-        key={key++}
-        href={url}
-        target='_blank'
-        rel='noopener noreferrer'
-        className='text-accent underline underline-offset-2 break-words'
-      >
-        {label}
-      </a>,
-    );
-    last = m.index + m[0].length;
-  }
-  if (last < text.length) out.push(text.slice(last));
-  return out;
-}
 
 export default function Chat() {
   const { language } = useLanguage();
   const t = i18n[language].chat;
 
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { messages, input, setInput, loading, send, cancel } = useChat();
+
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  const close = () => {
+    cancel();
+    setOpen(false);
+    // Send focus back to the control that opened the panel, so keyboard users
+    // aren't dropped at the top of the document.
+    toggleRef.current?.focus();
+  };
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, loading, open]);
 
-  const submit = async (text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed || loading) return;
+  useEffect(() => {
+    if (open) inputRef.current?.focus();
+  }, [open]);
 
-    const next = [...messages, { role: 'user' as const, content: trimmed }];
-    setMessages(next);
-    setInput('');
-    setLoading(true);
-    trackChatMessage(next.filter((msg) => msg.role === 'user').length);
-
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: next }),
-      });
-
-      if (!res.ok || !res.body) {
-        // Rate-limited (429) or the model is unavailable / over quota (502) —
-        // most likely during a traffic spike. Redirect to direct contact
-        // instead of a dead-end error.
-        setMessages((m) => [...m, { role: 'assistant', content: t.busy }]);
-        return;
-      }
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let acc = '';
-      let started = false;
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        acc += decoder.decode(value, { stream: true });
-        // Snapshot the accumulator: the updater below runs after this
-        // iteration, so capturing `acc` itself would read a later value.
-        const content = acc;
-        if (!started) {
-          started = true;
-          setLoading(false);
-          setMessages((m) => [...m, { role: 'assistant', content }]);
-        } else {
-          setMessages((m) => {
-            const copy = m.slice();
-            copy[copy.length - 1] = { role: 'assistant', content };
-            return copy;
-          });
-        }
-      }
-      if (!started) {
-        // Stream opened but produced no tokens — typically a quota error that
-        // surfaced mid-stream. Same contact fallback.
-        setMessages((m) => [...m, { role: 'assistant', content: t.busy }]);
-      }
-    } catch {
-      setMessages((m) => [...m, { role: 'assistant', content: t.error }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    submit(input);
-  };
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <>
       {open && (
+        // Deliberately not aria-modal: the rest of the page stays interactive
+        // and focus is not trapped, so claiming modality would mislead screen
+        // readers into hiding content that is still reachable.
         <div
           role='dialog'
           aria-label={t.title}
@@ -126,7 +58,7 @@ export default function Chat() {
           <div className='flex items-center justify-between border-b-2 border-ink bg-surface px-4 py-3'>
             <span className='font-display font-bold text-fg'>{t.title}</span>
             <button
-              onClick={() => setOpen(false)}
+              onClick={close}
               aria-label={t.close}
               className='font-display font-bold text-fg hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
             >
@@ -134,44 +66,64 @@ export default function Chat() {
             </button>
           </div>
 
-          <div ref={scrollRef} className='flex-1 space-y-3 overflow-y-auto p-4 text-sm'>
+          <div
+            ref={scrollRef}
+            aria-live='polite'
+            className='flex-1 space-y-3 overflow-y-auto p-4 text-sm'
+          >
             <p className='text-muted'>{t.greeting}</p>
 
             {messages.length === 0 && (
               <div className='flex flex-wrap gap-2'>
-                {t.suggestions.map((q) => (
+                {t.suggestions.map((question) => (
                   <button
-                    key={q}
-                    onClick={() => submit(q)}
+                    key={question}
+                    onClick={() => send(question)}
                     className='border-2 border-ink bg-surface px-2.5 py-1 text-xs text-fg shadow-retro-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
                   >
-                    {q}
+                    {question}
                   </button>
                 ))}
               </div>
             )}
 
-            {messages.map((m, i) => (
-              <div key={i} className={m.role === 'user' ? 'text-right' : 'text-left'}>
+            {messages.map((message, i) => (
+              <div
+                key={i}
+                className={message.role === 'user' ? 'text-right' : 'text-left'}
+              >
                 <span
                   className={`inline-block max-w-[85%] whitespace-pre-wrap border-2 border-ink px-3 py-2 text-left shadow-retro-sm ${
-                    m.role === 'user' ? 'bg-accent text-on-accent' : 'bg-surface text-fg'
+                    message.role === 'user'
+                      ? 'bg-accent text-on-accent'
+                      : 'bg-surface text-fg'
                   }`}
                 >
-                  {m.role === 'assistant' ? renderContent(m.content) : m.content}
+                  {message.role === 'assistant' ? (
+                    <AssistantMessage text={message.content} />
+                  ) : (
+                    message.content
+                  )}
                 </span>
               </div>
             ))}
             {loading && <p className='text-left text-muted'>…</p>}
           </div>
 
-          <form onSubmit={onSubmit} className='flex gap-2 border-t-2 border-ink p-3'>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              send(input);
+            }}
+            className='flex gap-2 border-t-2 border-ink p-3'
+          >
             <input
+              ref={inputRef}
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(event) => setInput(event.target.value)}
               placeholder={t.placeholder}
               aria-label={t.placeholder}
-              maxLength={1500}
+              maxLength={MAX_INPUT_CHARS}
               className='min-w-0 flex-1 border-2 border-ink bg-surface px-3 py-2 text-sm text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
             />
             <button
@@ -186,7 +138,8 @@ export default function Chat() {
       )}
 
       <button
-        onClick={() => setOpen((o) => !o)}
+        ref={toggleRef}
+        onClick={() => (open ? close() : setOpen(true))}
         aria-label={t.open}
         aria-expanded={open}
         className='fixed bottom-4 right-4 z-40 border-2 border-ink bg-accent px-4 py-3 font-display font-bold text-on-accent shadow-retro transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'

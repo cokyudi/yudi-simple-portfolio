@@ -1,4 +1,8 @@
 import About from '@/components/About';
+import Experience from '@/components/Experience';
+import Projects from '@/components/Projects';
+import LatestPost from '@/components/LatestPost';
+import ContactCTA from '@/components/ContactCTA';
 import { getAllPosts } from '@/lib/posts';
 import { userData } from '@/constants/data';
 import { i18n } from '@/constants/i18n';
@@ -22,6 +26,8 @@ const appSchemas = userData.projects
   }));
 
 export default function Home() {
+  // Read once here and hand the list to the two sections that need it; the
+  // newest-post pick itself is language-dependent, so it happens client-side.
   const posts = getAllPosts();
 
   return (
@@ -33,8 +39,14 @@ export default function Home() {
         }}
       />
       <div className='max-w-4xl mx-auto mt-10 antialiased'>
-        <About posts={posts} />
+        <div className='container px-5'>
+          <About posts={posts} />
+          <Experience />
+          <Projects />
+          <LatestPost posts={posts} />
+          <ContactCTA />
+        </div>
       </div>
     </div>
-  )
+  );
 }
