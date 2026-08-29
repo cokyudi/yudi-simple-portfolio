@@ -93,3 +93,35 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
 export function jsonLdGraph(...nodes: object[]): string {
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': nodes });
 }
+
+/** Article node for a single blog post, linked to the Person and Blog entities. */
+export function blogPostingSchema(post: {
+  slug: string;
+  title: string;
+  description?: string;
+  date: string;
+  updated?: string;
+  lang: 'en' | 'ja';
+  tags?: string[];
+  readingTime: number;
+  image: string;
+}) {
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    headline: post.title,
+    description: post.description ?? '',
+    datePublished: isoDateTime(post.date),
+    dateModified: isoDateTime(post.updated ?? post.date),
+    timeRequired: `PT${post.readingTime}M`,
+    inLanguage: post.lang,
+    ...(post.tags?.length ? { keywords: post.tags.join(', ') } : {}),
+    url,
+    mainEntityOfPage: url,
+    image: post.image,
+    author: { '@id': PERSON_ID },
+    publisher: { '@id': PERSON_ID },
+    isPartOf: { '@id': BLOG_ID },
+  };
+}

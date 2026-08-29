@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Single source of truth for the Node version; keep .nvmrc and
+          # package.json engines in step.
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # next-env.d.ts is gitignored and declares the image module types, so a
+      # clean checkout has no `import photo from '@/public/…'` types until Next
+      # generates them. `typegen` does that without a full build.
+      - name: Generate Next types
+        run: npx next typegen
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - run: npm test
+
+      # No build step here on purpose: Vercel builds every push and PR, and
+      # `next build` typechecks as it goes. Duplicating it would only add the
+      # slowest step and the one that fails for environmental reasons —
+      # app/og/* fetches Google Fonts at build time. This job covers what
+      # Vercel does not: lint and tests.

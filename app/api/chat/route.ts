@@ -1,6 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { streamText } from 'ai';
 import { getKnowledge } from '@/lib/knowledge';
+import { MAX_INPUT_CHARS, MAX_TURNS } from '@/constants/chat';
 
 export const runtime = 'nodejs';
 export const maxDuration = 30;
@@ -11,8 +12,6 @@ type ChatMessage = { role: 'user' | 'assistant'; content: string };
 // the free Gemini tier means abuse can't bill — this just protects the quota.
 const WINDOW_MS = 60_000;
 const MAX_PER_WINDOW = 8;
-const MAX_INPUT_CHARS = 1500;
-const MAX_TURNS = 8;
 const hits = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {

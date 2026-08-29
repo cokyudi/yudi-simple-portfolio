@@ -9,9 +9,42 @@ npm run dev      # Start development server
 npm run build    # Production build
 npm run start    # Start production server
 npm run lint     # Run ESLint (next/core-web-vitals + next/typescript)
+npx tsc --noEmit # Typecheck
+npm test         # Run tests once (Vitest)
+npm run test:watch
 ```
 
-No test suite is configured.
+Tests are Vitest with jsdom + Testing Library, configured in `vitest.config.mts`.
+They cover the pure logic — `lib/format.ts`, `lib/posts.ts`, `lib/chat-client.ts`
+(with a mocked fetch) and `components/AssistantMessage.tsx` — not page rendering.
+Two notes:
+
+- `lib/posts.ts` imports `server-only`, which throws outside an RSC build, so
+  the config aliases it to `test/server-only.stub.ts`.
+- Testing Library only auto-cleans when Vitest globals are enabled; these tests
+  import `describe`/`it`/`expect` explicitly, so `test/setup.ts` registers
+  `afterEach(cleanup)` by hand. Without it, rendered DOM accumulates between
+  cases and queries match earlier ones.
+
+`lib/posts.ts` tests run against the real `posts/` directory and assert
+invariants (ordering, language filtering, tag-overlap ranking) rather than
+pinning specific slugs, so adding a post does not break them.
+
+`.github/workflows/ci.yml` runs lint, typecheck, and tests on every push to `main`
+and every PR. It runs `npx next typegen` before the typecheck — `next-env.d.ts` is gitignored,
+so a clean checkout has no image-module types and `tsc` alone fails on
+`import photo from '@/public/…'`. It deliberately does **not** build: Vercel builds each push and PR
+already, and `next build` typechecks as it goes, so CI covers only what Vercel
+misses — ESLint (dropped from the build in Next 16) and the test suite.
+
+## Node version
+
+Declared in `.nvmrc` (`24`, the current LTS) and mirrored by `engines.node: ">=24"`
+in `package.json`. CI reads `.nvmrc` via `node-version-file` rather than pinning
+its own, and Vercel reads the `engines` field for the build and runtime — so the
+version lives in one place. A range, not an exact pin: an exact patch version
+breaks the build for anyone a patch release behind, which is friction without
+safety. Keep `@types/node` on the matching major.
 
 ## Architecture
 
@@ -19,7 +52,7 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 
 **Routing:**
 
-- `/` → `app/page.tsx` — Portfolio home (About, experience timeline, CV link, contact CTAs)
+- `/` → `app/page.tsx` — Portfolio home; it composes the sections (`About` hero, `Experience`, `Projects`, `LatestPost`, `ContactCTA`) and reads `getAllPosts()` once for the two that need it. `About` is the hero only — keep page composition in the page, not inside a section component.
 - `/blog` → `app/blog/page.tsx` — Blog post grid
 - `/blog/[slug]` → `app/blog/[slug]/page.tsx` — Individual post (statically generated)
 - `/og/*` → `app/og/` — Dynamic Open Graph image generation
@@ -30,15 +63,18 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 
 - `app/` — Pages, layouts, API routes
 - `components/` — UI components (most are `'use client'` for Framer Motion animations)
-- `constants/` — Static data (`data.ts` for experience/social links) and i18n translations (`i18n.ts` for EN/JA)
+- `constants/` — Static data (`data.ts` for experience/social links), i18n translations (`i18n.ts` for EN/JA), and typed analytics helpers (`analytics.ts`)
 - `context/` — `LanguageContext` for EN/JA language switching with localStorage persistence
+- `hooks/` — shared client hooks (`useChat` for assistant state, `useLatestPost` for the language-aware newest-post pick)
 - `lib/posts.ts` — MDX blog utilities (`getPostBySlug`, `getAllPosts`, `getAllPostSlugs`)
+- `lib/format.ts` — client-safe display formatting shared by cards and post pages (`formatPostDate`, `formatReadingTime`, `formatTag`)
 - `lib/knowledge.ts` — server-only reader that concatenates `knowledge/` + `posts/` into the assistant's grounding context
+- `lib/chat-client.ts` — browser-side transport for the assistant: POSTs the conversation and streams the reply, with no React in it
 - `posts/` — MDX blog content with gray-matter frontmatter (`title`, `date`, `description`, `lang`)
 - `knowledge/` — curated, public-safe assistant grounding (`profile.{en,ja}.md`, `faq.{en,ja}.md`); not rendered anywhere
 - `types/` — TypeScript type definitions
 
-Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
+Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/LatestPost.tsx` (section framing for the newest post on `/`; it delegates the card itself to `BlogCard` so the homepage and blog index cannot drift — `app/page.tsx` passes `getAllPosts()` into `About`, which picks the newest post matching the active language), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
 
 ## Blog Content System
 
@@ -48,15 +84,23 @@ Posts are `.mdx` files in `posts/` compiled at build time via `next-mdx-remote` 
 
 Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`.
 
+`i18n.ts` defines `en` first and types `ja` as `Translations = typeof en`, so a key present in one language but missing from the other is a **compile error**, not a silent runtime fallback. Add copy to `en` first and let TypeScript tell you what `ja` still needs.
+
+Tag slugs in post frontmatter are language-neutral; their display labels live in `i18n[lang].tags` and render as `tags[slug] ?? slug`, so a tag with no entry falls back to its raw slug. Translate only human-language tags (`japan`, `career`, `job-search`, `personal`) — technical terms and proper nouns (`react`, `nextjs`, `ai`, `rag`) stay canonical in both languages.
+
 Blog posts carry a `lang: 'en' | 'ja'` frontmatter field (defaults to `'en'` if absent). `app/blog/page.tsx` fetches all posts server-side and passes them to `components/BlogGrid.tsx` (a Client Component) which filters by the active language. Language toggle is hidden on individual post pages (`/blog/[slug]`) since the post language is fixed.
+
+Because the toggle is hidden there, any shared client component rendered on a post must be told the post's language explicitly rather than following `useLanguage()` — `ContactCTA` takes a `lang` prop for exactly this (`lang ?? language`). Without it a JA post renders an English CTA.
 
 ## Theming
 
-Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvider` wraps the app in `app/providers.tsx`. A subtle theme-aware graph-paper grid background is applied to `body` in `styles/globals.css` (two `linear-gradient`s via `color-mix` on `--ink`, disabled under `prefers-reduced-motion`).
+Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvider` wraps the app in `app/providers.tsx`. `components/ThemeSwitch.tsx` renders both icons unconditionally and toggles them with `dark:` variants off the class next-themes sets on `<html>` — no mount gate, so the button is in the prerendered HTML and causes no layout shift. Do not reintroduce a `mounted` state guard. A subtle theme-aware graph-paper grid background is applied to `body` in `styles/globals.css` (two `linear-gradient`s via `color-mix` on `--ink`, disabled under `prefers-reduced-motion`).
 
 ## AI Assistant
 
-The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`generateText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
+The "Ask about Yudi" chat is split three ways: `components/Chat.tsx` is the view, `hooks/useChat.ts` owns conversation state and cancellation, and `lib/chat-client.ts` does the fetch + stream decode. `components/AssistantMessage.tsx` linkifies replies. Shared client/server limits live in `constants/chat.ts` — `MAX_INPUT_CHARS` caps both the input's `maxLength` and the route's truncation, so they can't drift. The route is `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`generateText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
+
+The chat panel is a non-modal dialog: it sets `role='dialog'` and moves focus to the input on open, closes on Escape, and returns focus to the toggle. It deliberately omits `aria-modal` and a focus trap — the rest of the page stays interactive, so claiming modality would tell screen readers to hide content that is still reachable.
 
 - **Secret safety:** `GOOGLE_GENERATIVE_AI_API_KEY` is read server-side only — never `NEXT_PUBLIC_*`, never in the prompt or client bundle. Free tier, so no billing exposure.
 - **Knowledge is public:** the repo is public, and the assistant exposes `knowledge/` content to anyone — keep it public-safe (no PII/secrets).
@@ -67,7 +111,11 @@ The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.t
 
 ## Analytics & Conversions
 
-GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` from `@next/third-parties/google`: `cv_download` (CV button) and `contact_click` (hero + footer + ContactCTA, with `method`/`location` params).
+GTM loads only when `GTM_ID` is set. **Never call `sendGTMEvent` directly** — use the typed helpers in `constants/analytics.ts` (`trackCvDownload`, `trackContactClick`, `trackBlogClick`, `trackChatMessage`). Parameter values are unions, so a typo like `'blog-post'` fails the build instead of silently splitting a metric across two buckets in GA4. The events are: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
+
+`location` distinguishes where a conversion came from: `hero`, `footer_cta`, `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
+
+`blog_click` (`components/About.tsx` hero link, `components/LatestPost.tsx`) tracks entry into the blog, with `location` of `hero`, `home_featured`, or `home_view_all` plus the target `slug`. Like `chat_message` it is **navigation, not a conversion** — do not flag it as a key event in GA4.
 
 ## Path Aliases
 
@@ -100,7 +148,9 @@ GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` f
 - **Static Params:** `generateStaticParams` in `[slug]/page.tsx` only generates slugs; it does not handle language variations since language is toggled client-side.
 - **Async params (Next.js 15+):** `params` in page components, `generateMetadata`, and `generateStaticParams` is now a `Promise` — always `await params` before accessing fields.
 - **JSX.Element return type:** Do NOT annotate component return types as `JSX.Element` — the global `JSX` namespace was removed in `@types/react@19`. Let TypeScript infer return types.
-- **ESLint flat config:** Uses `eslint.config.mjs` (ESLint 9 flat config via `FlatCompat`). Do not create `.eslintrc.json`.
+- **ESLint flat config:** `eslint.config.mjs` imports the native flat configs directly (`eslint-config-next/core-web-vitals` + `/typescript`). Do **not** route them through `FlatCompat` — `eslint-config-next@16` ships flat configs, and the eslintrc shim fails with a misleading `Converting circular structure to JSON`. Do not create `.eslintrc.json`.
+- **`next lint` is gone:** removed in Next.js 16. The `lint` script is `eslint .`.
+- **`react-hooks/set-state-in-effect`:** `context/LanguageContext.tsx` suppresses this deliberately — `localStorage` can't be read during SSR. The clean fix (language in a cookie, read server-side) would make every page vary per request and give up static prerendering. Leave the suppression and its comment in place.
 
 ## Environment Variables
 

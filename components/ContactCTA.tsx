@@ -1,15 +1,33 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { sendGTMEvent } from '@next/third-parties/google';
+import {
+  trackContactClick,
+  trackCvDownload,
+  type ConversionLocation,
+} from '@/constants/analytics';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import { userData } from '@/constants/data';
 
-export default function ContactCTA() {
+type ContactCTAProps = {
+  // Blog posts have a fixed language (the toggle is hidden there), so they pass
+  // the post's own lang instead of following the client-side context.
+  lang?: 'en' | 'ja';
+  location?: ConversionLocation;
+  showResume?: boolean;
+};
+
+export default function ContactCTA({
+  lang,
+  location = 'footer_cta',
+  showResume = false,
+}: ContactCTAProps) {
   const { language } = useLanguage();
-  const t = i18n[language].contact;
+  const active = lang ?? language;
+  const t = i18n[active].contact;
+  const tAbout = i18n[active].about;
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -28,10 +46,32 @@ export default function ContactCTA() {
           {t.subtitle}
         </p>
         <div className='mt-8 flex flex-wrap gap-4 justify-center'>
+          {showResume && (
+            <>
+              <Button
+                href={userData.resumeUrl.en}
+                target='_blank'
+                rel='noopener noreferrer'
+                variant={active === 'en' ? 'accent' : 'neutral'}
+                onClick={() => trackCvDownload(location, 'en')}
+              >
+                {tAbout.resumeEn}
+              </Button>
+              <Button
+                href={userData.resumeUrl.ja}
+                target='_blank'
+                rel='noopener noreferrer'
+                variant={active === 'ja' ? 'accent' : 'neutral'}
+                onClick={() => trackCvDownload(location, 'ja')}
+              >
+                {tAbout.resumeJa}
+              </Button>
+            </>
+          )}
           <Button
             href={`mailto:${userData.socialLinks.email}`}
-            variant='accent'
-            onClick={() => sendGTMEvent({ event: 'contact_click', method: 'email', location: 'footer_cta' })}
+            variant={showResume ? 'neutral' : 'accent'}
+            onClick={() => trackContactClick('email', location)}
           >
             {t.email}
           </Button>
@@ -40,7 +80,7 @@ export default function ContactCTA() {
             target='_blank'
             rel='noopener noreferrer'
             variant='neutral'
-            onClick={() => sendGTMEvent({ event: 'contact_click', method: 'linkedin', location: 'footer_cta' })}
+            onClick={() => trackContactClick('linkedin', location)}
           >
             {t.linkedin}
           </Button>

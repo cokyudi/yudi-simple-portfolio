@@ -3,20 +3,21 @@ import type { Metadata } from 'next';
 import {
   getPostBySlug,
   getAllPostSlugs,
-  getAllPosts,
+  getRelatedPosts,
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
 import BlogCard from '@/components/BlogCard';
+import ContactCTA from '@/components/ContactCTA';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
+import { formatPostDate, formatReadingTime } from '@/lib/format';
 import {
   personSchema,
   breadcrumbSchema,
+  blogPostingSchema,
   jsonLdGraph,
   isoDateTime,
-  PERSON_ID,
-  BLOG_ID,
 } from '@/lib/jsonld';
 
 type BlogPostPageProps = {
@@ -103,40 +104,22 @@ export default async function BlogPostPage({
     notFound();
   });
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
   const lang = post.frontMatter.lang ?? 'en';
-  const locale = lang === 'ja' ? 'ja-JP' : 'en-US';
   const t = i18n[lang].blog;
-  const readLabel =
-    lang === 'ja'
-      ? `${post.readingTime}${t.minRead}`
-      : `${post.readingTime} ${t.minRead}`;
 
-  const blogPosting = {
-    '@type': 'BlogPosting',
-    '@id': `${SITE_URL}/blog/${slug}#post`,
-    headline: post.frontMatter.title,
-    description: post.frontMatter.description ?? '',
-    datePublished: isoDateTime(post.frontMatter.date),
-    dateModified: isoDateTime(post.frontMatter.updated ?? post.frontMatter.date),
-    timeRequired: `PT${post.readingTime}M`,
-    inLanguage: lang,
-    ...(post.frontMatter.tags && post.frontMatter.tags.length > 0
-      ? { keywords: post.frontMatter.tags.join(', ') }
-      : {}),
-    url: `${SITE_URL}/blog/${slug}`,
-    mainEntityOfPage: `${SITE_URL}/blog/${slug}`,
+  const blogPosting = blogPostingSchema({
+    slug,
+    title: post.frontMatter.title,
+    description: post.frontMatter.description,
+    date: post.frontMatter.date,
+    updated: post.frontMatter.updated,
+    lang,
+    tags: post.frontMatter.tags,
+    readingTime: post.readingTime,
     image: `${SITE_URL}/og/blog-post?title=${encodeURIComponent(
       post.frontMatter.title,
     )}&date=${encodeURIComponent(post.frontMatter.date)}&v=${OG_VERSION}`,
-    author: { '@id': PERSON_ID },
-    publisher: { '@id': PERSON_ID },
-    isPartOf: { '@id': BLOG_ID },
-  };
+  });
 
   const breadcrumb = breadcrumbSchema([
     { name: 'Home', url: SITE_URL },
@@ -144,22 +127,7 @@ export default async function BlogPostPage({
     { name: post.frontMatter.title, url: `${SITE_URL}/blog/${slug}` },
   ]);
 
-  // Internal linking: same-language posts, ranked by shared-tag overlap, then
-  // newest first. Falls back to purely chronological when no tags are set.
-  const currentTags = new Set(post.frontMatter.tags ?? []);
-  const relatedPosts = getAllPosts()
-    .filter((p) => p.lang === lang && p.slug !== slug)
-    .map((p) => ({
-      post: p,
-      shared: p.tags.filter((tag) => currentTags.has(tag)).length,
-    }))
-    .sort(
-      (a, b) =>
-        b.shared - a.shared ||
-        new Date(b.post.date).getTime() - new Date(a.post.date).getTime(),
-    )
-    .slice(0, 3)
-    .map((r) => r.post);
+  const relatedPosts = getRelatedPosts(slug, lang);
 
   return (
     <div className='max-w-4xl mx-auto px-5 py-10'>
@@ -182,10 +150,10 @@ export default async function BlogPostPage({
           style={{ viewTransitionName: `post-date-${slug}` }}
         >
           <time dateTime={post.frontMatter.date}>
-            {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
+            {formatPostDate(post.frontMatter.date, lang)}
           </time>
         </Badge>
-        <Badge variant='neutral'>{readLabel}</Badge>
+        <Badge variant='neutral'>{formatReadingTime(post.readingTime, lang)}</Badge>
       </p>
 
       {post.toc.length > 0 && (
@@ -229,6 +197,8 @@ export default async function BlogPostPage({
           </div>
         </section>
       )}
+
+      <ContactCTA lang={lang} location='blog_post' showResume />
     </div>
   );
 }

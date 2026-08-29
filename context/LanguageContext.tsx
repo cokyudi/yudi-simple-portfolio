@@ -14,8 +14,14 @@ const LanguageContext = createContext<LanguageContextProps | undefined>(undefine
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguage] = useState<Language>('en');
 
+  // Reading localStorage requires an effect: it doesn't exist during SSR, so
+  // the server always renders 'en' and this corrects it after hydration. The
+  // proper fix is a cookie read server-side, but that would make every page
+  // vary per request and give up static prerendering for all 18 posts — not
+  // worth it to remove a brief flash of English for returning JA visitors.
   useEffect(() => {
     const stored = localStorage.getItem('language') as Language;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (stored) setLanguage(stored);
   }, []);
 

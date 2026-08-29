@@ -53,6 +53,7 @@ export type BlogPostMeta = {
   description: string;
   lang: 'en' | 'ja';
   tags: string[];
+  readingTime: number;
   updated?: string;
 };
 
@@ -138,15 +139,19 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
   return getPostFileNames()
     .map((file) => {
       const slug = file.replace(/\.mdx$/, '');
-      const { data } = readPostFile(slug);
+      // gray-matter already returns the body, so reading time costs nothing
+      // extra here — no MDX compilation needed for the list view.
+      const { data, content } = readPostFile(slug);
+      const lang = (data.lang as 'en' | 'ja') ?? 'en';
 
       return {
         slug,
         title: data.title as string,
         date: data.date as string,
         description: (data.description as string) ?? '',
-        lang: (data.lang as 'en' | 'ja') ?? 'en',
+        lang,
         tags: (data.tags as string[] | undefined) ?? [],
+        readingTime: computeReadingTime(content, lang),
         updated: data.updated as string | undefined,
       };
     })
@@ -155,6 +160,28 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
         new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 });
+
+/**
+ * Same-language posts ranked by shared-tag overlap, then newest first. Falls
+ * back to purely chronological when a post carries no tags.
+ */
+export const getRelatedPosts = cache(
+  (slug: string, lang: 'en' | 'ja', limit = 3): BlogPostMeta[] => {
+    const post = getAllPosts().find((p) => p.slug === slug);
+    const tags = new Set(post?.tags ?? []);
+
+    return getAllPosts()
+      .filter((p) => p.lang === lang && p.slug !== slug)
+      .map((p) => ({ post: p, shared: p.tags.filter((tag) => tags.has(tag)).length }))
+      .sort(
+        (a, b) =>
+          b.shared - a.shared ||
+          new Date(b.post.date).getTime() - new Date(a.post.date).getTime(),
+      )
+      .slice(0, limit)
+      .map((ranked) => ranked.post);
+  },
+);
 
 export const getAllPostSlugs = cache(() => {
   return getPostFileNames().map((file) => ({
