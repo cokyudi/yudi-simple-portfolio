@@ -10,6 +10,7 @@ export const i18n = {
       resumeEn: 'English CV',
       resumeJa: 'Japanese CV (職務経歴書)',
       readBlog: 'Read my blog →',
+      latestPost: 'Latest post',
       getInTouch: 'Get in touch',
       current: 'Current',
       present: 'Present',
@@ -23,6 +24,8 @@ export const i18n = {
       contents: 'Contents',
       minRead: 'min read',
       readNext: 'Read next',
+      latestFromBlog: 'Latest from the blog',
+      viewAllPosts: 'View all posts →',
     },
     contact: {
       heading: 'Let’s work together',
@@ -151,6 +154,7 @@ export const i18n = {
       resumeEn: '英語版CV',
       resumeJa: '職務経歴書（日本語）',
       readBlog: 'ブログを読む →',
+      latestPost: '最新の記事',
       getInTouch: 'お問い合わせ',
       current: '現職',
       present: '現在',
@@ -164,6 +168,8 @@ export const i18n = {
       contents: '目次',
       minRead: '分で読む',
       readNext: 'おすすめの記事',
+      latestFromBlog: 'ブログの最新記事',
+      viewAllPosts: 'すべての記事を見る →',
     },
     contact: {
       heading: '一緒に働きましょう',

@@ -1,4 +1,5 @@
 import About from '@/components/About';
+import { getAllPosts } from '@/lib/posts';
 import { userData } from '@/constants/data';
 import { i18n } from '@/constants/i18n';
 import { personSchema, websiteSchema, jsonLdGraph, PERSON_ID } from '@/lib/jsonld';
@@ -30,7 +31,7 @@ export default function Home() {
         }}
       />
       <div className='max-w-4xl mx-auto mt-10 antialiased'>
-        <About />
+        <About posts={getAllPosts()} />
       </div>
     </div>
   )

@@ -39,7 +39,7 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 - `knowledge/` — curated, public-safe assistant grounding (`profile.{en,ja}.md`, `faq.{en,ja}.md`); not rendered anywhere
 - `types/` — TypeScript type definitions
 
-Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
+Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/LatestPost.tsx` (featured newest-post card on `/`; `app/page.tsx` passes `getAllPosts()` into `About`, which picks the newest post matching the active language), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
 
 ## Blog Content System
 
@@ -73,6 +73,8 @@ The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.t
 GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` from `@next/third-parties/google`: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
 
 `location` distinguishes where a conversion came from: `hero`, `footer_cta`, `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
+
+`blog_click` (`components/About.tsx` hero link, `components/LatestPost.tsx`) tracks entry into the blog, with `location` of `hero`, `home_featured`, or `home_view_all` plus the target `slug`. Like `chat_message` it is **navigation, not a conversion** — do not flag it as a key event in GA4.
 
 ## Path Aliases
 

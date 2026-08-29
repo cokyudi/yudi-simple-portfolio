@@ -8,16 +8,26 @@ import { Link } from 'next-view-transitions';
 import Experience from '@/components/Experience';
 import Projects from '@/components/Projects';
 import ContactCTA from '@/components/ContactCTA';
+import LatestPost from '@/components/LatestPost';
 import Button from '@/components/ui/Button';
 import Badge from '@/components/ui/Badge';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import { userData } from '@/constants/data';
+import type { BlogPostMeta } from '@/lib/posts';
 
-export default function About() {
+type AboutProps = {
+  posts: BlogPostMeta[];
+};
+
+export default function About({ posts }: AboutProps) {
   const { language } = useLanguage();
   const t = i18n[language].about;
   const shouldReduceMotion = useReducedMotion();
+
+  // `posts` arrives sorted newest-first, so the first match is the latest post
+  // in the active language. Undefined when a language has no posts yet.
+  const latest = posts.find((p) => p.lang === language);
 
   const textVariants = {
     hidden: shouldReduceMotion ? {} : { opacity: 0, y: 20 },
@@ -128,10 +138,15 @@ export default function About() {
                 {t.getInTouch}
               </Button>
               <Link
-                href='/blog'
-                className='inline-flex items-center font-display font-bold text-accent hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+                href={latest ? `/blog/${latest.slug}` : '/blog'}
+                onClick={() =>
+                  sendGTMEvent({ event: 'blog_click', location: 'hero', slug: latest?.slug })
+                }
+                className='basis-full flex items-center justify-center lg:justify-start font-display font-bold text-accent hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
               >
-                {t.readBlog}
+                <span className='line-clamp-2 max-w-md'>
+                  {latest ? `${t.latestPost}: ${latest.title}` : t.readBlog}
+                </span>
               </Link>
             </motion.div>
           </div>
@@ -141,6 +156,8 @@ export default function About() {
       <Experience />
 
       <Projects />
+
+      {latest && <LatestPost post={latest} />}
 
       <ContactCTA />
     </div>
