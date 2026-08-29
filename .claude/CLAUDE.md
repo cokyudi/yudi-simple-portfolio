@@ -39,7 +39,7 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 - `knowledge/` — curated, public-safe assistant grounding (`profile.{en,ja}.md`, `faq.{en,ja}.md`); not rendered anywhere
 - `types/` — TypeScript type definitions
 
-Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
+Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
 
 ## Blog Content System
 
@@ -50,6 +50,8 @@ Posts are `.mdx` files in `posts/` compiled at build time via `next-mdx-remote` 
 Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`.
 
 Blog posts carry a `lang: 'en' | 'ja'` frontmatter field (defaults to `'en'` if absent). `app/blog/page.tsx` fetches all posts server-side and passes them to `components/BlogGrid.tsx` (a Client Component) which filters by the active language. Language toggle is hidden on individual post pages (`/blog/[slug]`) since the post language is fixed.
+
+Because the toggle is hidden there, any shared client component rendered on a post must be told the post's language explicitly rather than following `useLanguage()` — `ContactCTA` takes a `lang` prop for exactly this (`lang ?? language`). Without it a JA post renders an English CTA.
 
 ## Theming
 
@@ -68,7 +70,9 @@ The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.t
 
 ## Analytics & Conversions
 
-GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` from `@next/third-parties/google`: `cv_download` (CV button) and `contact_click` (hero + footer + ContactCTA, with `method`/`location` params).
+GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` from `@next/third-parties/google`: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
+
+`location` distinguishes where a conversion came from: `hero`, `footer_cta`, `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
 
 ## Path Aliases
 

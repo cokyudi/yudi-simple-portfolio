@@ -7,6 +7,7 @@ import {
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
 import BlogCard from '@/components/BlogCard';
+import ContactCTA from '@/components/ContactCTA';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
@@ -229,6 +230,8 @@ export default async function BlogPostPage({
           </div>
         </section>
       )}
+
+      <ContactCTA lang={lang} location='blog_post' showResume />
     </div>
   );
 }
