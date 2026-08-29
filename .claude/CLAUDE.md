@@ -10,9 +10,28 @@ npm run build    # Production build
 npm run start    # Start production server
 npm run lint     # Run ESLint (next/core-web-vitals + next/typescript)
 npx tsc --noEmit # Typecheck
+npm test         # Run tests once (Vitest)
+npm run test:watch
 ```
 
-No test suite is configured.
+Tests are Vitest with jsdom + Testing Library, configured in `vitest.config.mts`.
+They cover the pure logic — `lib/format.ts`, `lib/posts.ts`, `lib/chat-client.ts`
+(with a mocked fetch) and `components/AssistantMessage.tsx` — not page rendering.
+Two notes:
+
+- `lib/posts.ts` imports `server-only`, which throws outside an RSC build, so
+  the config aliases it to `test/server-only.stub.ts`.
+- Testing Library only auto-cleans when Vitest globals are enabled; these tests
+  import `describe`/`it`/`expect` explicitly, so `test/setup.ts` registers
+  `afterEach(cleanup)` by hand. Without it, rendered DOM accumulates between
+  cases and queries match earlier ones.
+
+`lib/posts.ts` tests run against the real `posts/` directory and assert
+invariants (ordering, language filtering, tag-overlap ranking) rather than
+pinning specific slugs, so adding a post does not break them.
+
+`.github/workflows/ci.yml` runs lint, typecheck, tests, then build on every push
+to `main` and every PR.
 
 ## Architecture
 
