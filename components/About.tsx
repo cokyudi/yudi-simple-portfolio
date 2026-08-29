@@ -2,7 +2,11 @@
 
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
-import { sendGTMEvent } from '@next/third-parties/google';
+import {
+  trackBlogClick,
+  trackContactClick,
+  trackCvDownload,
+} from '@/constants/analytics';
 import profile from '@/public/yudi-draw.jpg';
 import { Link } from 'next-view-transitions';
 import Experience from '@/components/Experience';
@@ -117,7 +121,7 @@ export default function About({ posts }: AboutProps) {
                 target='_blank'
                 rel='noopener noreferrer'
                 variant={language === 'en' ? 'accent' : 'neutral'}
-                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero', lang: 'en' })}
+                onClick={() => trackCvDownload('hero', 'en')}
               >
                 {t.resumeEn}
               </Button>
@@ -126,22 +130,20 @@ export default function About({ posts }: AboutProps) {
                 target='_blank'
                 rel='noopener noreferrer'
                 variant={language === 'ja' ? 'accent' : 'neutral'}
-                onClick={() => sendGTMEvent({ event: 'cv_download', location: 'hero', lang: 'ja' })}
+                onClick={() => trackCvDownload('hero', 'ja')}
               >
                 {t.resumeJa}
               </Button>
               <Button
                 href={`mailto:${userData.socialLinks.email}`}
                 variant='neutral'
-                onClick={() => sendGTMEvent({ event: 'contact_click', method: 'email', location: 'hero' })}
+                onClick={() => trackContactClick('email', 'hero')}
               >
                 {t.getInTouch}
               </Button>
               <Link
                 href={latest ? `/blog/${latest.slug}` : '/blog'}
-                onClick={() =>
-                  sendGTMEvent({ event: 'blog_click', location: 'hero', slug: latest?.slug })
-                }
+                onClick={() => trackBlogClick('hero', latest?.slug)}
                 className='basis-full flex items-center justify-center lg:justify-start font-display font-bold text-accent hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
               >
                 <span className='line-clamp-2 max-w-md'>

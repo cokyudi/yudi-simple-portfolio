@@ -31,15 +31,16 @@ Next.js 16 (React 19) **App Router** portfolio site with a blog.
 
 - `app/` — Pages, layouts, API routes
 - `components/` — UI components (most are `'use client'` for Framer Motion animations)
-- `constants/` — Static data (`data.ts` for experience/social links) and i18n translations (`i18n.ts` for EN/JA)
+- `constants/` — Static data (`data.ts` for experience/social links), i18n translations (`i18n.ts` for EN/JA), and typed analytics helpers (`analytics.ts`)
 - `context/` — `LanguageContext` for EN/JA language switching with localStorage persistence
 - `lib/posts.ts` — MDX blog utilities (`getPostBySlug`, `getAllPosts`, `getAllPostSlugs`)
+- `lib/format.ts` — client-safe display formatting shared by cards and post pages (`formatPostDate`, `formatReadingTime`, `formatTag`)
 - `lib/knowledge.ts` — server-only reader that concatenates `knowledge/` + `posts/` into the assistant's grounding context
 - `posts/` — MDX blog content with gray-matter frontmatter (`title`, `date`, `description`, `lang`)
 - `knowledge/` — curated, public-safe assistant grounding (`profile.{en,ja}.md`, `faq.{en,ja}.md`); not rendered anywhere
 - `types/` — TypeScript type definitions
 
-Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/LatestPost.tsx` (featured newest-post card on `/`; `app/page.tsx` passes `getAllPosts()` into `About`, which picks the newest post matching the active language), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
+Notable components: `components/Chat.tsx` (assistant widget), `components/ContactCTA.tsx` (end-of-page contact band, rendered on `/` and on every blog post), `components/LatestPost.tsx` (section framing for the newest post on `/`; it delegates the card itself to `BlogCard` so the homepage and blog index cannot drift — `app/page.tsx` passes `getAllPosts()` into `About`, which picks the newest post matching the active language), `components/ui/Button.tsx` (renders a plain `<a>` for external/`mailto`/`tel` hrefs, the view-transition `Link` otherwise).
 
 ## Blog Content System
 
@@ -48,6 +49,8 @@ Posts are `.mdx` files in `posts/` compiled at build time via `next-mdx-remote` 
 ## Internationalization
 
 Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`.
+
+`i18n.ts` defines `en` first and types `ja` as `Translations = typeof en`, so a key present in one language but missing from the other is a **compile error**, not a silent runtime fallback. Add copy to `en` first and let TypeScript tell you what `ja` still needs.
 
 Tag slugs in post frontmatter are language-neutral; their display labels live in `i18n[lang].tags` and render as `tags[slug] ?? slug`, so a tag with no entry falls back to its raw slug. Translate only human-language tags (`japan`, `career`, `job-search`, `personal`) — technical terms and proper nouns (`react`, `nextjs`, `ai`, `rag`) stay canonical in both languages.
 
@@ -72,7 +75,7 @@ The "Ask about Yudi" chat (`components/Chat.tsx`) posts to `app/api/chat/route.t
 
 ## Analytics & Conversions
 
-GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` from `@next/third-parties/google`: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
+GTM loads only when `GTM_ID` is set. **Never call `sendGTMEvent` directly** — use the typed helpers in `constants/analytics.ts` (`trackCvDownload`, `trackContactClick`, `trackBlogClick`, `trackChatMessage`). Parameter values are unions, so a typo like `'blog-post'` fails the build instead of silently splitting a metric across two buckets in GA4. The events are: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
 
 `location` distinguishes where a conversion came from: `hero`, `footer_cta`, `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
 

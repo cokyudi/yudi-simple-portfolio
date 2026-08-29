@@ -1,7 +1,11 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { sendGTMEvent } from '@next/third-parties/google';
+import {
+  trackContactClick,
+  trackCvDownload,
+  type ConversionLocation,
+} from '@/constants/analytics';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
@@ -11,7 +15,7 @@ type ContactCTAProps = {
   // Blog posts have a fixed language (the toggle is hidden there), so they pass
   // the post's own lang instead of following the client-side context.
   lang?: 'en' | 'ja';
-  location?: string;
+  location?: ConversionLocation;
   showResume?: boolean;
 };
 
@@ -49,7 +53,7 @@ export default function ContactCTA({
                 target='_blank'
                 rel='noopener noreferrer'
                 variant={active === 'en' ? 'accent' : 'neutral'}
-                onClick={() => sendGTMEvent({ event: 'cv_download', location, lang: 'en' })}
+                onClick={() => trackCvDownload(location, 'en')}
               >
                 {tAbout.resumeEn}
               </Button>
@@ -58,7 +62,7 @@ export default function ContactCTA({
                 target='_blank'
                 rel='noopener noreferrer'
                 variant={active === 'ja' ? 'accent' : 'neutral'}
-                onClick={() => sendGTMEvent({ event: 'cv_download', location, lang: 'ja' })}
+                onClick={() => trackCvDownload(location, 'ja')}
               >
                 {tAbout.resumeJa}
               </Button>
@@ -67,7 +71,7 @@ export default function ContactCTA({
           <Button
             href={`mailto:${userData.socialLinks.email}`}
             variant={showResume ? 'neutral' : 'accent'}
-            onClick={() => sendGTMEvent({ event: 'contact_click', method: 'email', location })}
+            onClick={() => trackContactClick('email', location)}
           >
             {t.email}
           </Button>
@@ -76,7 +80,7 @@ export default function ContactCTA({
             target='_blank'
             rel='noopener noreferrer'
             variant='neutral'
-            onClick={() => sendGTMEvent({ event: 'contact_click', method: 'linkedin', location })}
+            onClick={() => trackContactClick('linkedin', location)}
           >
             {t.linkedin}
           </Button>

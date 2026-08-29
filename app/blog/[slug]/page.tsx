@@ -11,6 +11,7 @@ import ContactCTA from '@/components/ContactCTA';
 import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
+import { formatPostDate, formatReadingTime } from '@/lib/format';
 import {
   personSchema,
   breadcrumbSchema,
@@ -104,18 +105,8 @@ export default async function BlogPostPage({
     notFound();
   });
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
   const lang = post.frontMatter.lang ?? 'en';
-  const locale = lang === 'ja' ? 'ja-JP' : 'en-US';
   const t = i18n[lang].blog;
-  const readLabel =
-    lang === 'ja'
-      ? `${post.readingTime}${t.minRead}`
-      : `${post.readingTime} ${t.minRead}`;
 
   const blogPosting = {
     '@type': 'BlogPosting',
@@ -183,10 +174,10 @@ export default async function BlogPostPage({
           style={{ viewTransitionName: `post-date-${slug}` }}
         >
           <time dateTime={post.frontMatter.date}>
-            {new Date(post.frontMatter.date).toLocaleDateString(locale, dateOptions)}
+            {formatPostDate(post.frontMatter.date, lang)}
           </time>
         </Badge>
-        <Badge variant='neutral'>{readLabel}</Badge>
+        <Badge variant='neutral'>{formatReadingTime(post.readingTime, lang)}</Badge>
       </p>
 
       {post.toc.length > 0 && (

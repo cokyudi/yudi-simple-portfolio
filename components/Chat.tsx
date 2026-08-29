@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, type ReactNode } from 'react';
-import { sendGTMEvent } from '@next/third-parties/google';
+import { trackChatMessage } from '@/constants/analytics';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 
@@ -58,10 +58,7 @@ export default function Chat() {
     setMessages(next);
     setInput('');
     setLoading(true);
-    sendGTMEvent({
-      event: 'chat_message',
-      turn: next.filter((msg) => msg.role === 'user').length,
-    });
+    trackChatMessage(next.filter((msg) => msg.role === 'user').length);
 
     try {
       const res = await fetch('/api/chat', {

@@ -22,6 +22,8 @@ const appSchemas = userData.projects
   }));
 
 export default function Home() {
+  const posts = getAllPosts();
+
   return (
     <div className='space-y-14 lg:space-y-24'>
       <script
@@ -31,7 +33,7 @@ export default function Home() {
         }}
       />
       <div className='max-w-4xl mx-auto mt-10 antialiased'>
-        <About posts={getAllPosts()} />
+        <About posts={posts} />
       </div>
     </div>
   )
