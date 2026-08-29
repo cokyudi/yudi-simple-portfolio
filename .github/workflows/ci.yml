@@ -27,10 +27,8 @@ jobs:
 
       - run: npm test
 
-      # Runs last: it is the slowest step and the one most likely to fail for
-      # environmental reasons (app/og/* fetches fonts at build time).
-      - run: npm run build
-        env:
-          # The assistant is inert without a key; the build only needs to
-          # compile the route, not call Gemini.
-          GOOGLE_GENERATIVE_AI_API_KEY: ''
+      # No build step here on purpose: Vercel builds every push and PR, and
+      # `next build` typechecks as it goes. Duplicating it would only add the
+      # slowest step and the one that fails for environmental reasons —
+      # app/og/* fetches Google Fonts at build time. This job covers what
+      # Vercel does not: lint and tests.

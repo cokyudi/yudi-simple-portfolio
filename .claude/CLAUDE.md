@@ -30,8 +30,10 @@ Two notes:
 invariants (ordering, language filtering, tag-overlap ranking) rather than
 pinning specific slugs, so adding a post does not break them.
 
-`.github/workflows/ci.yml` runs lint, typecheck, tests, then build on every push
-to `main` and every PR.
+`.github/workflows/ci.yml` runs lint, typecheck, and tests on every push to `main`
+and every PR. It deliberately does **not** build: Vercel builds each push and PR
+already, and `next build` typechecks as it goes, so CI covers only what Vercel
+misses — ESLint (dropped from the build in Next 16) and the test suite.
 
 ## Node version
 
