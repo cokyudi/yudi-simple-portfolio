@@ -1,14 +1,15 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({ baseDirectory: __dirname });
+import coreWebVitals from 'eslint-config-next/core-web-vitals';
+import typescript from 'eslint-config-next/typescript';
 
 const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  { ignores: ['.next/**', 'out/**', 'next-env.d.ts'] },
+  ...coreWebVitals,
+  ...typescript,
+  {
+    // Tailwind/PostCSS load these as CommonJS; `require` is correct here.
+    files: ['*.config.js'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
 ];
 
 export default eslintConfig;

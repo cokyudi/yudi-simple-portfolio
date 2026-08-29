@@ -4,7 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.83",
@@ -27,7 +27,6 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "20.11.30",
     "@types/react": "^19.2.14",

@@ -86,14 +86,17 @@ export default function Chat() {
         const { done, value } = await reader.read();
         if (done) break;
         acc += decoder.decode(value, { stream: true });
+        // Snapshot the accumulator: the updater below runs after this
+        // iteration, so capturing `acc` itself would read a later value.
+        const content = acc;
         if (!started) {
           started = true;
           setLoading(false);
-          setMessages((m) => [...m, { role: 'assistant', content: acc }]);
+          setMessages((m) => [...m, { role: 'assistant', content }]);
         } else {
           setMessages((m) => {
             const copy = m.slice();
-            copy[copy.length - 1] = { role: 'assistant', content: acc };
+            copy[copy.length - 1] = { role: 'assistant', content };
             return copy;
           });
         }

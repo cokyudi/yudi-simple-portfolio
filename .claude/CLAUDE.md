@@ -9,6 +9,7 @@ npm run dev      # Start development server
 npm run build    # Production build
 npm run start    # Start production server
 npm run lint     # Run ESLint (next/core-web-vitals + next/typescript)
+npx tsc --noEmit # Typecheck
 ```
 
 No test suite is configured.
@@ -52,7 +53,7 @@ Blog posts carry a `lang: 'en' | 'ja'` frontmatter field (defaults to `'en'` if 
 
 ## Theming
 
-Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvider` wraps the app in `app/providers.tsx`. A subtle theme-aware graph-paper grid background is applied to `body` in `styles/globals.css` (two `linear-gradient`s via `color-mix` on `--ink`, disabled under `prefers-reduced-motion`).
+Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvider` wraps the app in `app/providers.tsx`. `components/ThemeSwitch.tsx` renders both icons unconditionally and toggles them with `dark:` variants off the class next-themes sets on `<html>` — no mount gate, so the button is in the prerendered HTML and causes no layout shift. Do not reintroduce a `mounted` state guard. A subtle theme-aware graph-paper grid background is applied to `body` in `styles/globals.css` (two `linear-gradient`s via `color-mix` on `--ink`, disabled under `prefers-reduced-motion`).
 
 ## AI Assistant
 
@@ -100,7 +101,9 @@ GTM loads only when `GTM_ID` is set. Conversion events fire via `sendGTMEvent` f
 - **Static Params:** `generateStaticParams` in `[slug]/page.tsx` only generates slugs; it does not handle language variations since language is toggled client-side.
 - **Async params (Next.js 15+):** `params` in page components, `generateMetadata`, and `generateStaticParams` is now a `Promise` — always `await params` before accessing fields.
 - **JSX.Element return type:** Do NOT annotate component return types as `JSX.Element` — the global `JSX` namespace was removed in `@types/react@19`. Let TypeScript infer return types.
-- **ESLint flat config:** Uses `eslint.config.mjs` (ESLint 9 flat config via `FlatCompat`). Do not create `.eslintrc.json`.
+- **ESLint flat config:** `eslint.config.mjs` imports the native flat configs directly (`eslint-config-next/core-web-vitals` + `/typescript`). Do **not** route them through `FlatCompat` — `eslint-config-next@16` ships flat configs, and the eslintrc shim fails with a misleading `Converting circular structure to JSON`. Do not create `.eslintrc.json`.
+- **`next lint` is gone:** removed in Next.js 16. The `lint` script is `eslint .`.
+- **`react-hooks/set-state-in-effect`:** `context/LanguageContext.tsx` suppresses this deliberately — `localStorage` can't be read during SSR. The clean fix (language in a cookie, read server-side) would make every page vary per request and give up static prerendering. Leave the suppression and its comment in place.
 
 ## Environment Variables
 
