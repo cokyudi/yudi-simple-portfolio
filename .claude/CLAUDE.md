@@ -49,6 +49,8 @@ Posts are `.mdx` files in `posts/` compiled at build time via `next-mdx-remote` 
 
 Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`.
 
+Tag slugs in post frontmatter are language-neutral; their display labels live in `i18n[lang].tags` and render as `tags[slug] ?? slug`, so a tag with no entry falls back to its raw slug. Translate only human-language tags (`japan`, `career`, `job-search`, `personal`) — technical terms and proper nouns (`react`, `nextjs`, `ai`, `rag`) stay canonical in both languages.
+
 Blog posts carry a `lang: 'en' | 'ja'` frontmatter field (defaults to `'en'` if absent). `app/blog/page.tsx` fetches all posts server-side and passes them to `components/BlogGrid.tsx` (a Client Component) which filters by the active language. Language toggle is hidden on individual post pages (`/blog/[slug]`) since the post language is fixed.
 
 Because the toggle is hidden there, any shared client component rendered on a post must be told the post's language explicitly rather than following `useLanguage()` — `ContactCTA` takes a `lang` prop for exactly this (`lang ?? language`). Without it a JA post renders an English CTA.

@@ -53,6 +53,7 @@ export type BlogPostMeta = {
   description: string;
   lang: 'en' | 'ja';
   tags: string[];
+  readingTime: number;
   updated?: string;
 };
 
@@ -138,15 +139,19 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
   return getPostFileNames()
     .map((file) => {
       const slug = file.replace(/\.mdx$/, '');
-      const { data } = readPostFile(slug);
+      // gray-matter already returns the body, so reading time costs nothing
+      // extra here — no MDX compilation needed for the list view.
+      const { data, content } = readPostFile(slug);
+      const lang = (data.lang as 'en' | 'ja') ?? 'en';
 
       return {
         slug,
         title: data.title as string,
         date: data.date as string,
         description: (data.description as string) ?? '',
-        lang: (data.lang as 'en' | 'ja') ?? 'en',
+        lang,
         tags: (data.tags as string[] | undefined) ?? [],
+        readingTime: computeReadingTime(content, lang),
         updated: data.updated as string | undefined,
       };
     })

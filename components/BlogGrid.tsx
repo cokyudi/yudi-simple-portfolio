@@ -30,8 +30,14 @@ export default function BlogGrid({ allPosts }: BlogGridProps) {
           aria-label='Blog posts'
           className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
         >
-          {filtered.map((post) => (
-            <BlogCard key={post.slug} {...post} lang={language} />
+          {filtered.map((post, i) => (
+            <BlogCard
+              key={post.slug}
+              {...post}
+              lang={language}
+              featured={i === 0}
+              className={i === 0 ? 'sm:col-span-2 lg:col-span-3' : ''}
+            />
           ))}
         </section>
       )}
