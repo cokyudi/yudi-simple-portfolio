@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import {
   getPostBySlug,
   getAllPostSlugs,
+  getPostAlternates,
   getRelatedPosts,
 } from '@/lib/posts';
 import Badge from '@/components/ui/Badge';
@@ -37,17 +38,12 @@ export async function generateMetadata(
     const { slug } = await params;
     const { frontMatter } = await getPostBySlug(slug);
 
-    // EN/JA posts pair as `slug.mdx` ↔ `slug-ja.mdx`. If both exist, emit
-    // hreflang alternates so Google links the language versions.
-    const allSlugs = new Set(getAllPostSlugs().map((s) => s.slug));
-    const enSlug = slug.endsWith('-ja') ? slug.slice(0, -3) : slug;
-    const jaSlug = `${enSlug}-ja`;
-    const hasPair = allSlugs.has(enSlug) && allSlugs.has(jaSlug);
-    const languages = hasPair
+    const pair = getPostAlternates(slug);
+    const languages = pair
       ? {
-          en: `/blog/${enSlug}`,
-          ja: `/blog/${jaSlug}`,
-          'x-default': `/blog/${enSlug}`,
+          en: `/blog/${pair.en}`,
+          ja: `/blog/${pair.ja}`,
+          'x-default': `/blog/${pair.en}`,
         }
       : undefined;
 

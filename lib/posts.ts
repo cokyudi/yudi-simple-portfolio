@@ -183,6 +183,20 @@ export const getRelatedPosts = cache(
   },
 );
 
+/**
+ * EN/JA posts pair by filename convention: `slug.mdx` ↔ `slug-ja.mdx`. Returns
+ * both slugs when the pair exists, so post metadata and the sitemap declare
+ * hreflang alternates from one place instead of each re-deriving the rule.
+ */
+export const getPostAlternates = cache(
+  (slug: string): { en: string; ja: string } | null => {
+    const slugs = new Set(getAllPostSlugs().map((entry) => entry.slug));
+    const en = slug.endsWith('-ja') ? slug.slice(0, -3) : slug;
+    const ja = `${en}-ja`;
+    return slugs.has(en) && slugs.has(ja) ? { en, ja } : null;
+  },
+);
+
 export const getAllPostSlugs = cache(() => {
   return getPostFileNames().map((file) => ({
     slug: file.replace(/\.mdx$/, ''),
