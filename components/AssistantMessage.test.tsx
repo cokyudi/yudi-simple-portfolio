@@ -42,10 +42,10 @@ describe('AssistantMessage', () => {
   });
 
   it('renders links on every render, not just the first', () => {
-    // Note: this does not by itself prove the regex is not shared. A drained
-    // exec loop resets lastIndex when it returns null, so sequential renders
-    // are safe either way — the per-call regex guards against interleaved
-    // concurrent renders, which cannot be reproduced synchronously here.
+    // Note: this does not by itself prove the regex is safe to share. matchAll
+    // clones it rather than advancing lastIndex, so sequential renders would
+    // pass either way; the guarantee matters for interleaved concurrent
+    // renders, which cannot be reproduced synchronously here.
     const { unmount } = render(<AssistantMessage text='first https://one.com' />);
     expect(screen.getByRole('link')).toHaveAttribute('href', 'https://one.com');
     unmount();

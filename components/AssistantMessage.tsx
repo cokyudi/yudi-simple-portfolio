@@ -1,11 +1,9 @@
 import { Fragment, type ReactNode } from 'react';
 
 // Markdown links [label](url) and bare URLs, so neither renders as raw syntax.
-// Kept as a source string and compiled per call: a shared /g regex carries
-// lastIndex between renders, which makes it mutable state shared across
-// concurrent renders.
-const LINK_PATTERN_SOURCE =
-  '\\[([^\\]]+)\\]\\((https?://[^\\s)]+)\\)|(https?://[^\\s)]+)';
+// Read with matchAll, which clones the regex rather than advancing lastIndex on
+// this shared constant — exec() would make it mutable state across renders.
+const LINK_PATTERN = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
 
 /**
  * Assistant replies are plain text with occasional links — far short of
@@ -13,15 +11,10 @@ const LINK_PATTERN_SOURCE =
  * broken. This linkifies just that much.
  */
 export default function AssistantMessage({ text }: { text: string }) {
-  const pattern = new RegExp(LINK_PATTERN_SOURCE, 'g');
   const parts: ReactNode[] = [];
   let cursor = 0;
 
-  for (
-    let match = pattern.exec(text);
-    match !== null;
-    match = pattern.exec(text)
-  ) {
+  for (const match of text.matchAll(LINK_PATTERN)) {
     const [whole, label, markdownUrl, bareUrl] = match;
     const start = match.index;
 
