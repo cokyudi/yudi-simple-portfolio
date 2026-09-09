@@ -43,11 +43,42 @@ body {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Chat avatar: 5-frame blink strip, stepped rather than interpolated. The strip
+   is SVG — the source art is only ~91px per head, so a raster export went soft
+   on 2x/3x displays; see scripts/build-chat-avatar.mjs.
+   Sized in percentages, not pixels, so the class works at any box size.
+   Holding the first frame for 80% of the cycle gives a long idle with an
+   occasional blink. */
+.chat-avatar {
+  background-image: url('/images/chat-avatar.svg');
+  /* The artwork is line art drawn on the light page colour, so the plate stays
+     light in both themes - on a dark surface the black hair loses its
+     silhouette. Same reason a profile photo doesn't invert in dark mode. */
+  background-color: #faf6ec;
+  background-size: 500% 100%;
+  background-repeat: no-repeat;
+  animation: chat-avatar 4s steps(5, jump-none) infinite;
+}
+
+@keyframes chat-avatar {
+  0%,
+  80% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+
+  .chat-avatar {
+    animation: none;
   }
 }
 
