@@ -53,7 +53,7 @@ export default function Chat() {
         <div
           role='dialog'
           aria-label={t.title}
-          className='fixed bottom-24 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
+          className='fixed bottom-32 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
         >
           <div className='flex items-center justify-between border-b-2 border-ink bg-surface px-4 py-3'>
             <span className='font-display font-bold text-fg'>{t.title}</span>
@@ -140,11 +140,26 @@ export default function Chat() {
       <button
         ref={toggleRef}
         onClick={() => (open ? close() : setOpen(true))}
-        aria-label={t.open}
+        aria-label={open ? t.close : t.open}
         aria-expanded={open}
-        className='fixed bottom-4 right-4 z-40 border-2 border-ink bg-accent px-4 py-3 font-display font-bold text-on-accent shadow-retro transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+        className='fixed bottom-4 right-4 z-40 flex flex-col items-center transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
       >
-        {open ? t.close : t.open}
+        {/* The label lives in the bubble, so the face reads as the thing
+            speaking rather than an ornament sitting beside a button. The face
+            stays put when the panel opens - only the wording changes - so the
+            toggle never turns into a different-looking control, and toggleRef
+            stays mounted for focus return on close. */}
+        <span className='relative border-2 border-ink bg-accent px-3 py-1.5 font-display text-sm font-bold text-on-accent shadow-retro-sm'>
+          {open ? t.close : t.open}
+          <span
+            aria-hidden
+            className='absolute left-1/2 top-full h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rotate-45 border-b-2 border-r-2 border-ink bg-accent'
+          />
+        </span>
+        <span
+          aria-hidden
+          className='chat-avatar mt-1 h-16 w-16 border-2 border-ink shadow-retro-sm'
+        />
       </button>
     </>
   );
