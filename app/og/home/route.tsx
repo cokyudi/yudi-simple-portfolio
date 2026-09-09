@@ -43,7 +43,7 @@ export async function GET() {
 
         <img
           src={profileImageSrc}
-          alt='Yudi Dharma Putra profile photo'
+          alt='Illustrated portrait of Yudi Dharma Putra'
           width={300}
           height={300}
           style={{

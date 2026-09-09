@@ -44,7 +44,7 @@ export default function About({ posts }: AboutProps) {
       <div className='flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'>
         <Image
           src={profile}
-          alt='profile photo of Yudi Dharma Putra'
+          alt='Illustrated portrait of Yudi Dharma Putra'
           priority
           className='rounded-full border-2 border-ink shadow-retro'
           width={250}
