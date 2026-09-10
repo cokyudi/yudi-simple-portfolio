@@ -17,6 +17,7 @@ export default function Chat() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const close = () => {
     cancel();
@@ -32,6 +33,30 @@ export default function Chat() {
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
+  }, [open]);
+
+  // iOS anchors `fixed` elements to the layout viewport, so the on-screen
+  // keyboard covers the bottom of the panel instead of pushing it up. Follow
+  // the visual viewport instead: sit just above the keyboard and shrink to the
+  // space that is left. Values mirror the `bottom-32` / `h-[28rem]` fallback.
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!open || !vv) return;
+    const sync = () => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      const keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      const gap = keyboard > 0 ? 8 : 128; // only clear the toggle while it is visible
+      panel.style.bottom = `${keyboard + gap}px`;
+      panel.style.height = `${Math.min(448, vv.height - gap - 16)}px`;
+    };
+    sync();
+    vv.addEventListener('resize', sync);
+    vv.addEventListener('scroll', sync);
+    return () => {
+      vv.removeEventListener('resize', sync);
+      vv.removeEventListener('scroll', sync);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -51,6 +76,7 @@ export default function Chat() {
         // and focus is not trapped, so claiming modality would mislead screen
         // readers into hiding content that is still reachable.
         <div
+          ref={panelRef}
           role='dialog'
           aria-label={t.title}
           className='fixed bottom-32 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
@@ -124,7 +150,7 @@ export default function Chat() {
               placeholder={t.placeholder}
               aria-label={t.placeholder}
               maxLength={MAX_INPUT_CHARS}
-              className='min-w-0 flex-1 border-2 border-ink bg-surface px-3 py-2 text-sm text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+              className='min-w-0 flex-1 border-2 border-ink bg-surface px-3 py-2 text-base text-fg sm:text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
             />
             <button
               type='submit'
