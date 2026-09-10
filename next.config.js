@@ -24,6 +24,8 @@ const securityHeaders = [
 
 module.exports = {
   reactStrictMode: true,
+  // Lets phones on the LAN load /_next/* from `next dev`; dev-only, ignored in production.
+  allowedDevOrigins: ['192.168.*.*', '10.*.*.*'],
   images: {
     qualities: [75, 80],
   },
