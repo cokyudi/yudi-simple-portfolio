@@ -62,19 +62,12 @@ export async function POST(req: Request) {
     .filter((m) => m.role === 'user' || m.role === 'assistant')
     .map((m) => ({ role: m.role, content: String(m.content).slice(0, MAX_INPUT_CHARS) }));
 
-  try {
-    const result = streamText({
-      model: google('gemini-2.5-flash'),
-      system: SYSTEM_PROMPT + getKnowledge(),
-      messages: cleaned,
-      maxOutputTokens: 500,
-      temperature: 0.3,
-    });
-    return result.toTextStreamResponse();
-  } catch {
-    return Response.json(
-      { error: 'The assistant is unavailable right now. Please try again later.' },
-      { status: 502 },
-    );
-  }
+  const result = streamText({
+    model: google('gemini-2.5-flash'),
+    system: SYSTEM_PROMPT + getKnowledge(),
+    messages: cleaned,
+    maxOutputTokens: 500,
+    temperature: 0.3,
+  });
+  return result.toTextStreamResponse();
 }
