@@ -23,6 +23,8 @@ export type Project = {
   id: ProjectId;
   name: string;
   url: string;
+  // Localized landing page for JA mode; falls back to `url`.
+  urlJa?: string;
   tech: string[];
 };
 
@@ -41,7 +43,8 @@ export const userData: {
       id: 'tangocho',
       name: 'tangocho (単語帳)',
       url: 'https://tangocho.yudidputra.com',
-      tech: ['Next.js', 'TypeScript', 'Supabase', 'Gemini', 'PWA'],
+      urlJa: 'https://tangocho.yudidputra.com/?lang=ja',
+      tech: ['Next.js', 'TypeScript', 'Supabase', 'Gemini', 'Web Speech API', 'PWA'],
     },
     {
       id: 'portfolio',
