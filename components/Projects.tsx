@@ -32,7 +32,7 @@ export default function Projects() {
               }
             >
               <a
-                href={project.url}
+                href={language === 'ja' ? (project.urlJa ?? project.url) : project.url}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='font-display font-bold text-lg text-fg hover:text-accent transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
