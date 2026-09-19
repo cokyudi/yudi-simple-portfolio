@@ -16,7 +16,8 @@ npm run test:watch
 
 Tests are Vitest with jsdom + Testing Library, configured in `vitest.config.mts`.
 They cover the pure logic — `lib/format.ts`, `lib/posts.ts`, `lib/chat-client.ts`
-(with a mocked fetch) and `components/AssistantMessage.tsx` — not page rendering.
+(with a mocked fetch), `components/AssistantMessage.tsx` and the guardrails in
+`app/api/chat/route.ts` (with `ai` and `lib/knowledge.ts` mocked) — not page rendering.
 Two notes:
 
 - `lib/posts.ts` imports `server-only`, which throws outside an RSC build, so
@@ -98,7 +99,7 @@ Dark/light mode via `next-themes` with Tailwind `darkMode: 'class'`. `ThemeProvi
 
 ## AI Assistant
 
-The "Ask about Yudi" chat is split four ways: `components/Chat.tsx` is the toggle and the open/closed state, `components/ChatPanel.tsx` is the conversation view, `hooks/useChat.ts` owns conversation state and cancellation, and `lib/chat-client.ts` does the fetch + stream decode. `ChatPanel` is mounted only while the widget is open, so its "on open" behaviour (focus, keyboard inset, Escape) is plain mount behaviour and it owns its own refs — but `useChat` stays in `Chat.tsx`, because the conversation has to survive the panel unmounting. `components/AssistantMessage.tsx` linkifies replies. Shared client/server limits live in `constants/chat.ts` — `MAX_INPUT_CHARS` caps both the input's `maxLength` and the route's truncation, so they can't drift. The route is `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`generateText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
+The "Ask about Yudi" chat is split four ways: `components/Chat.tsx` is the toggle and the open/closed state, `components/ChatPanel.tsx` is the conversation view, `hooks/useChat.ts` owns conversation state and cancellation, and `lib/chat-client.ts` does the fetch + stream decode. `ChatPanel` is mounted only while the widget is open, so its "on open" behaviour (focus, keyboard inset, Escape) is plain mount behaviour and it owns its own refs — but `useChat` stays in `Chat.tsx`, because the conversation has to survive the panel unmounting. `components/AssistantMessage.tsx` linkifies replies. Shared client/server limits live in `constants/chat.ts` — `MAX_INPUT_CHARS` caps both the input's `maxLength` and the route's truncation, so they can't drift. The route is `app/api/chat/route.ts`, which calls **Gemini** (`gemini-2.5-flash`) via the **AI SDK v6** (`streamText` from `ai` + `@ai-sdk/google`). Grounding comes from `lib/knowledge.ts` (curated `knowledge/` files + all `posts/`, globbed — new posts are included automatically). The system prompt is **scoped**: answer only from context, decline off-topic. Guardrails: per-IP in-memory rate limit, input-length cap, output-token cap.
 
 The chat panel is a non-modal dialog: it sets `role='dialog'` and moves focus to the input on open, closes on Escape, and returns focus to the toggle. It deliberately omits `aria-modal` and a focus trap — the rest of the page stays interactive, so claiming modality would tell screen readers to hide content that is still reachable. A backdrop overlay was considered and rejected for the same reason: dimming a background that stays clickable and screen-reader-reachable would tell sighted users it is inert when it is not.
 
