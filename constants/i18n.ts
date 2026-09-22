@@ -47,6 +47,7 @@ const en = {
     rag: 'RAG',
     react: 'React',
     'web-development': 'Web development',
+    'web-speech': 'Web Speech API',
   },
   contact: {
     heading: 'Let’s work together',
@@ -218,6 +219,7 @@ const ja: Translations = {
     rag: 'RAG',
     react: 'React',
     'web-development': 'Web開発',
+    'web-speech': 'Web Speech API',
   },
   contact: {
     heading: '一緒に働きましょう',
