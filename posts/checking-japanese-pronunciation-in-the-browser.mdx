@@ -1,0 +1,158 @@
+---
+title: "What Breaks When You Check Japanese Pronunciation in the Browser"
+date: "2026-09-22"
+description: "I mumbled nonsense at my vocabulary app and it said I was right. Three bugs from building Japanese speech practice with the Web Speech API."
+tags: ["web-speech", "frontend", "nextjs", "japan"]
+---
+
+## The App Told Me I Was Right
+
+I mumbled らきょう into my phone. The app showed a ✓.
+
+The word was 妥協 — *dakyō*, compromise. What I said was not that. It wasn't close enough that a person would have nodded it through, and the whole point of the feature is that it's supposed to know the difference.
+
+Which is worse than a normal bug. A crash tells you something is wrong. A false ✓ tells you that you've learned a word you haven't — in the one tool whose entire job is keeping an honest record of what I know. It doesn't just fail, it quietly corrupts the thing it's measuring.
+
+The cause was one line I had written feeling clever:
+
+```ts
+r.maxAlternatives = 5;
+```
+
+Speech recognizers return a ranked list of guesses. Five felt generous — surely letting the runner-ups count makes the check more forgiving of my accent? It made the check meaningless. 妥協 was sitting fourth in that list, so my mumble passed.
+
+The recognizer wasn't wrong. My question was. I don't want to know whether the right word was *somewhere in the recognizer's mind*. I want to know whether it's what I **said**. One alternative, judge that.
+
+<Figure
+  src="/images/blog/speak-mode-web-speech-api.webp"
+  alt="Anime illustration of a student at a desk with headphones, an open notebook and a pen"
+  caption="Vocabulary drilling, minus the part where you say it out loud."
+  priority
+/>
+
+## What I Was Building
+
+[tangocho](https://tangocho.yudidputra.com) is my Japanese vocabulary app. It now has a **Speak mode**: it shows you the meaning, you say the word out loud, it tells you whether you said it right, then it reads the word back to you in Japanese.
+
+<Figure
+  src="/images/blog/tangocho-speak-card.webp"
+  alt="tangocho's Speak mode card: a Flip/Speak toggle, the prompt “Say it in Japanese”, the meaning of the word, and a Speak button with a microphone icon"
+  caption="The card shows only the meaning. The Japanese is supposed to come out of your mouth."
+/>
+
+There's no speech API in it. No Whisper, no Google Speech-to-Text, no audio upload, no per-minute pricing, no storage bucket full of my own voice — just two browser APIs and about seventy lines of string comparison. That's partly because tangocho runs on free tiers for exactly one user, and partly because I'm not grading my accent. I'm trying to remember whether "compromise" is 妥協 and produce it out loud from the meaning alone. Recall only needs a yes or no.
+
+It's the same argument I made about [doing RAG with no vector database](/blog/rag-without-a-vector-database): the cheap version is often the correct one.
+
+The playback half is four lines, because `speechSynthesis` has shipped everywhere for years:
+
+```ts
+// lib/speech.ts
+export function speak(text: string) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ja-JP';
+  speechSynthesis.speak(u);
+}
+```
+
+That plays the card's reading — the kana, falling back to the term — when the answer is revealed. No audio files, nothing to host, nothing to store.
+
+One thing worth being precise about, since "in-browser" is easy to oversell: **I never receive your audio, but the browser may still send it somewhere.** Chrome's recognition is largely server-side — the audio goes to Google, the way it does for any dictation box. On iOS it runs through the system dictation stack. What I can say honestly is that tangocho itself uploads nothing, stores nothing, and pays nothing. The privacy boundary is the browser's, not mine, and that's worth knowing before you put a microphone in your app.
+
+The listening half is where all three bugs live.
+
+## Judging Is String Comparison, Not ML
+
+Recognition hands back a transcript. Deciding whether it's correct is where the actual product logic lives, and it's embarrassingly plain:
+
+```ts
+// Katakana → hiragana, drop whitespace/punctuation, so ショクジ matches しょくじ.
+export function normalize(s: string) {
+  return s
+    .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
+    .replace(/[\s\p{P}]/gu, '');
+}
+
+export function isMatch(raw: string, word: { term: string; reading: string | null }) {
+  const heard = normalize(raw);
+  return [word.term, word.reading]
+    .filter(Boolean)
+    .map((t) => normalize(t!))
+    .some((t) => heard === t || (t.length >= 2 && heard.includes(t)));
+}
+```
+
+Two decisions in there earned their place. Katakana and hiragana are the same sounds, so ショクジ coming back for しょくじ is a match, not a miss. And a word inside a longer phrase counts — answering 食べ物です instead of 食べ物 still means I said it — but only for words of two characters or more, because a single kana matches almost any sentence by accident.
+
+## Bug #2: It Rejected Answers I Got Right
+
+Japanese is full of homophones, and the recognizer has to commit to kanji for a sound with no context to go on. Say 感傷 — *kanshō*, sentimentality — and you'll often get back 鑑賞, *kanshō*, appreciation. Different word, identical reading. I said it perfectly and got an ✗.
+
+The fix is to compare readings rather than characters: look the heard term up in Jisho, and if the kanji differ but the readings match, accept it.
+
+That lookup is async, which immediately created a smaller, meaner bug. The card flashed ✗ and then corrected itself to ✓ half a second later. Technically accurate, psychologically awful — you've already felt wrong. So the result has three states, not two:
+
+```ts
+if (isKana(heard)) return setSpoken({ text: heard, status: 'miss' });
+
+setSpoken({ text: heard, status: 'checking' });
+const reading = await lookupReading(heard);
+if (heardId.current !== id) return;
+if (reading && normalize(reading) === normalize(word.reading ?? word.term)) {
+  // Show the reading, not the kanji the recognizer happened to pick.
+  return setSpoken({ text: reading, status: 'match', note: 'same reading' });
+}
+```
+
+A spinner while it checks. Never a verdict it might take back. (The `heardId` guard is there because you can hit the mic again before Jisho answers — the stale reply has to lose.)
+
+## Bug #3: Safari Never Fires isFinal
+
+Here is the entire recognizer setup, scars included:
+
+```ts
+export function createRecognition(): Recognition | null {
+  const w = window as unknown as Record<string, (new () => Recognition) | undefined>;
+  const Ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+  if (!Ctor) return null;
+  const r = new Ctor();
+  r.lang = 'ja-JP';
+  r.maxAlternatives = 1;   // ← bug #1
+  r.interimResults = true; // ← bug #3
+  return r;
+}
+```
+
+`SpeechRecognition` is still vendor-prefixed in some browsers and still missing from TypeScript's DOM types, so I declare the handful of members I actually touch.
+
+That last line is the Safari fix. On Chrome the recognizer fires a final result and you're done. On Safari, in my testing, it just… keeps going: interim results, forever, never marking one final. So the first build worked perfectly on my laptop and produced absolutely nothing on my phone — which is the only place I actually use the app.
+
+The fix was to stop waiting for an `isFinal` that might never arrive. Keep the latest interim transcript, close the mic after a beat of silence, and report whatever I'm holding when the recognizer ends:
+
+```ts
+r.onresult = (e) => {
+  latest = e.results[0][0]?.transcript ?? null;
+  clearTimers();
+  if (e.results[0].isFinal) r.stop();
+  else timers.current.push(setTimeout(() => r.stop(), 1200));
+};
+r.onend = () => { setListening(false); if (latest) onResult(latest); };
+```
+
+Plus a ten-second safety net, because a microphone nobody closes is a bug with a battery cost.
+
+Safari has one more trap: it throws `service-not-allowed` unless Dictation is enabled in system settings, which no user will ever guess from a dead button. That error maps to a hint telling them where to look, and "Show answer" keeps working regardless. Any feature standing on a hardware permission needs a plan for the browser saying no.
+
+## What It Costs, and What It Can't Do
+
+Nothing, and quite a lot respectively. A daily-use pronunciation check, in the browser, at zero marginal cost, in roughly 170 lines across three files — with real limits:
+
+- **No accent feedback.** It tells me *what* it heard, not *how well* I said it. Flat intonation a Japanese listener would notice sails straight through.
+- **Uneven browser support.** Chrome and iOS are fine; Firefox has no implementation; Safari needs that system setting first.
+- **The recognizer sets the floor.** Mishear a word I said perfectly and I eat a false negative — which is why homophones needed the reading lookup, and why a "Try again" button matters more than a score.
+
+The day I want real pronunciation scoring — pitch accent, per-mora feedback, the things a learner actually plateaus on — this all goes in the bin, and I'll be paying for a speech model, uploading audio, and writing a privacy policy to match.
+
+Looking back, all three bugs were the same mistake wearing different clothes: I kept treating the recognizer's output as a verdict when it's only evidence. Five guesses aren't five answers. The kanji it picked isn't the word I said. A result it hasn't labelled final is still a result. Once I stopped asking the recognizer to be right and started asking it what it heard, the rest was string comparison.
