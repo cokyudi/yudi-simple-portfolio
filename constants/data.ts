@@ -44,7 +44,7 @@ export const userData: {
       name: 'tangocho (単語帳)',
       url: 'https://tangocho.yudidputra.com',
       urlJa: 'https://tangocho.yudidputra.com/?lang=ja',
-      tech: ['Next.js', 'TypeScript', 'Supabase', 'Gemini', 'Web Speech API', 'PWA'],
+      tech: ['Next.js', 'TypeScript', 'Supabase', 'Gemini', 'Web Speech API', 'Web Push', 'PWA'],
     },
     {
       id: 'portfolio',
