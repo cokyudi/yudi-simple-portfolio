@@ -128,7 +128,7 @@ const en = {
     heading: 'Projects',
     subtitle: 'Things I’ve designed and built.',
     tangocho:
-      'A Japanese vocabulary PWA with AI word capture (Gemini + Jisho), SM-2 spaced repetition, and speaking practice that checks your pronunciation — built for my daily life in Japan.',
+      'A Japanese vocabulary PWA where AI “friends” I create slip four new words into a daily message, plus AI word capture (Gemini + Jisho), SM-2 spaced repetition, and speaking practice that checks your pronunciation — built for my daily life in Japan.',
     portfolio:
       'This bilingual portfolio and blog, including the “Ask about Yudi” AI assistant and a full SEO/structured-data setup. Open source.',
   },
@@ -300,7 +300,7 @@ const ja: Translations = {
     heading: 'プロジェクト',
     subtitle: '自分で設計・開発したもの。',
     tangocho:
-      '日本語の単語をAI（Gemini + Jisho）で取り込み、SM-2の間隔反復と音声での発音練習で覚えるPWA。日本での日常のために自作。',
+      'AIの「友だち」が毎日ひとことで新しい単語を4つ届けてくれる、日本語の単語PWA。AI（Gemini + Jisho）での取り込み、SM-2の間隔反復、音声での発音練習にも対応。日本での日常のために自作。',
     portfolio:
       'このバイリンガルなポートフォリオ＆ブログ。「Yudiについて質問」AIアシスタントとSEO・構造化データ一式を含む。オープンソース。',
   },
