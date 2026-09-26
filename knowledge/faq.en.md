@@ -30,4 +30,5 @@ Yes — he's actively open to new full-stack engineering roles (Tokyo-based or r
 - E-Contract Management System (800+ paid users) at TREASURY.
 - A document-management compliance platform for enterprise & government clients.
 - TELFLOW telecom CRM customizations used by 10,000+ end users at DGIT/CSG.
+- tangocho (単語帳, https://tangocho.yudidputra.com), his Japanese vocabulary PWA: AI "friends" he creates each send four new words a day, checked against Jisho and pushed at 07:00 JST, plus AI word capture, SM-2 spaced repetition and a pronunciation-checking Speak mode. Next.js, Supabase, Gemini, all on free tiers.
 - This portfolio site itself: Next.js, TypeScript, Tailwind, MDX blog, Lighthouse ~96.

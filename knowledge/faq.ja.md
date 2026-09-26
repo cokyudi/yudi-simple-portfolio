@@ -28,4 +28,5 @@ Meets Consultingでは単独開発者としてAI統合型の社内ツールを�
 - TREASURYでの電子契約管理システム（有料ユーザー800名以上）。
 - 企業・官公庁向けの文書管理コンプライアンスプラットフォーム。
 - DGIT/CSGでのTELFLOW通信CRMのカスタマイズ（エンドユーザー1万人以上が利用）。
+- tangocho（単語帳、https://tangocho.yudidputra.com/?lang=ja）：自作の日本語単語PWA。自分で作ったAIの「友だち」が毎日4つの新しい単語を届け（Jishoで確認済み、毎朝7時にプッシュ通知）、AIでの単語取り込み、SM-2の間隔反復、発音を判定するSpeak modeも備える。Next.js、Supabase、Gemini、すべて無料枠で運用。
 - このポートフォリオサイト自体：Next.js, TypeScript, Tailwind, MDXブログ、Lighthouse 約96点。
