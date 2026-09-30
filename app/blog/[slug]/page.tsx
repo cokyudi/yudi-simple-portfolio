@@ -126,7 +126,7 @@ export default async function BlogPostPage({
   const relatedPosts = getRelatedPosts(slug, lang);
 
   return (
-    <div className='max-w-4xl mx-auto px-5 py-10'>
+    <div lang={lang} className='max-w-4xl mx-auto px-5 py-10'>
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
