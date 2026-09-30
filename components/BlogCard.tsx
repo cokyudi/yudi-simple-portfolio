@@ -40,7 +40,6 @@ export default function BlogCard({
   return (
     <Link
       href={`/blog/${slug}`}
-      aria-label={`${t.readPost}: ${title}`}
       onClick={onClick}
       className={`group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper ${className}`}
     >
