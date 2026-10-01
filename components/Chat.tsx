@@ -58,7 +58,7 @@ export default function Chat() {
         </span>
         <span
           aria-hidden
-          className='chat-avatar mt-1 h-16 w-16 border-2 border-ink shadow-retro-sm'
+          className='chat-avatar mt-1 h-24 w-24'
         />
       </button>
     </>
