@@ -37,8 +37,8 @@ export default function ChatPanel({
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Matches the `h-[28rem]` / `bottom-32` fallback below.
-  useKeyboardInset(panelRef, { maxHeight: 448, gap: 128 });
+  // Matches the `h-[28rem]` / `bottom-40` fallback below (clears the 96px avatar + bubble).
+  useKeyboardInset(panelRef, { maxHeight: 448, gap: 160 });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -64,7 +64,7 @@ export default function ChatPanel({
       ref={panelRef}
       role='dialog'
       aria-label={t.title}
-      className='fixed bottom-32 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
+      className='fixed bottom-40 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
     >
       <div className='flex items-center justify-between border-b-2 border-ink bg-surface px-4 py-3'>
         <span className='font-display font-bold text-fg'>{t.title}</span>

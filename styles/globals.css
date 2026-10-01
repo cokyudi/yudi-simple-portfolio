@@ -53,10 +53,10 @@ body {
    occasional blink. */
 .chat-avatar {
   background-image: url('/images/chat-avatar-pixel.webp');
-  /* The plate stays light in both themes: on a dark surface the black hair and
-     black shirt lose their silhouette. Same reason a profile photo doesn't
-     invert in dark mode. */
-  background-color: #faf6ec;
+  /* No plate: the sprite is cut out, and a white outline traced around its
+     silhouette (four 2px drop-shadows) keeps the black hair and shirt readable
+     on the dark theme without a box around him on the light one. */
+  filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
   background-size: 500% 100%;
   background-repeat: no-repeat;
   animation: chat-avatar 4s steps(5, jump-none) infinite;
