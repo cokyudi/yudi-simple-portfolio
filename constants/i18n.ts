@@ -16,7 +16,6 @@ const en = {
     getInTouch: 'Get in touch',
     current: 'Current',
     present: 'Present',
-    openToWork: 'Open to work',
   },
   blog: {
     heading: 'Blog',
@@ -49,9 +48,9 @@ const en = {
     'web-speech': 'Web Speech API',
   },
   contact: {
-    heading: 'Let’s work together',
+    heading: 'Let’s talk',
     subtitle:
-      'I’m open to new full-stack engineering roles and interesting collaborations. Whether you’re hiring or have a project in mind — let’s talk.',
+      'Always happy to chat about web engineering, life in Japan, or something you’re building. Drop me a line.',
     email: 'Email me',
     linkedin: 'Connect on LinkedIn',
   },
@@ -133,13 +132,17 @@ const en = {
   },
   heading: 'Experiences',
   experience: {
+    'ollo-fulltime': {
+      title: 'Web Application Engineer',
+      desc: 'Building Ollo Factory, an AI platform that analyses manufacturing work to help factories improve their processes. React/Next.js on the frontend, talking to a Go backend over GraphQL.',
+    },
     'meets-fulltime': {
       title: 'Senior Full-stack Engineer',
       desc: 'Sole developer of three AI-integrated internal tools in three months (3,300+ automated tests), with Claude Code and E2E agents in the core workflow. Built Gemini + RAG automation on an “AI proposes, deterministic code decides” pattern — e.g. a Google Ads engine that cut AI costs ~85% and delivered measurable weekly ad-spend and CPC reductions.',
     },
     'treasury-fulltime': {
       title: 'Full-stack Engineer',
-      desc: 'Led frontend architecture for B2B/B2G e-signature SaaS (React/TypeScript). Improved page load ~30% and cut production issues ~40% with automated testing and code-review standards. E-Contract platform reached 800+ paid users.',
+      desc: 'Led frontend architecture for B2B/B2G e-signature SaaS (React/TypeScript). Improved page load ~30% and cut production issues ~40% with automated testing and code-review standards.',
     },
     'treasury-parttime': {
       title: 'Part-time Full-stack Engineer',
@@ -187,7 +190,6 @@ const ja: Translations = {
     getInTouch: 'お問い合わせ',
     current: '現職',
     present: '現在',
-    openToWork: 'お仕事募集中',
   },
   blog: {
     heading: 'ブログ',
@@ -220,9 +222,9 @@ const ja: Translations = {
     'web-speech': 'Web Speech API',
   },
   contact: {
-    heading: '一緒に働きましょう',
+    heading: 'お話ししましょう',
     subtitle:
-      '新しいフルスタックエンジニアの職や、面白いコラボレーションを募集しています。採用のご相談でも、プロジェクトのお話でも、お気軽にご連絡ください。',
+      'Web開発のこと、日本での暮らしのこと、いま作っているもののことなど、気軽に話せたら嬉しいです。ご連絡をお待ちしています。',
     email: 'メールする',
     linkedin: 'LinkedInでつながる',
   },
@@ -304,13 +306,17 @@ const ja: Translations = {
   },
   heading: '職務経歴',
   experience: {
+    'ollo-fulltime': {
+      title: 'Webアプリケーションエンジニア',
+      desc: '製造現場の作業をAIで分析し、工場の工程改善を支援するプラットフォーム「Ollo Factory」を開発。フロントエンドはReact/Next.jsで、GoのバックエンドとGraphQLで連携。',
+    },
     'meets-fulltime': {
       title: 'シニアフルスタックエンジニア',
       desc: '3ヶ月で3つのAI統合型社内ツールを単独開発（自動テスト3,300件以上）。Claude CodeとE2Eテストエージェントを開発の中核に。「AIが提案し、決定論的なコードが判断する」パターンでGemini + RAGの自動化を構築——例：AIコストを約85%削減し、週次の広告費とCPCを着実に削減したGoogle Ads運用エンジン。',
     },
     'treasury-fulltime': {
       title: 'フルスタックエンジニア',
-      desc: 'B2B/B2Gの電子契約SaaSのフロントエンド設計・実装をリード（React/TypeScript）。最適化と自動テスト・コードレビュー導入で、ページ読み込みを約30%改善、本番障害を約40%削減。電子契約プラットフォームは有料ユーザー800名以上。',
+      desc: 'B2B/B2Gの電子契約SaaSのフロントエンド設計・実装をリード（React/TypeScript）。最適化と自動テスト・コードレビュー導入で、ページ読み込みを約30%改善、本番障害を約40%削減。',
     },
     'treasury-parttime': {
       title: 'パートタイム・フルスタックエンジニア',

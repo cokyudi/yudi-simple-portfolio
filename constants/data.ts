@@ -1,4 +1,5 @@
 export type ExperienceId =
+  | 'ollo-fulltime'
   | 'meets-fulltime'
   | 'treasury-fulltime'
   | 'treasury-parttime'
@@ -54,6 +55,12 @@ export const userData: {
     },
   ],
   experience: [
+    {
+      id: 'ollo-fulltime',
+      company: '株式会社Ollo',
+      year: '2026-10',
+      companyLink: 'https://ollo.jp/',
+    },
     {
       id: 'meets-fulltime',
       company: 'Meets Consulting Inc.',

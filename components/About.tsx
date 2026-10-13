@@ -10,7 +10,6 @@ import {
 import profile from '@/public/yudi-draw.jpg';
 import { Link } from 'next-view-transitions';
 import Button from '@/components/ui/Button';
-import Badge from '@/components/ui/Badge';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import { userData } from '@/constants/data';
@@ -56,21 +55,6 @@ export default function About({ posts }: AboutProps) {
       </div>
 
       <div className='lg:px-4 lg:mt-12'>
-        <motion.div
-          className='mb-4'
-          initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.5, ease: 'easeOut' }}
-        >
-          <Badge variant='highlight'>
-            <span
-              className='mr-1.5 inline-block h-2 w-2 rounded-full bg-current align-middle'
-              aria-hidden='true'
-            />
-            {t.openToWork}
-          </Badge>
-        </motion.div>
-
         <motion.p
           className='mb-3 font-display font-bold uppercase tracking-widest text-sm text-accent'
           initial={shouldReduceMotion ? false : { x: -30 }}

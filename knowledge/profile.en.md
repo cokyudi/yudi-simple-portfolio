@@ -13,25 +13,31 @@ improving performance, code quality, and maintainability. Experienced with
 RDBMS-backed systems, automated testing, and operating apps in AWS.
 Works in English and Japanese (business level, JLPT N2). Based in Tokyo, Japan.
 
-## Availability
+## Current status
 
-Open to new full-stack engineering opportunities (Tokyo-based or remote) and
-interesting project collaborations. Reach out via email or LinkedIn.
+Employed full-time at Ollo (株式会社Ollo) since October 2026 and not looking for
+new roles. Still happy to talk about engineering. Reach out via email or LinkedIn.
 
-## Most recent role (source of truth: site data)
+## Current role (source of truth: site data)
 
-- **Senior Engineer — Meets Consulting Inc.** (2026-05 – 2026-07).
-  Solo developer who built three AI-integrated internal tools in three months
-  (3,300+ automated tests across Jest, Vitest, Playwright, and Maestro), with AI
-  coding agents (Claude Code) and automated E2E test agents as a core part of the
-  workflow. Integrated Google Gemini + RAG into business-critical automation using
-  an "AI proposes, deterministic code decides" design pattern, so automation never
-  compromises revenue, margin, or data integrity. Tools spanned a B2B logistics
-  matching platform (Next.js/Firebase/GCP/Stripe Connect), a LINE-based marketing
-  CRM (Next.js/Supabase), and a Google Ads automation engine whose RAG learning
-  loop cut AI API costs ~85%.
+- **Web Application Engineer at 株式会社Ollo (Ollo)**, Tokyo. Full-time, on-site,
+  since 2026-10 (current, ongoing). Works on Ollo Factory, an AI platform that
+  analyses manufacturing work to help factories improve their processes. The
+  frontend is React/Next.js and talks to a Go backend over GraphQL.
+  Company site: https://ollo.jp/
 
 ## Experience detail
+
+### Senior Engineer — Meets Consulting Inc. (May 2026 – Jul 2026)
+Solo developer who built three AI-integrated internal tools in three months
+(3,300+ automated tests across Jest, Vitest, Playwright, and Maestro), with AI
+coding agents (Claude Code) and automated E2E test agents as a core part of the
+workflow. Integrated Google Gemini + RAG into business-critical automation using
+an "AI proposes, deterministic code decides" design pattern, so automation never
+compromises revenue, margin, or data integrity. Tools spanned a B2B logistics
+matching platform (Next.js/Firebase/GCP/Stripe Connect), a LINE-based marketing
+CRM (Next.js/Supabase), and a Google Ads automation engine whose RAG learning
+loop cut AI API costs ~85%.
 
 ### Full-stack Engineer (Frontend Specialist) — TREASURY Inc., Tokyo (Dec 2022 – Apr 2026)
 B2B/B2G electronic contract systems replacing paper-based signing with secure
@@ -48,7 +54,7 @@ product, supporting business stakeholders in Japanese.
 - Built invoice generation/management: PDF generation, dynamic numbering, tax calculation, download history.
 - Integrated backend APIs for contract signing, email notifications, queued reminders.
 - Supported AWS ops: EC2 log checks (staging/prod), S3 storage with pre-signed URLs.
-- Key projects: E-Contract Management System (800+ paid users); a document-management compliance platform (enterprise & government).
+- Key projects: E-Contract Management System; a document-management compliance platform (enterprise & government).
 
 ### Frontend Engineer — DGIT Systems / CSG, Bali (Nov 2019 – Mar 2022)
 Solutions Team customizing the core CRM product TELFLOW for telecom clients.

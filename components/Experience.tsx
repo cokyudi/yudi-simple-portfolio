@@ -6,15 +6,18 @@ import { i18n } from '@/constants/i18n';
 import ExperienceCard from '@/components/ExperienceCard';
 import { useLanguage } from '@/context/LanguageContext';
 
-// Editorial bento spans, by position. Default cells are 1x1.
+// Editorial bento spans, by position. Default cells are 1x1. Rows share one
+// height (auto-rows-fr), so the longest descriptions get the wide cells; a long
+// one in a narrow cell stretches its whole row.
 const bentoSpans = [
-  'sm:col-span-2 lg:row-span-2', // 0 — featured (wide + tall on desktop)
-  'sm:col-span-2',               // 1 — wide
-  '',                            // 2
-  '',                            // 3
-  'sm:col-span-2',               // 4 — wide
-  '',                            // 5
-  '',                            // 6
+  'sm:col-span-2', // 0 — featured
+  'sm:col-span-2', // 1
+  'sm:col-span-2', // 2
+  '',              // 3
+  '',              // 4
+  'sm:col-span-2', // 5
+  '',              // 6
+  '',              // 7
 ];
 
 export default function Experience() {
