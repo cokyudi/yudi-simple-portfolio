@@ -49,7 +49,7 @@ export default function ExperienceCard({
     >
       <Card className='relative h-full flex flex-col p-6'>
         <div className='absolute -top-3 left-4'>
-          <Badge variant='neutral'>{period}</Badge>
+          <Badge variant={!endYear && featured ? 'highlight' : 'neutral'}>{period}</Badge>
         </div>
 
         {tag && (
