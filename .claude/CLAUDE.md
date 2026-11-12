@@ -83,7 +83,7 @@ Posts are `.mdx` files in `posts/` compiled at build time via `next-mdx-remote` 
 
 ## Internationalization
 
-Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`.
+Bilingual EN/JA implemented via `LanguageContext` (client-side, localStorage-persisted) — **not** Next.js i18n routing. All copy lives in `constants/i18n.ts`. With no stored choice, the initial language follows `navigator.language` (`ja*` → JA, else EN); the toggle is what persists it.
 
 `i18n.ts` defines `en` first and types `ja` as `Translations = typeof en`, so a key present in one language but missing from the other is a **compile error**, not a silent runtime fallback. Add copy to `en` first and let TypeScript tell you what `ja` still needs.
 
