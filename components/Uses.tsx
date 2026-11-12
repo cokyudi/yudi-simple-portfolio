@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
+import { trackSection } from '@/constants/analytics';
 
 export default function Uses() {
   const { language } = useLanguage();
@@ -10,7 +11,7 @@ export default function Uses() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className='max-w-4xl mx-auto px-5 py-10'>
+    <div {...trackSection('uses')} className='max-w-4xl mx-auto px-5 py-10'>
       <h1 className='text-4xl md:text-5xl font-display font-bold text-fg'>
         {t.heading}
       </h1>

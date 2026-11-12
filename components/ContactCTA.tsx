@@ -5,6 +5,7 @@ import {
   trackContactClick,
   trackCvDownload,
   type ConversionLocation,
+  trackSection,
 } from '@/constants/analytics';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
@@ -32,6 +33,7 @@ export default function ContactCTA({
 
   return (
     <motion.section
+      {...trackSection('contact_cta')}
       className='max-w-5xl mx-auto mt-16 lg:mt-24'
       initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}

@@ -13,6 +13,7 @@ import { OG_VERSION } from '@/constants/og';
 import { SITE_URL } from '@/constants/site';
 import { i18n } from '@/constants/i18n';
 import { formatPostDate, formatReadingTime } from '@/lib/format';
+import { trackSection } from '@/constants/analytics';
 import {
   personSchema,
   breadcrumbSchema,
@@ -154,6 +155,7 @@ export default async function BlogPostPage({
 
       {post.toc.length > 0 && (
         <nav
+          {...trackSection('post_toc')}
           aria-label={t.contents}
           className='mt-8 border-2 border-ink bg-surface/50 p-4'
         >
@@ -170,7 +172,7 @@ export default async function BlogPostPage({
         </nav>
       )}
 
-      <article className='mt-10 border-2 border-ink bg-surface p-6 md:p-8 shadow-retro'>
+      <article {...trackSection('post_body')} className='mt-10 border-2 border-ink bg-surface p-6 md:p-8 shadow-retro'>
         <div className='
           prose prose-lg max-w-none
           prose-headings:font-display
@@ -184,7 +186,7 @@ export default async function BlogPostPage({
       </article>
 
       {relatedPosts.length > 0 && (
-        <section className='mt-14'>
+        <section {...trackSection('related_posts')} className='mt-14'>
           <h2 className='text-2xl font-display font-bold text-fg'>{t.readNext}</h2>
           <div className='mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
             {relatedPosts.map((p) => (

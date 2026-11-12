@@ -116,9 +116,13 @@ On mobile Safari the panel is positioned by `hooks/useKeyboardInset.ts` rather t
 
 GTM loads only when `GTM_ID` is set. **Never call `sendGTMEvent` directly** — use the typed helpers in `constants/analytics.ts` (`trackCvDownload`, `trackContactClick`, `trackBlogClick`, `trackChatMessage`). Parameter values are unions, so a typo like `'blog-post'` fails the build instead of silently splitting a metric across two buckets in GA4. The events are: `cv_download` (CV buttons, with `location`/`lang`) and `contact_click` (hero + footer + ContactCTA, with `method`/`location`). `chat_message` also fires per user turn in `components/Chat.tsx` — it is an engagement metric, **not** a key event in GA4 (it fires per message, so flagging it inflates conversions).
 
-`location` distinguishes where a conversion came from: `hero`, `footer_cta`, `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
+`location` distinguishes where a conversion came from: `hero`, `footer` (icon links), `footer_cta` (homepage ContactCTA), `blog_post`. Always pass it on new CTAs so the GA4 breakdown stays meaningful.
 
 `blog_click` (`components/About.tsx` hero link, `components/LatestPost.tsx`) tracks entry into the blog, with `location` of `hero`, `home_featured`, or `home_view_all` plus the target `slug`. Like `chat_message` it is **navigation, not a conversion** — do not flag it as a key event in GA4.
+
+**Click map (`ui_click`):** `listenForClicks` (mounted once in `app/providers.tsx`) reports every link/button click with `section`, `element`, `label`, `link_url`, `lang`. Mark page regions with `{...trackSection('…')}` and name buttons with `{...trackElement('…', label?)}` — both typed unions in `constants/analytics.ts`. Links need no attribute; their href is the identity. Unsectioned clicks report `section: 'other'`, so a new region shows up in GA4 as a gap rather than silently. Engagement, not a key event; conversions still fire their own events alongside it.
+
+**GTM container:** `gtm/site-events.json` is the importable config — one GA4 Event tag forwarding all five events with every parameter. Edit it rather than hand-building tags in the GTM UI, and register new parameters as GA4 custom dimensions or they will not appear in reports.
 
 ## Path Aliases
 
