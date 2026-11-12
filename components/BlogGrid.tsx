@@ -4,6 +4,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import BlogCard from '@/components/BlogCard';
 import type { BlogPostMeta } from '@/lib/posts';
+import { trackSection } from '@/constants/analytics';
 
 type BlogGridProps = {
   allPosts: BlogPostMeta[];
@@ -15,7 +16,7 @@ export default function BlogGrid({ allPosts }: BlogGridProps) {
   const filtered = allPosts.filter((p) => p.lang === language);
 
   return (
-    <div className='mx-auto max-w-4xl px-5 py-10'>
+    <div {...trackSection('blog_index')} className='mx-auto max-w-4xl px-5 py-10'>
       <header className='mb-10'>
         <h1 className='text-4xl md:text-5xl font-display font-bold text-fg'>
           {t.heading}

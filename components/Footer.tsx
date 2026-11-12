@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from 'next-view-transitions';
-import { trackContactClick } from '@/constants/analytics';
+import { trackContactClick, trackSection } from '@/constants/analytics';
 import { userData } from '@/constants/data';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
@@ -15,7 +15,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className='mt-16 lg:mt-24 border-t-2 border-ink'>
+    <footer {...trackSection('footer')} className='mt-16 lg:mt-24 border-t-2 border-ink'>
       <div className='max-w-4xl mx-auto px-5 py-8 pb-28 flex flex-col gap-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left'>
         <div>
           <p className='font-display font-bold text-fg'>Yudi Dharma Putra</p>

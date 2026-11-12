@@ -6,6 +6,7 @@ import {
   trackBlogClick,
   trackContactClick,
   trackCvDownload,
+  trackSection,
 } from '@/constants/analytics';
 import profile from '@/public/yudi-draw.jpg';
 import { Link } from 'next-view-transitions';
@@ -39,7 +40,7 @@ export default function About({ posts }: AboutProps) {
   }
 
   return (
-    <div className='max-w-5xl mx-auto lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
+    <div {...trackSection('hero')} className='max-w-5xl mx-auto lg:space-x-5 lg:flex lg:flex-row items-center lg:-mx-4 flex flex-col text-center lg:text-left'>
       <div className='flex-shrink-0 lg:mt-12 lg:px-4 mb-10 ml-auto mr-auto'>
         <Image
           src={profile}

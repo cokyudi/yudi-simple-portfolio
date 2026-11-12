@@ -1,5 +1,6 @@
 'use client'
 import { useTheme } from 'next-themes';
+import { trackElement } from '@/constants/analytics';
 
 // The icon is driven by the `dark` class next-themes sets on <html> before
 // first paint, not by React state. That keeps the markup identical on server
@@ -12,6 +13,7 @@ const ThemeSwitch = () => {
     <button
       aria-label='Toggle dark mode'
       type='button'
+      {...trackElement('theme_toggle', resolvedTheme === 'dark' ? 'light' : 'dark')}
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       className='inline-flex items-center justify-center w-11 h-11 p-2.5 border-2 border-ink bg-surface text-fg shadow-retro-sm transition-transform duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
     >

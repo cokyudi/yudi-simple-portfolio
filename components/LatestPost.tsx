@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'next-view-transitions';
 import BlogCard from '@/components/BlogCard';
-import { trackBlogClick } from '@/constants/analytics';
+import { trackBlogClick, trackSection } from '@/constants/analytics';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import { useLatestPost } from '@/hooks/useLatestPost';
@@ -28,6 +28,7 @@ export default function LatestPost({ posts }: LatestPostProps) {
 
   return (
     <motion.section
+      {...trackSection('latest_post')}
       className='max-w-5xl mx-auto mt-16 lg:mt-24 px-5'
       initial={shouldReduceMotion ? false : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}

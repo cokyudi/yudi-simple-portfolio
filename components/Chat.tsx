@@ -5,6 +5,7 @@ import ChatPanel from '@/components/ChatPanel';
 import { useChat } from '@/hooks/useChat';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
+import { trackElement, trackSection } from '@/constants/analytics';
 
 export default function Chat() {
   const { language } = useLanguage();
@@ -39,6 +40,8 @@ export default function Chat() {
 
       <button
         ref={toggleRef}
+        {...trackSection('chat')}
+        {...trackElement('chat_toggle', open ? 'close' : 'open')}
         onClick={() => (open ? close() : setOpen(true))}
         aria-label={open ? t.close : t.open}
         aria-expanded={open}

@@ -7,6 +7,7 @@ import { useKeyboardInset } from '@/hooks/useKeyboardInset';
 import { useLanguage } from '@/context/LanguageContext';
 import { i18n } from '@/constants/i18n';
 import type { ChatMessage } from '@/lib/chat-client';
+import { trackElement, trackSection } from '@/constants/analytics';
 
 interface ChatPanelProps {
   messages: ChatMessage[];
@@ -63,6 +64,7 @@ export default function ChatPanel({
     <div
       ref={panelRef}
       role='dialog'
+      {...trackSection('chat')}
       aria-label={t.title}
       className='fixed bottom-40 right-4 z-40 flex h-[28rem] w-[min(22rem,calc(100vw-2rem))] flex-col border-2 border-ink bg-paper shadow-retro'
     >
@@ -70,6 +72,7 @@ export default function ChatPanel({
         <span className='font-display font-bold text-fg'>{t.title}</span>
         <button
           onClick={onClose}
+          {...trackElement('chat_close')}
           aria-label={t.close}
           className='font-display font-bold text-fg hover:text-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
         >
@@ -90,6 +93,7 @@ export default function ChatPanel({
               <button
                 key={question}
                 onClick={() => send(question)}
+                {...trackElement('chat_suggestion', question)}
                 className='border-2 border-ink bg-surface px-2.5 py-1 text-xs text-fg shadow-retro-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent'
               >
                 {question}
@@ -140,6 +144,7 @@ export default function ChatPanel({
         />
         <button
           type='submit'
+          {...trackElement('chat_send')}
           disabled={loading || !input.trim()}
           className='border-2 border-ink bg-accent px-3 py-2 text-sm font-display font-bold text-on-accent shadow-retro-sm transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none focus:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50'
         >

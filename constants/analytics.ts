@@ -38,3 +38,67 @@ export const trackBlogClick = (location: BlogEntryPoint, slug?: string) =>
 /** Engagement, not a conversion: fires once per user turn in the assistant. */
 export const trackChatMessage = (turn: number) =>
   sendGTMEvent({ event: 'chat_message', turn });
+
+/**
+ * Click map: every link or button click is reported as one `ui_click`, so the
+ * whole site is covered without an onClick per element. Containers name the
+ * part of the page with `data-section`; a control only needs `data-track` when
+ * its href doesn't already say what it is (buttons, mostly). Engagement, not a
+ * conversion — conversions keep their own events above, and fire alongside.
+ */
+export type TrackSection =
+  | 'nav'
+  | 'hero'
+  | 'experience'
+  | 'projects'
+  | 'latest_post'
+  | 'blog_index'
+  | 'post_toc'
+  | 'post_body'
+  | 'related_posts'
+  | 'contact_cta'
+  | 'footer'
+  | 'chat'
+  | 'uses';
+
+/** Named controls; anything unnamed reports as `link` or `button`. */
+export type TrackElement =
+  | 'language_toggle'
+  | 'theme_toggle'
+  | 'chat_toggle'
+  | 'chat_close'
+  | 'chat_suggestion'
+  | 'chat_send';
+
+export const trackSection = (section: TrackSection) => ({ 'data-section': section });
+
+export const trackElement = (element: TrackElement, label?: string) => ({
+  'data-track': element,
+  ...(label && { 'data-label': label }),
+});
+
+/** What a click on `target` reports, or null if it didn't hit a link or button. */
+export const clickPayload = (target: Element) => {
+  const control = target.closest<HTMLElement>('a, button');
+  if (!control) return null;
+  const { track, label } = control.dataset;
+  const href = control.getAttribute('href');
+  return {
+    event: 'ui_click',
+    section: control.closest<HTMLElement>('[data-section]')?.dataset.section ?? 'other',
+    element: track ?? (control.tagName === 'A' ? 'link' : 'button'),
+    ...(label && { label }),
+    ...(href && { link_url: href }),
+    lang: document.documentElement.lang,
+  };
+};
+
+/** Sends a `ui_click` for every link/button click on the page. Returns the cleanup. */
+export const listenForClicks = () => {
+  const onClick = (event: MouseEvent) => {
+    const payload = event.target instanceof Element && clickPayload(event.target);
+    if (payload) sendGTMEvent(payload);
+  };
+  document.addEventListener('click', onClick, { capture: true });
+  return () => document.removeEventListener('click', onClick, { capture: true });
+};
