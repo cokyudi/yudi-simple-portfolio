@@ -19,10 +19,12 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // proper fix is a cookie read server-side, but that would make every page
   // vary per request and give up static prerendering for all 18 posts — not
   // worth it to remove a brief flash of English for returning JA visitors.
+  // With no stored choice, follow the browser language so first-time Japanese
+  // readers land on JA copy; it is not persisted until they toggle.
   useEffect(() => {
-    const stored = localStorage.getItem('language') as Language;
+    const stored = localStorage.getItem('language') as Language | null;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (stored) setLanguage(stored);
+    setLanguage(stored ?? (navigator.language.startsWith('ja') ? 'ja' : 'en'));
   }, []);
 
   // Keep <html lang> in sync with the active UI language for a11y / language

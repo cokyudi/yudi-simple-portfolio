@@ -71,4 +71,14 @@ describe('getRelatedPosts', () => {
     const overlaps = related.map((post) => post.tags.filter((tag) => tags.has(tag)).length);
     expect(overlaps).toEqual([...overlaps].sort((a, b) => b - a));
   });
+
+  it('includes a post from outside the topic whenever one exists', () => {
+    for (const post of getAllPosts()) {
+      const tags = new Set(post.tags);
+      const sharesNone = (p: { tags: string[] }) => p.tags.every((tag) => !tags.has(tag));
+      const candidates = getAllPosts().filter((p) => p.lang === post.lang && p.slug !== post.slug);
+      if (!candidates.some(sharesNone)) continue;
+      expect(getRelatedPosts(post.slug, post.lang).some(sharesNone)).toBe(true);
+    }
+  });
 });

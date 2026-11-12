@@ -163,23 +163,29 @@ export const getAllPosts = cache((): BlogPostMeta[] => {
 
 /**
  * Same-language posts ranked by shared-tag overlap, then newest first. Falls
- * back to purely chronological when a post carries no tags.
+ * back to purely chronological when a post carries no tags. The last slot
+ * goes to the newest post sharing no tags, so readers of a career post also
+ * see an engineering one (and vice versa) instead of only more of the same.
  */
 export const getRelatedPosts = cache(
   (slug: string, lang: 'en' | 'ja', limit = 3): BlogPostMeta[] => {
     const post = getAllPosts().find((p) => p.slug === slug);
     const tags = new Set(post?.tags ?? []);
 
-    return getAllPosts()
+    const ranked = getAllPosts()
       .filter((p) => p.lang === lang && p.slug !== slug)
       .map((p) => ({ post: p, shared: p.tags.filter((tag) => tags.has(tag)).length }))
       .sort(
         (a, b) =>
           b.shared - a.shared ||
           new Date(b.post.date).getTime() - new Date(a.post.date).getTime(),
-      )
-      .slice(0, limit)
-      .map((ranked) => ranked.post);
+      );
+
+    const top = ranked.slice(0, limit);
+    const outside = ranked.find((r) => r.shared === 0);
+    if (limit > 1 && outside && !top.includes(outside)) top[limit - 1] = outside;
+
+    return top.map((r) => r.post);
   },
 );
 
