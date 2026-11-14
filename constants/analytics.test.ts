@@ -1,5 +1,13 @@
-import { describe, expect, it } from 'vitest';
-import { clickPayload } from '@/constants/analytics';
+import { describe, expect, it, vi } from 'vitest';
+import { clickPayload, listenForClicks, trackCvDownload } from '@/constants/analytics';
+
+const pushes = vi.hoisted((): Record<string, unknown>[] => []);
+vi.mock('@next/third-parties/google', () => ({
+  sendGTMEvent: (data: Record<string, unknown>) => pushes.push(data),
+}));
+
+/** What GTM's Data Layer Variables read after the pushes so far: a key keeps its last value. */
+const dataLayerState = () => Object.assign({}, ...pushes);
 
 const render = (html: string) => {
   document.body.innerHTML = html;
@@ -31,5 +39,26 @@ describe('clickPayload', () => {
     render(`<p>text</p><a href="/x">x</a>`);
     expect(clickPayload(document.querySelector('p')!)).toBeNull();
     expect(clickPayload(document.querySelector('a')!)).toMatchObject({ section: 'other' });
+  });
+});
+
+describe('data layer pushes', () => {
+  it('do not carry parameters over from earlier events', () => {
+    render(`<div data-section="chat"><button data-track="chat_toggle" data-label="close">x</button></div>
+      <nav data-section="nav"><a href="/blog">blog</a></nav>`);
+    // jsdom can't navigate; the capture-phase listener has already run by then.
+    document.querySelector('a')!.addEventListener('click', (e) => e.preventDefault());
+    const stop = listenForClicks();
+    document.querySelector('button')!.click();
+    document.querySelector('a')!.click();
+    stop();
+
+    expect(dataLayerState()).toMatchObject({ event: 'ui_click', element: 'link', link_url: '/blog' });
+    expect(dataLayerState().label).toBeUndefined();
+
+    trackCvDownload('hero', 'en');
+    expect(dataLayerState()).toMatchObject({ event: 'cv_download', location: 'hero', lang: 'en' });
+    expect(dataLayerState().section).toBeUndefined();
+    expect(dataLayerState().link_url).toBeUndefined();
   });
 });
