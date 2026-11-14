@@ -122,6 +122,8 @@ GTM loads only when `GTM_ID` is set. **Never call `sendGTMEvent` directly** — 
 
 **Click map (`ui_click`):** `listenForClicks` (mounted once in `app/providers.tsx`) reports every link/button click with `section`, `element`, `label`, `link_url`, `lang`. Mark page regions with `{...trackSection('…')}` and name buttons with `{...trackElement('…', label?)}` — both typed unions in `constants/analytics.ts`. Links need no attribute; their href is the identity. Unsectioned clicks report `section: 'other'`, so a new region shows up in GA4 as a gap rather than silently. Engagement, not a key event; conversions still fire their own events alongside it.
 
+**Data layer resets:** GTM keeps the last pushed value of every key, and the one GA4 tag reads all of them on every event, so every helper pushes through `push()` in `constants/analytics.ts`, which sets unused keys to `undefined`. A new event parameter must be added to its `EMPTY` map (and to the GTM container) or it will leak into later events.
+
 **GTM container:** `gtm/site-events.json` is the importable config — one GA4 Event tag forwarding all five events with every parameter. Edit it rather than hand-building tags in the GTM UI, and register new parameters as GA4 custom dimensions or they will not appear in reports.
 
 ## Path Aliases

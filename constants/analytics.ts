@@ -12,6 +12,29 @@ import type { Language } from '@/constants/i18n';
  * conversion count several times over for a single conversation.
  */
 
+/**
+ * GTM's data layer is a merged state: a key keeps its last pushed value until
+ * something overwrites it, and the one GA4 tag reads every key on every event.
+ * So each push resets the keys it doesn't use — otherwise a link click after a
+ * chat toggle reports `label: 'close'`, and `cv_download` inherits the
+ * `section` of the `ui_click` fired by the same click. Mirrors the Data Layer
+ * Variables in `gtm/site-events.json`.
+ */
+const EMPTY = {
+  location: undefined,
+  lang: undefined,
+  method: undefined,
+  slug: undefined,
+  turn: undefined,
+  section: undefined,
+  element: undefined,
+  label: undefined,
+  link_url: undefined,
+};
+
+const push = (payload: { event: string } & Partial<Record<keyof typeof EMPTY, unknown>>) =>
+  sendGTMEvent({ ...EMPTY, ...payload });
+
 /** Where on the site a conversion happened. */
 export type ConversionLocation = 'hero' | 'footer' | 'footer_cta' | 'blog_post';
 
@@ -23,21 +46,20 @@ export type BlogEntryPoint = 'hero' | 'home_featured' | 'home_view_all';
 
 /** Conversion: the visitor downloaded a CV. */
 export const trackCvDownload = (location: ConversionLocation, lang: Language) =>
-  sendGTMEvent({ event: 'cv_download', location, lang });
+  push({ event: 'cv_download', location, lang });
 
 /** Conversion: the visitor opened a contact channel. */
 export const trackContactClick = (
   method: ContactMethod,
   location?: ConversionLocation,
-) => sendGTMEvent({ event: 'contact_click', method, ...(location && { location }) });
+) => push({ event: 'contact_click', method, location });
 
 /** Navigation, not a conversion: the visitor entered the blog. */
 export const trackBlogClick = (location: BlogEntryPoint, slug?: string) =>
-  sendGTMEvent({ event: 'blog_click', location, ...(slug && { slug }) });
+  push({ event: 'blog_click', location, slug });
 
 /** Engagement, not a conversion: fires once per user turn in the assistant. */
-export const trackChatMessage = (turn: number) =>
-  sendGTMEvent({ event: 'chat_message', turn });
+export const trackChatMessage = (turn: number) => push({ event: 'chat_message', turn });
 
 /**
  * Click map: every link or button click is reported as one `ui_click`, so the
@@ -97,7 +119,7 @@ export const clickPayload = (target: Element) => {
 export const listenForClicks = () => {
   const onClick = (event: MouseEvent) => {
     const payload = event.target instanceof Element && clickPayload(event.target);
-    if (payload) sendGTMEvent(payload);
+    if (payload) push(payload);
   };
   document.addEventListener('click', onClick, { capture: true });
   return () => document.removeEventListener('click', onClick, { capture: true });
