@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
-import { clickPayload, listenForClicks, trackCvDownload } from '@/constants/analytics';
+import {
+  INTERNAL_TRAFFIC_SCRIPT,
+  clickPayload,
+  listenForClicks,
+  trackCvDownload,
+} from '@/constants/analytics';
 
 const pushes = vi.hoisted((): Record<string, unknown>[] => []);
 vi.mock('@next/third-parties/google', () => ({
@@ -60,5 +65,24 @@ describe('data layer pushes', () => {
     expect(dataLayerState()).toMatchObject({ event: 'cv_download', location: 'hero', lang: 'en' });
     expect(dataLayerState().section).toBeUndefined();
     expect(dataLayerState().link_url).toBeUndefined();
+  });
+});
+
+describe('INTERNAL_TRAFFIC_SCRIPT', () => {
+  const win = window as unknown as { dataLayer: unknown[] };
+  const load = (search: string) => {
+    history.replaceState(null, '', `/${search}`);
+    win.dataLayer = [];
+    new Function(INTERNAL_TRAFFIC_SCRIPT)();
+    return win.dataLayer;
+  };
+
+  it('tags every load after ?internal=1 until ?internal=0', () => {
+    localStorage.clear();
+    expect(load('')).toEqual([]);
+    expect(load('?internal=1')).toEqual([{ traffic_type: 'internal' }]);
+    expect(load('')).toEqual([{ traffic_type: 'internal' }]);
+    expect(load('?internal=0')).toEqual([]);
+    expect(load('')).toEqual([]);
   });
 });

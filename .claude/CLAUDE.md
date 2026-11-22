@@ -124,6 +124,8 @@ GTM loads only when `GTM_ID` is set. **Never call `sendGTMEvent` directly** — 
 
 **Data layer resets:** GTM keeps the last pushed value of every key, and the one GA4 tag reads all of them on every event, so every helper pushes through `push()` in `constants/analytics.ts`, which sets unused keys to `undefined`. A new event parameter must be added to its `EMPTY` map (and to the GTM container) or it will leak into later events.
 
+**Owner traffic:** visiting any page with `?internal=1` sets a `localStorage` flag; `INTERNAL_TRAFFIC_SCRIPT` (inline, rendered just before `GoogleTagManager` in `app/layout.tsx`) then pushes `traffic_type: 'internal'` on every load, and GA4's Internal Traffic data filter drops those events. `?internal=0` clears it. Device-based rather than IP-based because the owner browses from changing networks. `traffic_type` is deliberately **not** in `EMPTY` — it must persist for the whole page. GTM forwards it twice: on `GA4 - Site events` (in `gtm/site-events.json`) and as a configuration parameter on the Google tag (set in the GTM UI, not in the import file), which covers `page_view` and enhanced-measurement events.
+
 **GTM container:** `gtm/site-events.json` is the importable config — one GA4 Event tag forwarding all five events with every parameter. Edit it rather than hand-building tags in the GTM UI, and register new parameters as GA4 custom dimensions or they will not appear in reports.
 
 ## Path Aliases

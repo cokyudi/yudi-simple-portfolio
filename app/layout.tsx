@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import Chat from '@/components/Chat';
 import { GoogleTagManager } from '@next/third-parties/google';
+import { INTERNAL_TRAFFIC_SCRIPT } from '@/constants/analytics';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from '@/app/providers';
@@ -84,7 +85,12 @@ function RootLayout({ children }: { children: React.ReactNode}) {
           <Chat />
         </Providers>
 
-        {process.env.GTM_ID && <GoogleTagManager gtmId={process.env.GTM_ID} />}
+        {process.env.GTM_ID && (
+          <>
+            <script dangerouslySetInnerHTML={{ __html: INTERNAL_TRAFFIC_SCRIPT }} />
+            <GoogleTagManager gtmId={process.env.GTM_ID} />
+          </>
+        )}
         <Analytics />
         <SpeedInsights />
       </body>
