@@ -35,6 +35,21 @@ const EMPTY = {
 const push = (payload: { event: string } & Partial<Record<keyof typeof EMPTY, unknown>>) =>
   sendGTMEvent({ ...EMPTY, ...payload });
 
+/**
+ * Inline script that runs before GTM boots. Visiting with `?internal=1` marks
+ * this browser as the owner's (`?internal=0` clears it); a marked browser
+ * pushes `traffic_type: 'internal'`, which GA4's Internal Traffic data filter
+ * drops. An IP rule can't follow a phone between networks; this can. Not in
+ * EMPTY on purpose — it must stay set for every event on the page.
+ */
+export const INTERNAL_TRAFFIC_SCRIPT = `try {
+  var q = new URLSearchParams(location.search).get('internal');
+  if (q === '1') localStorage.setItem('internal_traffic', '1');
+  if (q === '0') localStorage.removeItem('internal_traffic');
+  if (localStorage.getItem('internal_traffic'))
+    (window.dataLayer = window.dataLayer || []).push({ traffic_type: 'internal' });
+} catch (e) {}`;
+
 /** Where on the site a conversion happened. */
 export type ConversionLocation = 'hero' | 'footer' | 'footer_cta' | 'blog_post';
 
